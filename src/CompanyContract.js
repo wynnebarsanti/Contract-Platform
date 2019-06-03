@@ -6,7 +6,7 @@ class CompanyContract extends React.Component {
     return (
       <div>
         <Navbar />
-        Hello
+        This is the Company Contract
       </div>
     );
   }
