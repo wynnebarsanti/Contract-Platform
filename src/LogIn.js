@@ -120,7 +120,6 @@ class Login extends Component {
         </Paper>
         <br />
         <br />
-        <ForumPage />
       </Container>
     );
   }
