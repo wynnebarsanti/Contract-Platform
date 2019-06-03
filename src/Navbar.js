@@ -1,65 +1,50 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
-import { Link } from "react-router-dom";
+import { Link, BrowserRouter, Switch, Route } from "react-router-dom";
 
-function TabContainer(props) {
-  return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
-    </Typography>
-  );
-}
-
-TabContainer.propTypes = {
-  children: PropTypes.node.isRequired
-};
-
-function LinkTab(props) {
-  return (
-    <Tab
-      component="a"
-      onClick={event => {
-        event.preventDefault();
-      }}
-      {...props}
-    />
-  );
-}
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
+class Navbar extends React.Component {
+  render() {
+    return (
+      <BrowserRouter>
+        <div className="App">
+          <Route
+            path="/"
+            render={({ location }) => (
+              <Fragment>
+                <Tabs value={location.pathname}>
+                  <Tab label="Item One" value="/" component={Link} to="/" />
+                  <Tab
+                    label="Company Contracts"
+                    value="/tab2"
+                    component={Link}
+                    to="/CompanyContract"
+                  />
+                  <Tab
+                    value="/tab3"
+                    label="All Students"
+                    component={Link}
+                    to="/AllStudent"
+                  />
+                </Tabs>
+                <Switch>
+                  <Route
+                    path="/CompanyContract"
+                    render={() => <div>Tab 2</div>}
+                  />
+                  <Route path="/AllStudents" render={() => <div>Tab 3</div>} />
+                  <Route path="/" render={() => <div>Tab 1</div>} />
+                </Switch>
+              </Fragment>
+            )}
+          />
+        </div>
+      </BrowserRouter>
+    );
   }
-}));
-
-function NavTabs() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-
-  function handleChange(event, newValue) {
-    setValue(newValue);
-  }
-
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Tabs variant="fullWidth" value={value} onChange={handleChange}>
-          <LinkTab label="Company Profile" containerElement={<Link to="/company"/>} />
-          <LinkTab label="Company Contracts" containerElement={<Link to="/CompanyContract"/>}/>
-          <LinkTab label="All Students" href="/spam" />
-        </Tabs>
-      </AppBar>
-      {value === 0 && <TabContainer>Page Two</TabContainer>}
-      {value === 1 && <TabContainer>Page Two</TabContainer>}
-      {value === 2 && <TabContainer>Page Three</TabContainer>}
-    </div>
-  );
 }
-
-export default NavTabs;
+export default Navbar;
