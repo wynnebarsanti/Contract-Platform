@@ -9,9 +9,6 @@ import AllStudents from "./AllStudents.js";
 import StudentProfile from "./StudentProfile.js";
 import StudentContract from "./StudentContract.js";
 import Forum from "./Forum.js";
-
-import AllContracts from "./AllContracts";
-
 import Users from "./Users.js";
 
 class App extends React.Component {
@@ -20,34 +17,18 @@ class App extends React.Component {
       <div className="App">
         <Router>
           <Route exact path="/" component={LogIn} />
-<<<<<<< HEAD
-<<<<<<< HEAD
-          <Route exact path="/Users" component={Users} />
-=======
-          <Route exact path="/users" component={Users} />
->>>>>>> 872c34248fb51c75006857ecdf255325e27ba6f0
-=======
 
-          <Route exact path="/users" component={Users} />
->>>>>>> bff0bfc5168f8e58dc5e048b81eea36255391819
+          <Route exact path="/Users" component={Users} />
+
           <Route exact path="/Company" component={CompanyProfile} />
           <Route exact path="/CompanyContract" component={CompanyContract} />
           <Route exact path="/AllStudents" component={AllStudents} />
           <Route exact path="/Student" component={StudentProfile} />
           <Route exact path="/StudentContract" component={StudentContract} />
           <Route exact path="/Forum" component={Forum} />
-<<<<<<< HEAD
-<<<<<<< HEAD
+
       </Router> 
 
-=======
-        </Router>
->>>>>>> 872c34248fb51c75006857ecdf255325e27ba6f0
-=======
-
-        </Router>
-
->>>>>>> bff0bfc5168f8e58dc5e048b81eea36255391819
       </div>
     );
   }
