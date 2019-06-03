@@ -20,6 +20,7 @@ class App extends React.Component {
       <div className="App">
         <Router>
           <Route exact path="/" component={LogIn} />
+
           <Route exact path="/users" component={Users} />
           <Route exact path="/Company" component={CompanyProfile} />
           <Route exact path="/CompanyContract" component={CompanyContract} />
@@ -27,7 +28,9 @@ class App extends React.Component {
           <Route exact path="/Student" component={StudentProfile} />
           <Route exact path="/StudentContract" component={StudentContract} />
           <Route exact path="/Forum" component={Forum} />
+
         </Router>
+
       </div>
     );
   }
