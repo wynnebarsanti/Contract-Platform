@@ -70,7 +70,8 @@ class StudentProfile extends React.Component {
   }
 
   render(){
-    console.log(this.props.location.state)
+    //console.log(this.props.location.state)
+    const userInfo = this.props.location.state;
     const { classes } = this.props;
     return (
       <div>
