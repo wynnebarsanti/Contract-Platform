@@ -9,11 +9,9 @@ import {
   Card,
   Chip,
   Button,
-  Typography,
-  TextField
+  Typography
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
-import Users from "./Users.js";
 
 const firebaseAppAuth = firebaseApp.auth();
 
@@ -32,44 +30,46 @@ class Login extends Component {
     };
   }
 
-  createInDatabase = () => {
-    const usersRef = firebaseApp
-      .database()
-      .ref(`users/${this.state.currentUser}`);
-    const user = {
-      student: this.state.student,
-      company: this.state.company,
-      linkedIn: "",
-      github: "",
-      currentContracts: [
-        {
-          title: "first contract",
-          description: "hello ther",
-          interested: "q3wr81023984asfd, 23098qskjflasdfj"
-        }
-      ],
-      pastContracts: [
-        {
-          title: "old contract",
-          description: "GOD BLESS YOU",
-          interested: "q3wr81023984asfd, 23098qskjflasdfj"
-        }
-      ],
-      username: this.props.user.displayName,
-      photo: this.props.user.photoURL
-    };
-    usersRef.push(user);
+  // createInDatabase = () => {
+  //   const usersRef = firebaseApp
+  //     .database()
+  //     .ref(`users/${this.state.currentUser}`);
+  //   const user = {
+  //     student: this.state.student,
+  //     company: this.state.company,
+  //     linkedIn: "",
+  //     github: "",
+  //     currentContracts: [
+  //       {
+  //         title: "first contract",
+  //         description: "hello ther",
+  //         interested: "q3wr81023984asfd, 23098qskjflasdfj"
+  //       }
+  //     ],
+  //     pastContracts: [
+  //       {
+  //         title: "old contract",
+  //         description: "GOD BLESS YOU",
+  //         interested: "q3wr81023984asfd, 23098qskjflasdfj"
+  //       }
+  //     ],
+  //     username: this.state.username,
+  //     photo: this.state.photo
+  //   };
+  //   usersRef.push(user);
 
-    //check if you already have a user
-  };
+  // };
 
   handleStudent = () => {
     //route to the users page, which handles whether student, admin, or company should be rendered.
     this.setState(
       {
-        student: true
-      },
-      () => this.createInDatabase()
+        student: true,
+        username: this.props.user.displayName,
+        photo: this.props.user.photoURL
+      }
+      // },
+      // () => this.createInDatabase()
     );
 
     this.setRedirect();
@@ -79,9 +79,12 @@ class Login extends Component {
     //route to the users page, which handles whether student, admin, or company should be rendered.
     this.setState(
       {
-        company: true
-      },
-      () => this.createInDatabase()
+        company: true,
+        username: this.props.user.displayName,
+        photo: this.props.user.photoURL
+      }
+      // },
+      // () => this.createInDatabase()
     );
     this.setRedirect();
   };

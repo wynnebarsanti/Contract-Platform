@@ -5,8 +5,37 @@ import firebaseApp from "./firebaseConfig";
 class Users extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = props.location.state;
   }
+
+  createInDatabase = () => {
+    const usersRef = firebaseApp
+      .database()
+      .ref(`users/${this.state.currentUser}`);
+    const user = {
+      student: this.state.student,
+      company: this.state.company,
+      linkedIn: "",
+      github: "",
+      currentContracts: [
+        {
+          title: "first contract",
+          description: "hello ther",
+          interested: "q3wr81023984asfd, 23098qskjflasdfj"
+        }
+      ],
+      pastContracts: [
+        {
+          title: "old contract",
+          description: "GOD BLESS YOU",
+          interested: "q3wr81023984asfd, 23098qskjflasdfj"
+        }
+      ],
+      username: this.state.username,
+      photo: this.state.photo
+    };
+    usersRef.push(user);
+  };
 
   componentDidMount() {
     const usersRef = firebaseApp.database().ref("users");
@@ -15,7 +44,11 @@ class Users extends React.Component {
       let update = snap.val() || [];
       this.updateSnap(update);
     });
+
+    this.createInDatabase();
   }
+
+  checkExists = () => {};
 
   updateSnap = value => {
     this.setState({
@@ -55,9 +88,9 @@ class Users extends React.Component {
   };
 
   render() {
-    console.log(this.props.location.state);
+    console.log(this.state);
 
-    return <div>{this.renderRedirect()}</div>;
+    return <div>{JSON.stringify(this.state.users)} </div>;
   }
 }
 
