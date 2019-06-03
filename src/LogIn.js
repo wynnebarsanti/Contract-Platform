@@ -32,22 +32,58 @@ class Login extends Component {
     };
   }
 
+  createInDatabase = () => {
+    const usersRef = firebaseApp
+      .database()
+      .ref(`users/${this.state.currentUser}`);
+    const user = {
+      student: this.state.student,
+      company: this.state.company,
+      linkedIn: "",
+      github: "",
+      currentContracts: [
+        {
+          title: "first contract",
+          description: "hello ther",
+          interested: "q3wr81023984asfd, 23098qskjflasdfj"
+        }
+      ],
+      pastContracts: [
+        {
+          title: "old contract",
+          description: "GOD BLESS YOU",
+          interested: "q3wr81023984asfd, 23098qskjflasdfj"
+        }
+      ],
+      username: this.props.user.displayName,
+      photo: this.props.user.photoURL
+    };
+    usersRef.push(user);
+
+    //check if you already have a user
+  };
+
   handleStudent = () => {
     //route to the users page, which handles whether student, admin, or company should be rendered.
-    this.setState({
-      student: true
-    });
+    this.setState(
+      {
+        student: true
+      },
+      () => this.createInDatabase()
+    );
+
     this.setRedirect();
-    console.log(this.state.redirect);
   };
 
   handleCompany = () => {
     //route to the users page, which handles whether student, admin, or company should be rendered.
-    this.setState({
-      company: true
-    });
+    this.setState(
+      {
+        company: true
+      },
+      () => this.createInDatabase()
+    );
     this.setRedirect();
-    console.log(this.state.redirect);
   };
 
   renderRedirect = () => {
@@ -84,6 +120,7 @@ class Login extends Component {
 
   render() {
     const { user, signOut, signInWithGoogle } = this.props;
+
     console.log(this.state.currentUser);
     return (
       <Container maxWidth="sm">
