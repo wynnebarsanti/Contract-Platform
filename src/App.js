@@ -9,6 +9,7 @@ import AllStudents from "./AllStudents.js";
 import StudentProfile from "./StudentProfile.js";
 import StudentContract from "./StudentContract.js";
 import Forum from "./Forum.js";
+import Users from "./Users.js";
 
 class App extends React.Component {
   render() {
@@ -16,6 +17,8 @@ class App extends React.Component {
       <div className="App">
         <Router>
           <Route exact path="/" component={LogIn} />
+
+          <Route exact path="/Users" component={Users} />
 
           <Route exact path="/Company" component={CompanyProfile} />
           <Route exact path="/CompanyContract" component={CompanyContract} />
