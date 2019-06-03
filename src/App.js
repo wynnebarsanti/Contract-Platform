@@ -17,6 +17,7 @@ class App extends React.Component {
       <div className="App">
         <Router>
           <Route exact path="/" component={LogIn} />
+          <Route exact path="/Users" component={Users} />
 
           <Route exact path="/company/profile" component={CompanyProfile} />
           <Route exact path="/company/contracts" component={CompanyContract} />
