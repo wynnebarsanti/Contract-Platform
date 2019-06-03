@@ -1,6 +1,6 @@
 # Contract Platform
 
-Platform enabling copmanies to find freelancers to complete various software engineering tracks for a certain price. 
+Platform enabling companies to find freelancers to complete various software engineering tracks for a certain price. 
 
 ## Usage
 
