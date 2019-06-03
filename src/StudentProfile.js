@@ -126,7 +126,7 @@ export default function StudentProfile() {
                   </CardContent>
                   <CardActions>
                     <Button size="small" color="primary">
-                      I'm Interested!
+                      View
                     </Button>
                     {/* <Button size="small" color="primary">
                       Edit
