@@ -26,35 +26,41 @@ class Login extends Component {
     super(props);
     this.state = {
       currentUser: "",
-      linkedIn: "",
-      website: "",
-      redirect: false
+      redirect: false,
+      student: false,
+      company: false
     };
   }
 
-  updateSnap = value => {
+  handleStudent = () => {
+    //route to the users page, which handles whether student, admin, or company should be rendered.
     this.setState({
-      users: value
+      student: true
     });
+    this.setRedirect();
+    console.log(this.state.redirect);
   };
 
-  handleClick = () => {
+  handleCompany = () => {
     //route to the users page, which handles whether student, admin, or company should be rendered.
+    this.setState({
+      company: true
+    });
     this.setRedirect();
     console.log(this.state.redirect);
   };
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to="/users" />;
+      return <Redirect to={{ pathname: "/users", state: this.state }} />;
     }
   };
 
-  handleValue = (event, value) => {
-    this.setState({
-      [value]: event.target.value
-    });
-  };
+  // handleValue = (event, value) => {
+  //   this.setState({
+  //     [value]: event.target.value
+  //   });
+  // };
 
   setRedirect = () => {
     this.setState({
@@ -131,10 +137,14 @@ class Login extends Component {
               onChange={e => this.handleValue(e, "website")}
             />
           </Card> */}
-
-          <Button variant="outlined" onClick={this.handleClick}>
-            Move Forth
-          </Button>
+          <Card>
+            <Button variant="outlined" onClick={this.handleStudent}>
+              Student
+            </Button>
+            <Button variant="outlined" onClick={this.handleCompany}>
+              Company
+            </Button>
+          </Card>
         </Paper>
       </Container>
     );
