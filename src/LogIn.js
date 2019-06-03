@@ -9,7 +9,8 @@ import {
   Card,
   Chip,
   Button,
-  Typography
+  Typography,
+  TextField
 } from "@material-ui/core";
 
 const firebaseAppAuth = firebaseApp.auth();
@@ -22,13 +23,25 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: ""
+      currentUser: "",
+      linkedIn: "",
+      website: ""
     };
   }
 
   updateSnap = value => {
     this.setState({
       users: value
+    });
+  };
+
+  handleclick = () => {
+    //route to the users page, which handles whether student, admin, or company should be rendered.
+  };
+
+  handleValue = (event, value) => {
+    this.setState({
+      [value]: event.target.value
     });
   };
 
@@ -73,6 +86,37 @@ class Login extends Component {
               </Button>
             )}
           </Card>
+
+          <Card>
+            <TextField
+              placeholder="LinkedIn Link"
+              required
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              rows={1}
+              rowsMax={1}
+              value={this.state.linkedIn}
+              onChange={e => this.handleValue(e, "linkedIn")}
+            />
+          </Card>
+          <Card>
+            <TextField
+              placeholder="Website Link"
+              required
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              rows={1}
+              rowsMax={1}
+              value={this.state.linkedIn}
+              onChange={e => this.handleValue(e, "website")}
+            />
+          </Card>
+
+          <Button variant="outlined" onClick={() => this.handleClick}>
+            Move Forth
+          </Button>
         </Paper>
       </Container>
     );
