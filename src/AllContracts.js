@@ -1,5 +1,4 @@
-import React from "react";
-import Navbar from "./Navbar.js";
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import CameraIcon from '@material-ui/icons/PhotoCamera';
@@ -14,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import Navbar from './Navbar';
+
 
 function MadeWithLove() {
   return (
@@ -26,6 +27,7 @@ function MadeWithLove() {
     </Typography>
   );
 }
+
 const useStyles = makeStyles(theme => ({
   icon: {
     marginRight: theme.spacing(2),
@@ -60,21 +62,19 @@ const useStyles = makeStyles(theme => ({
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
+export default function AllContracts() {
+    const classes = useStyles();
 
-export default function StudentProfile() {
-  const classes = useStyles();
-
-
-    return (
-      <div>
-        <Navbar />
-        <React.Fragment>
+  return (
+    <div>
+    <Navbar />
+    <React.Fragment>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
           <CameraIcon className={classes.icon} />
           <Typography variant="h6" color="inherit" noWrap>
-            Student Profile
+            Contract Marketplace
           </Typography>
         </Toolbar>
       </AppBar>
@@ -83,14 +83,15 @@ export default function StudentProfile() {
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Student Name here
+              Contract Marketplace
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
-              Brief description of student skills
+              Companies will post projects that they need completed. 
+              Let them know you're interested and get working now! 
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
-                <Grid item>
+                {/* <Grid item>
                   <Button variant="contained" color="primary">
                     Linked In
                   </Button>
@@ -99,14 +100,13 @@ export default function StudentProfile() {
                   <Button variant="outlined" color="primary">
                     GitHub
                   </Button>
-                </Grid>
+                </Grid> */}
               </Grid>
             </div>
           </Container>
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
-          <b>current contracts</b>
           <Grid container spacing={4}>
             {cards.map(card => (
               <Grid item key={card} xs={12} sm={6} md={4}>
@@ -150,9 +150,9 @@ export default function StudentProfile() {
       </footer>
       {/* End footer */}
     </React.Fragment>
-      </div>
-    );
-  }
+    </div>
+  );
+}
 
 
 
