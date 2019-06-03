@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import { withStyles } from "@material-ui/core/styles";
 
 function MadeWithLove() {
   return (
@@ -26,7 +27,8 @@ function MadeWithLove() {
     </Typography>
   );
 }
-const useStyles = makeStyles(theme => ({
+
+const useStyles = theme => ({
   icon: {
     marginRight: theme.spacing(2),
   },
@@ -56,15 +58,20 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
-}));
+});
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+ 
 
+class StudentProfile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-export default function StudentProfile() {
-  const classes = useStyles();
-
-
+  render(){
+    console.log(this.props.location.state)
+    const { classes } = this.props;
     return (
       <div>
         <Navbar />
@@ -153,6 +160,6 @@ export default function StudentProfile() {
       </div>
     );
   }
+}
 
-
-
+export default withStyles(useStyles)(StudentProfile);
