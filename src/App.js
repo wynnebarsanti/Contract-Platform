@@ -8,12 +8,14 @@ import AllStudents from "./AllStudents.js";
 import Student from "./StudentProfile.js";
 import StudentContract from "./StudentContract.js";
 import Forum from "./Forum.js";
+import AllContracts from "./AllContracts";
 
 class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Router>
+        <AllContracts />
+        {/* <Router>
           <Route exact path="/" component={LogIn} />
 
           <Route exact path="/Company" component={CompanyProfile} />
@@ -23,7 +25,7 @@ class App extends React.Component {
           <Route exact path="/Student" component={Student} />
           <Route exact path="/StudentContract" component={StudentContract} />
           <Route exact path="/Forum" component={Forum} />
-        </Router>
+        </Router> */}
       </div>
     );
   }
