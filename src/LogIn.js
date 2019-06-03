@@ -105,7 +105,7 @@ class Login extends Component {
             )}
           </Card>
 
-          <Card>
+          {/* <Card>
             <TextField
               placeholder="LinkedIn Link"
               required
@@ -130,7 +130,7 @@ class Login extends Component {
               value={this.state.linkedIn}
               onChange={e => this.handleValue(e, "website")}
             />
-          </Card>
+          </Card> */}
 
           <Button variant="outlined" onClick={this.handleClick}>
             Move Forth
