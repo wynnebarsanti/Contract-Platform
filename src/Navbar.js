@@ -5,6 +5,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
+import { Link } from "react-router-dom";
 
 function TabContainer(props) {
   return (
@@ -49,12 +50,12 @@ function NavTabs() {
     <div className={classes.root}>
       <AppBar position="static">
         <Tabs variant="fullWidth" value={value} onChange={handleChange}>
-          <LinkTab label="Page One" href="/drafts" />
-          <LinkTab label="Page Two" href="/trash" />
-          <LinkTab label="Page Three" href="/spam" />
+          <LinkTab label="Company Profile" containerElement={<Link to="/company"/>} />
+          <LinkTab label="Company Contracts" containerElement={<Link to="/CompanyContract"/>}/>
+          <LinkTab label="All Students" href="/spam" />
         </Tabs>
       </AppBar>
-      {value === 0 && <TabContainer>Page One</TabContainer>}
+      {value === 0 && <TabContainer>Page Two</TabContainer>}
       {value === 1 && <TabContainer>Page Two</TabContainer>}
       {value === 2 && <TabContainer>Page Three</TabContainer>}
     </div>
