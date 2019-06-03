@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import withFirebaseAuth from "react-with-firebase-auth";
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import ForumPage from "./ForumPage"
 import firebaseApp from "./firebaseConfig";
 import {
   Container,
@@ -113,11 +114,13 @@ class Login extends Component {
               onChange={e => this.handleValue(e, "website")}
             />
           </Card>
-
           <Button variant="outlined" onClick={() => this.handleClick}>
             Move Forth
           </Button>
         </Paper>
+        <br />
+        <br />
+        <ForumPage />
       </Container>
     );
   }
