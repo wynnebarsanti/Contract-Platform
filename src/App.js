@@ -9,9 +9,6 @@ import AllStudents from "./AllStudents.js";
 import StudentProfile from "./StudentProfile.js";
 import StudentContract from "./StudentContract.js";
 import Forum from "./Forum.js";
-
-import AllContracts from "./AllContracts";
-
 import Users from "./Users.js";
 
 class App extends React.Component {
