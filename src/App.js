@@ -5,7 +5,7 @@ import { Route, BrowserRouter as Router } from "react-router-dom";
 import CompanyProfile from "./CompanyProfile.js";
 import CompanyContract from "./CompanyContract.js";
 import AllStudents from "./AllStudents.js";
-import Student from "./StudentProfile.js";
+import StudentProfile from "./StudentProfile.js";
 import StudentContract from "./StudentContract.js";
 import Forum from "./Forum.js";
 import AllContracts from "./AllContracts";
@@ -14,7 +14,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <AllContracts />
+        <StudentProfile />
         {/* <Router>
           <Route exact path="/" component={LogIn} />
 

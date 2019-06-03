@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import Navbar from './Navbar';
+
 
 function MadeWithLove() {
   return (
@@ -25,6 +27,7 @@ function MadeWithLove() {
     </Typography>
   );
 }
+
 const useStyles = makeStyles(theme => ({
   icon: {
     marginRight: theme.spacing(2),
@@ -59,17 +62,19 @@ const useStyles = makeStyles(theme => ({
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-export default function Album() {
-  const classes = useStyles();
+export default function AllContracts() {
+    const classes = useStyles();
 
   return (
+    <div>
+    <Navbar />
     <React.Fragment>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
           <CameraIcon className={classes.icon} />
           <Typography variant="h6" color="inherit" noWrap>
-            Profile
+            Contract Marketplace
           </Typography>
         </Toolbar>
       </AppBar>
@@ -78,16 +83,15 @@ export default function Album() {
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Student Name Here
+              Contract Marketplace
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
-              Something short and leading about the collection below—its contents, the creator, etc.
-              Make it short and sweet, but not too short so folks don&apos;t simply skip over it
-              entirely.
+              Companies will post projects that they need completed. 
+              Let them know you're interested and get working now! 
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
-                <Grid item>
+                {/* <Grid item>
                   <Button variant="contained" color="primary">
                     Linked In
                   </Button>
@@ -96,7 +100,7 @@ export default function Album() {
                   <Button variant="outlined" color="primary">
                     GitHub
                   </Button>
-                </Grid>
+                </Grid> */}
               </Grid>
             </div>
           </Container>
@@ -107,26 +111,26 @@ export default function Album() {
             {cards.map(card => (
               <Grid item key={card} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
-                  <CardMedia
+                  {/* <CardMedia
                     className={classes.cardMedia}
                     image="https://source.unsplash.com/random"
                     title="Image title"
-                  />
+                  /> */}
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                      Contract Name
                     </Typography>
                     <Typography>
-                      This is a media card. You can use this section to describe the content.
+                      Contract Details
                     </Typography>
                   </CardContent>
                   <CardActions>
                     <Button size="small" color="primary">
-                      View
+                      I'm Interested!
                     </Button>
-                    <Button size="small" color="primary">
+                    {/* <Button size="small" color="primary">
                       Edit
-                    </Button>
+                    </Button> */}
                   </CardActions>
                 </Card>
               </Grid>
@@ -146,6 +150,9 @@ export default function Album() {
       </footer>
       {/* End footer */}
     </React.Fragment>
+    </div>
   );
 }
+
+
 
