@@ -1,11 +1,12 @@
 import React from "react";
 import "./App.css";
 import LogIn from "./LogIn";
+
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import CompanyProfile from "./CompanyProfile.js";
 import CompanyContract from "./CompanyContract.js";
 import AllStudents from "./AllStudents.js";
-import Student from "./StudentProfile.js";
+import StudentProfile from "./StudentProfile.js";
 import StudentContract from "./StudentContract.js";
 import Forum from "./Forum.js";
 
@@ -20,7 +21,7 @@ class App extends React.Component {
           <Route exact path="/CompanyContract" component={CompanyContract} />
           <Route exact path="/AllStudents" component={AllStudents} />
 
-          <Route exact path="/Student" component={Student} />
+          <Route exact path="/Student" component={StudentProfile} />
           <Route exact path="/StudentContract" component={StudentContract} />
           <Route exact path="/Forum" component={Forum} />
         </Router>
