@@ -17,13 +17,13 @@ class App extends React.Component {
         <Router>
           <Route exact path="/" component={LogIn} />
 
-          <Route exact path="/Company" component={CompanyProfile} />
-          <Route exact path="/CompanyContract" component={CompanyContract} />
-          <Route exact path="/AllStudents" component={AllStudents} />
+          <Route exact path="/company/profile" component={CompanyProfile} />
+          <Route exact path="/company/contracts" component={CompanyContract} />
+          <Route exact path="/company/students" component={AllStudents} />
 
-          <Route exact path="/Student" component={StudentProfile} />
-          <Route exact path="/StudentContract" component={StudentContract} />
-          <Route exact path="/Forum" component={Forum} />
+          <Route exact path="/student/profile" component={StudentProfile} />
+          <Route exact path="/student/contracts" component={StudentContract} />
+          <Route exact path="/student/forum" component={Forum} />
         </Router>
       </div>
     );
