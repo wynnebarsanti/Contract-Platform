@@ -1,16 +1,15 @@
-import React from 'react';
-import './App.css';
-import LogIn from './LogIn';
+import React from "react";
+import "./App.css";
+import LogIn from "./LogIn";
 
 class App extends React.Component {
-  render(){
+  render() {
     return (
       <div className="App">
         <LogIn />
       </div>
     );
   }
-
 }
 
 export default App;
