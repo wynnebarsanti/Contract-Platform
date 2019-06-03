@@ -1,14 +1,9 @@
-import React from 'react';
+import React from "react";
 
-
-class Users extends React.Component{
-    render() {
-        return(
-            <div>
-                This is the users page.
-            </div>
-        )
-    }
+class Users extends React.Component {
+  render() {
+    return <div>This is the users page.</div>;
+  }
 }
 
 export default Users;
