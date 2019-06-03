@@ -23,12 +23,12 @@ class App extends React.Component {
         <Router>
           <Route exact path="/" component={LogIn} />
           <Route exact path="/Users" component={Users} />
-        <Route exact path="/Company" component={CompanyProfile} />
-        <Route exact path="/CompanyContract" component={CompanyContract} />
-        <Route exact path="/AllStudents" component={AllStudents} />
-        <Route exact path="/Student" component={StudentProfile} />
-        <Route exact path="/StudentContract" component={StudentContract} />
-        <Route exact path="/Forum" component={Forum} />
+          <Route exact path="/Company" component={CompanyProfile} />
+          <Route exact path="/CompanyContract" component={CompanyContract} />
+          <Route exact path="/AllStudents" component={AllStudents} />
+          <Route exact path="/Student" component={StudentProfile} />
+          <Route exact path="/StudentContract" component={StudentContract} />
+          <Route exact path="/Forum" component={Forum} />
       </Router> 
 
       </div>
