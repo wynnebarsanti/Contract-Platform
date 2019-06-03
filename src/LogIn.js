@@ -12,6 +12,8 @@ import {
   Typography,
   TextField
 } from "@material-ui/core";
+import { Redirect } from "react-router-dom";
+import Users from "./Users.js";
 
 const firebaseAppAuth = firebaseApp.auth();
 
@@ -25,7 +27,8 @@ class Login extends Component {
     this.state = {
       currentUser: "",
       linkedIn: "",
-      website: ""
+      website: "",
+      redirect: false
     };
   }
 
@@ -35,13 +38,27 @@ class Login extends Component {
     });
   };
 
-  handleclick = () => {
+  handleClick = () => {
     //route to the users page, which handles whether student, admin, or company should be rendered.
+    this.setRedirect();
+    console.log(this.state.redirect);
+  };
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/Users" />;
+    }
   };
 
   handleValue = (event, value) => {
     this.setState({
       [value]: event.target.value
+    });
+  };
+
+  setRedirect = () => {
+    this.setState({
+      redirect: true
     });
   };
 
@@ -64,6 +81,7 @@ class Login extends Component {
     console.log(this.state.currentUser);
     return (
       <Container maxWidth="sm">
+        {this.renderRedirect()}
         <Typography variant="h6">Login</Typography>
 
         <Paper>
@@ -87,7 +105,7 @@ class Login extends Component {
             )}
           </Card>
 
-          <Card>
+          {/* <Card>
             <TextField
               placeholder="LinkedIn Link"
               required
@@ -112,9 +130,9 @@ class Login extends Component {
               value={this.state.linkedIn}
               onChange={e => this.handleValue(e, "website")}
             />
-          </Card>
+          </Card> */}
 
-          <Button variant="outlined" onClick={() => this.handleClick}>
+          <Button variant="outlined" onClick={this.handleClick}>
             Move Forth
           </Button>
         </Paper>
