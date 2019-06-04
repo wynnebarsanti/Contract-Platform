@@ -18,6 +18,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Redirect } from "react-router-dom";
+import LoginLogo from "./LoginLogo.png";
 
 const firebaseAppAuth = firebaseApp.auth();
 
@@ -96,10 +97,10 @@ class Login extends Component {
     const { user, signOut, signInWithGoogle } = this.props;
     
 
-    console.log(this.state.currentUser);
     return (
       <Container maxWidth="sm">
         {this.renderRedirect()}
+        <img src={LoginLogo} alt="Logo" />
         <Typography variant="h6">Login</Typography>
 
         <Paper>

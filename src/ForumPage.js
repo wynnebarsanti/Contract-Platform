@@ -64,6 +64,7 @@ export default class ForumPage extends React.Component {
             }
         )
     }
+<<<<<<< HEAD
     
     componentDidMount() {
         const usersRef = firebaseApp.database().ref("users");
@@ -88,6 +89,8 @@ export default class ForumPage extends React.Component {
           );
         });
       };
+=======
+>>>>>>> fb96eee6a726f90c5a35127c99943c5671d4daa5
 
     render(){
         return(

@@ -11,9 +11,12 @@ const AdapterLink = React.forwardRef((props, ref) => (
 ));
 
 class StudentNavbar extends React.Component {
-  state = {
-    redirect: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      redirect: false
+    };
+  }
 
   setRedirect = () => {
     firebase.auth().signOut();
@@ -52,7 +55,11 @@ class StudentNavbar extends React.Component {
         >
           Forum
         </Button>
-        <Button color="inherit" onClick={this.setRedirect}>
+        <Button
+          color="inherit"
+          component={AdapterLink}
+          onClick={this.setRedirect}
+        >
           Logout
         </Button>
       </div>

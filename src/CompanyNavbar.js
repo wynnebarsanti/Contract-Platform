@@ -29,28 +29,28 @@ class CompanyNavbar extends React.Component {
     return (
       <div>
         <Button
-          color="primary"
+          color="inherit"
           component={AdapterLink}
           to="/users/company/profile"
         >
           Company Profile
         </Button>
         <Button
-          color="primary"
+          color="inherit"
           component={AdapterLink}
           to="/users/company/contracts"
         >
           Company Contracts
         </Button>
         <Button
-          color="primary"
+          color="inherit"
           component={AdapterLink}
           to="/users/company/students"
         >
           Students Available
         </Button>
         <Button
-          color="primary"
+          color="inherit"
           component={AdapterLink}
           to="/users/company/students"
         >
