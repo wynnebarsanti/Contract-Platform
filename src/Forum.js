@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "./Navbar.js";
+import Navbar from "./StudentNavbar.js";
 
 class Forum extends React.Component {
   render() {

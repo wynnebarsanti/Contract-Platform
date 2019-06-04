@@ -42,17 +42,28 @@ class Users extends React.Component {
 
     usersRef.on("value", snap => {
       let update = snap.val() || [];
-      this.updateSnap(update);
+      this.updateSnap(update).then(() => {
+        if (this.state.users[this.state.currentUser]) {
+          Promise.resolve();
+        } else {
+          this.createInDatabase();
+        }
+      });
+
+      //I don't know why its not redirecting..
     });
 
-    this.createInDatabase();
+    console.log(this.state.users);
   }
 
-  checkExists = () => {};
-
   updateSnap = value => {
-    this.setState({
-      users: value
+    return new Promise(resolve => {
+      this.setState(
+        {
+          users: value
+        },
+        () => resolve()
+      );
     });
   };
 
@@ -64,22 +75,24 @@ class Users extends React.Component {
   };
 
   renderRedirect = () => {
-    if (this.props.location.state.company === true) {
+    console.log("attempting to redirect");
+
+    if (this.state.company === true) {
       return (
         <Redirect
           to={{
             pathname: "/users/company/profile",
-            state: this.props.location.state,
+            parentState: this.state,
             changeParent: this.changeParent
           }}
         />
       );
-    } else if (this.props.location.state.student == true) {
+    } else if (this.state.student === true) {
       return (
         <Redirect
           to={{
             pathname: "/users/student/profile",
-            state: this.props.location.state,
+            parentState: this.state,
             changeParent: this.changeParent
           }}
         />
@@ -88,9 +101,7 @@ class Users extends React.Component {
   };
 
   render() {
-    console.log(this.state);
-
-    return <div>{JSON.stringify(this.state.users)} </div>;
+    return <div> {this.state.users ? this.renderRedirect() : null} </div>;
   }
 }
 
