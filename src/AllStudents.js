@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "./Navbar.js";
+import Navbar from "./CompanyNavbar.js";
 
 class AllStudents extends React.Component {
   render() {
