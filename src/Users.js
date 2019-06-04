@@ -49,8 +49,6 @@ class Users extends React.Component {
           this.createInDatabase();
         }
       });
-
-      //I don't know why its not redirecting..
     });
   }
 
@@ -78,8 +76,7 @@ class Users extends React.Component {
       return (
         <Redirect
           to={{
-            pathname: "/users/company/profile",
-            uid: this.state.currentUser
+            pathname: "/users/company/profile"
           }}
         />
       );
@@ -87,8 +84,7 @@ class Users extends React.Component {
       return (
         <Redirect
           to={{
-            pathname: "/users/student/profile",
-            uid: this.state.currentUser
+            pathname: "/users/student/profile"
           }}
         />
       );

@@ -67,7 +67,10 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 class StudentProfile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      currentUser: null,
+      uid: ""
+    };
   }
 
   componentDidMount() {
@@ -85,7 +88,8 @@ class StudentProfile extends React.Component {
       this.setState(
         {
           users: value,
-          currentUser: Object.keys(value[uid]).map(key => value[uid][key])
+          currentUser: Object.keys(value[uid]).map(key => value[uid][key]),
+          uid: uid
         },
         () => {
           resolve();
@@ -96,11 +100,9 @@ class StudentProfile extends React.Component {
 
   render() {
     const { users } = this.state;
-    const { uid } = firebaseApp.auth().currentUser;
+    const { uid } = this.state.uid;
     const { currentUser } = this.state;
     const { classes } = this.props;
-
-    console.log(currentUser);
 
     return (
       <div>
@@ -146,7 +148,7 @@ class StudentProfile extends React.Component {
                   color="textSecondary"
                   paragraph
                 >
-                  Brief description of student skills
+                  {currentUser ? currentUser[0].photo : ""}
                 </Typography>
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">

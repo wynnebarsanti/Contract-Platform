@@ -8,11 +8,10 @@ class Forum extends React.Component {
   }
   render() {
     console.log("in forum");
-    console.log(this.props);
+
     return (
       <div>
         <StudentNavbar />
-        {this.props}
       </div>
     );
   }
