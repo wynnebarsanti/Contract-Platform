@@ -76,8 +76,6 @@ class StudentProfile extends React.Component {
     usersRef.on("value", snap => {
       let update = snap.val() || [];
       this.updateSnap(update);
-
-      console.log(this.state.users);
     });
   }
 
@@ -93,8 +91,10 @@ class StudentProfile extends React.Component {
   };
 
   render() {
-    const userInfo = this.state.users;
-    console.log(userInfo);
+    const uid = this.props.location.uid;
+    const users = this.state.users;
+    const username = users ? users[uid] : null;
+    console.log(username);
     const { classes } = this.props;
     return (
       <div>
@@ -111,7 +111,7 @@ class StudentProfile extends React.Component {
                   transform: "translate(-50%, -50%)"
                 }}
               >
-                <StudentNavbar userInfo={userInfo} />
+                <StudentNavbar userInfo={uid} />
               </div>
             </Toolbar>
           </AppBar>
@@ -126,7 +126,7 @@ class StudentProfile extends React.Component {
                   color="textPrimary"
                   gutterBottom
                 >
-                  {userInfo.username}
+                  {uid}
                 </Typography>
                 <Typography
                   variant="h5"

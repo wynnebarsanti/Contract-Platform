@@ -52,8 +52,6 @@ class Users extends React.Component {
 
       //I don't know why its not redirecting..
     });
-
-    console.log(this.state.users);
   }
 
   updateSnap = value => {
@@ -71,7 +69,6 @@ class Users extends React.Component {
     this.setState({
       users: value
     });
-    console.log(value);
   };
 
   renderRedirect = () => {
@@ -81,7 +78,8 @@ class Users extends React.Component {
       return (
         <Redirect
           to={{
-            pathname: "/users/company/profile"
+            pathname: "/users/company/profile",
+            uid: this.state.currentUser
           }}
         />
       );
@@ -89,7 +87,8 @@ class Users extends React.Component {
       return (
         <Redirect
           to={{
-            pathname: "/users/student/profile"
+            pathname: "/users/student/profile",
+            uid: this.state.currentUser
           }}
         />
       );

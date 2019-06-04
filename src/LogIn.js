@@ -96,7 +96,6 @@ class Login extends Component {
   render() {
     const { user, signOut, signInWithGoogle } = this.props;
 
-    console.log(this.state.currentUser);
     return (
       <Container maxWidth="sm">
         {this.renderRedirect()}
