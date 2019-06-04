@@ -7,11 +7,8 @@ class Forum extends React.Component {
     this.state = {};
   }
   render() {
-    console.log("in forum");
-
     return (
       <div>
-        <StudentNavbar />
         <ForumPage />
       </div>
     );

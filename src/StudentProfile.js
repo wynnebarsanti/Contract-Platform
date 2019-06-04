@@ -73,13 +73,6 @@ class StudentProfile extends React.Component {
     };
   }
 
-<<<<<<< HEAD
-
-  render(){
-    //console.log(this.props.location.state)
-    const userInfo = this.props.location.state;
-    console.log(userInfo);
-=======
   componentDidMount() {
     const usersRef = firebaseApp.database().ref("users");
 
@@ -109,7 +102,6 @@ class StudentProfile extends React.Component {
     const { users } = this.state;
     const { uid } = this.state.uid;
     const { currentUser } = this.state;
->>>>>>> fb96eee6a726f90c5a35127c99943c5671d4daa5
     const { classes } = this.props;
 
     return (
