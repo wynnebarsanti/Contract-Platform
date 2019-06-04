@@ -83,18 +83,23 @@ class StudentProfile extends React.Component {
     return new Promise(resolve => {
       this.setState(
         {
-          users: value
+          users: value,
+          currentUser: Object.keys(value[this.props.location.uid]).map(
+            key => value[this.props.location.uid][key]
+          )
         },
-        () => resolve()
+        () => {
+          resolve();
+        }
       );
     });
   };
 
   render() {
-    const uid = this.props.location.uid;
-    const users = this.state.users;
-    const username = users ? users[uid] : null;
-    console.log(username);
+    const { users } = this.state;
+    const { uid } = this.props.location;
+    const { currentUser } = this.state;
+
     const { classes } = this.props;
     return (
       <div>
@@ -111,7 +116,7 @@ class StudentProfile extends React.Component {
                   transform: "translate(-50%, -50%)"
                 }}
               >
-                <StudentNavbar userInfo={uid} />
+                <StudentNavbar uid={uid} />
               </div>
             </Toolbar>
           </AppBar>
@@ -126,7 +131,7 @@ class StudentProfile extends React.Component {
                   color="textPrimary"
                   gutterBottom
                 >
-                  {uid}
+                  {JSON.stringify(currentUser)}
                 </Typography>
                 <Typography
                   variant="h5"
