@@ -48,7 +48,7 @@ export default class ForumComment extends React.Component {
         value: '',
         comments: [
           {
-            author: 'Han Solo',
+            author: this.props.currentUser[0].username,
             avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
             content: <p>{this.state.value}</p>,
             datetime: moment().fromNow(),
@@ -69,13 +69,14 @@ export default class ForumComment extends React.Component {
     const { comments, submitting, value } = this.state;
 
     return (
-      <div style={{width:"450px"}}>
+      <div>
         {comments.length > 0 && <CommentList comments={comments} />}
         <Comment
+          style={{width:"550px"}}
           avatar={
             <Avatar
               src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              alt="Han Solo"
+              alt="Brandon Williams"
             />
           }
           content={
@@ -84,6 +85,7 @@ export default class ForumComment extends React.Component {
               onSubmit={this.handleSubmit}
               submitting={submitting}
               value={value}
+              rows={2}
             />
           }
         />

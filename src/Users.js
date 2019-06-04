@@ -21,14 +21,14 @@ class Users extends React.Component {
         {
           title: "first contract",
           description: "hello ther",
-          interested: "q3wr81023984asfd, 23098qskjflasdfj"
+          interested: ["q3wr81023984asfd, 23098qskjflasdfj"]
         }
       ],
       pastContracts: [
         {
           title: "old contract",
           description: "GOD BLESS YOU",
-          interested: "q3wr81023984asfd, 23098qskjflasdfj"
+          interested: ["q3wr81023984asfd, 23098qskjflasdfj"]
         }
       ],
       username: this.state.username,
