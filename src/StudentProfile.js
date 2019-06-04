@@ -89,7 +89,7 @@ class StudentProfile extends React.Component {
       this.setState(
         {
           users: value,
-          currentUser: Object.keys(value[uid]).map(key => value[uid][key]),
+          currentUser: Object.keys(value[uid]).map(key => value[uid][key])[0],
           uid: uid
         },
         () => {
@@ -109,6 +109,7 @@ class StudentProfile extends React.Component {
       <div>
         <React.Fragment>
           <CssBaseline />
+
           <AppBar position="relative">
             <Toolbar>
               <img src={HeaderLogo} height="80" alt="Logo" />
@@ -130,6 +131,7 @@ class StudentProfile extends React.Component {
               </div>
             </Toolbar>
           </AppBar>
+
           <main>
             {/* Hero unit */}
             <div className={classes.heroContent}>
@@ -169,35 +171,42 @@ class StudentProfile extends React.Component {
                 </div>
               </Container>
             </div>
+
             <Container className={classes.cardGrid} maxWidth="md">
               {/* End hero unit */}
-              <b>current contracts</b>
+              <b>Current Contracts</b>
               <Grid container spacing={4}>
-                {cards.map(card => (
-                  <Grid item key={card} xs={12} sm={6} md={4}>
-                    <Card className={classes.card}>
-                      {/* <CardMedia
+                {currentUser
+                  ? currentUser.currentContracts.map(contract => (
+                      <Grid item key={contract} xs={12} sm={6} md={4}>
+                        <Card className={classes.card}>
+                          {/* <CardMedia
                     className={classes.cardMedia}
                     image="https://source.unsplash.com/random"
                     title="Image title"
                   /> */}
-                      <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          Contract Name
-                        </Typography>
-                        <Typography>Contract Details</Typography>
-                      </CardContent>
-                      <CardActions>
-                        <Button size="small" color="primary">
-                          View
-                        </Button>
-                        {/* <Button size="small" color="primary">
+                          <CardContent className={classes.cardContent}>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="h2"
+                            >
+                              <b>{contract.title}</b>
+                            </Typography>
+                            <Typography>{contract.details}</Typography>
+                          </CardContent>
+                          <CardActions>
+                            <Button size="small" color="primary">
+                              View
+                            </Button>
+                            {/* <Button size="small" color="primary">
                       Edit
                     </Button> */}
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                ))}
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    ))
+                  : ""}
               </Grid>
             </Container>
           </main>
