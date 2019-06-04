@@ -49,7 +49,7 @@ export default class ForumComment extends React.Component {
         comments: [
           {
             author: this.props.currentUser[0].username,
-            avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+            avatar: this.props.currentUser[0].photo,
             content: <p>{this.state.value}</p>,
             datetime: moment().fromNow(),
           },
@@ -75,8 +75,8 @@ export default class ForumComment extends React.Component {
           style={{width:"550px"}}
           avatar={
             <Avatar
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              alt="Brandon Williams"
+              src={this.props.currentUser[0].photo}
+              alt={this.props.currentUser[0].username}
             />
           }
           content={

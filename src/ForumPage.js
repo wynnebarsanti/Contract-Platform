@@ -11,6 +11,21 @@ import HeaderLogo from "./HeaderLogo.png";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles(theme => ({
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+  }));
 
 const { TextArea } = Input;
 export default class ForumPage extends React.Component {
@@ -53,19 +68,14 @@ export default class ForumPage extends React.Component {
     console.log(posts);
     return posts.map(item => {
       return (
-        <div
-          style={{
-            // display: "flex",
-            borderStyle: "solid",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-            paddingTop: "10px",
-            paddingBottom: "10px"
-          }}
-        >
-          {item.post}
-          {item.comments}
-        </div>
+        <div style={{
+            borderStyle: "solid"
+        }}>
+            <Grid item xs={6}>
+                {item.post}
+                {item.comments}
+            </Grid>
+        </div>  
       );
     });
   };
@@ -95,6 +105,7 @@ export default class ForumPage extends React.Component {
   };
 
   render() {
+    //   const classes = useStyles();
     return (
       <div className="container">
         <CssBaseline />
@@ -119,6 +130,7 @@ export default class ForumPage extends React.Component {
             </div>
           </Toolbar>
         </AppBar>
+        {/* <Grid item xs ={12}> */}
         <Typography
           component="h1"
           variant="h2"
@@ -132,30 +144,37 @@ export default class ForumPage extends React.Component {
           Learn, share, and build with other developers in the RevTek
           community!. Give back some knowledge to others and share a post today.
         </Typography>
-        <div>
-          <Input
-            name="title"
-            placeholder="Title of Post"
-            value={this.state.title}
-            onChange={this.handleChange}
-          />
-        </div>
-        <div>
-          <TextArea
-            name="details"
-            placeholder="Post details..."
-            value={this.state.details}
-            onChange={this.handleChange}
-            rows={4}
-          />
-        </div>
-        <div>
-          <Button onClick={this.createPost}>Create Post</Button>
-        </div>
+        {/* </Grid> */}
+        <div className="postBar">
+            <div>
+            <Input
+                name="title"
+                placeholder="Title of Post"
+                value={this.state.title}
+                onChange={this.handleChange}
+            />
+            </div>
+            <div>
+            <TextArea
+                name="details"
+                placeholder="Post details..."
+                value={this.state.details}
+                onChange={this.handleChange}
+                rows={4}
+            />
+            </div>
+            </div>
+            <div>
+            <Button onClick={this.createPost}>Create Post</Button>
+            </div>
         <br />
         <br />
         <div className="postHistory">
+        {/* <Grid 
+        alignContent={"space between"}
+        container spacing={3}> */}
           {this.state.posts.length && this.mapPosts()}
+        {/* </Grid> */}
         </div>
       </div>
     );
