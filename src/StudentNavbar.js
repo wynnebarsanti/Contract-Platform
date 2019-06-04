@@ -11,9 +11,12 @@ const AdapterLink = React.forwardRef((props, ref) => (
 ));
 
 class StudentNavbar extends React.Component {
-  state = {
-    redirect: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      redirect: false
+    };
+  }
 
   setRedirect = () => {
     firebase.auth().signOut();

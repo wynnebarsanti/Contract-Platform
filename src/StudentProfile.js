@@ -81,12 +81,11 @@ class StudentProfile extends React.Component {
 
   updateSnap = value => {
     return new Promise(resolve => {
+      const { uid } = firebaseApp.auth().currentUser;
       this.setState(
         {
           users: value,
-          currentUser: Object.keys(value[this.props.location.uid]).map(
-            key => value[this.props.location.uid][key]
-          )
+          currentUser: Object.keys(value[uid]).map(key => value[uid][key])
         },
         () => {
           resolve();
@@ -97,10 +96,12 @@ class StudentProfile extends React.Component {
 
   render() {
     const { users } = this.state;
-    const { uid } = this.props.location;
+    const { uid } = firebaseApp.auth().currentUser;
     const { currentUser } = this.state;
-
     const { classes } = this.props;
+
+    console.log(currentUser);
+
     return (
       <div>
         <React.Fragment>
@@ -122,7 +123,7 @@ class StudentProfile extends React.Component {
                   justifyContent: "space-between"
                 }}
               >
-                <StudentNavbar uid={uid} />
+                <StudentNavbar />
               </div>
             </Toolbar>
           </AppBar>
@@ -137,7 +138,7 @@ class StudentProfile extends React.Component {
                   color="textPrimary"
                   gutterBottom
                 >
-                  {JSON.stringify(currentUser)}
+                  {firebaseApp.auth().currentUser.displayName}
                 </Typography>
                 <Typography
                   variant="h5"
