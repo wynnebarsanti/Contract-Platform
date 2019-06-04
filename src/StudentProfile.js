@@ -15,6 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import { withStyles } from "@material-ui/core/styles";
+import HeaderLogo from './HeaderLogo.png'
 
 function MadeWithLove() {
   return (
@@ -72,18 +73,25 @@ class StudentProfile extends React.Component {
   render(){
     //console.log(this.props.location.state)
     const userInfo = this.props.location.state;
+    console.log(userInfo);
     const { classes } = this.props;
     return (
       <div>
-        <StudentNavbar />
         <React.Fragment>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
-          <CameraIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Student Profile
-          </Typography>
+          <img src={HeaderLogo} height="80" alt="Logo"/>
+          <div
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)"
+              }}
+            >
+              <StudentNavbar />
+            </div>
         </Toolbar>
       </AppBar>
       <main>
