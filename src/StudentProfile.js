@@ -17,6 +17,7 @@ import Link from "@material-ui/core/Link";
 import { withStyles } from "@material-ui/core/styles";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
+import { Avatar } from "antd";
 
 function MadeWithLove() {
   return (
@@ -147,9 +148,11 @@ class StudentProfile extends React.Component {
                   align="center"
                   color="textSecondary"
                   paragraph
-                >
-                  {currentUser ? currentUser[0].photo : ""}
-                </Typography>
+                />
+                <Avatar
+                  size={64}
+                  src={firebaseApp.auth().currentUser.photoURL}
+                />
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
                     <Grid item>
