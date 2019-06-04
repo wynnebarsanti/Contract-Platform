@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import withFirebaseAuth from "react-with-firebase-auth";
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import ForumPage from "./ForumPage";
 import firebaseApp from "./firebaseConfig";
 import {
   Container,
@@ -181,6 +182,8 @@ class Login extends Component {
             </Button>
           </Card>
         </Paper>
+        <br />
+        <br />
       </Container>
     );
   }
