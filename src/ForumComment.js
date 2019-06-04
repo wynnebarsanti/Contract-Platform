@@ -69,7 +69,7 @@ export default class ForumComment extends React.Component {
     const { comments, submitting, value } = this.state;
 
     return (
-      <div>
+      <div style={{width:"450px"}}>
         {comments.length > 0 && <CommentList comments={comments} />}
         <Comment
           avatar={

@@ -14,8 +14,8 @@ export default class ForumPost extends React.Component{
     render(){
         return(
             <div>
-                <Card title="Title of Post" style={{ width: 550 }}>
-                    <p>{this.state.author}:Post Details</p>
+                <Card title={this.props.title} style={{ width: 550 }}>
+                    <p>{this.props.details}</p>
                 </Card>
             </div>
         )

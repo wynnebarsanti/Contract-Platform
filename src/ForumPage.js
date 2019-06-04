@@ -2,12 +2,15 @@ import React from "react";
 import ForumComment from "./ForumComment.js"
 import ForumPost from "./ForumPost.js"
 import {Button, Input} from 'antd';
+import './ForumPage.css';
 
 const { TextArea } = Input;
 export default class ForumPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            title: "",
+            details: "",
             posts: []
         }
     }
@@ -16,12 +19,20 @@ export default class ForumPage extends React.Component {
         console.log("it worked");
         var newArray = this.state.posts.slice();
         newArray.push({
-            post: <ForumPost />,
+            post: <ForumPost 
+                    title={this.state.title}
+                    details={this.state.details} />,
             comments: <ForumComment />
         })
         this.setState({
             posts: newArray
             })
+    }
+
+    handleChange = event => {
+        this.setState({
+            [event.target.name]: event.target.value
+        })
     }
 
     mapPosts = () => {
@@ -43,11 +54,19 @@ export default class ForumPage extends React.Component {
         return(
             <div className="container">
                 <div>
-                    <Input placeholder="Title of Post"/>
+                    <Input 
+                    name="title"
+                    placeholder="Title of Post"
+                    value={this.state.title}
+                    onChange={this.handleChange}
+                    />
                 </div>
                 <div>
                     <TextArea
+                    name="details"
                     placeholder="Post details..."
+                    value={this.state.details}
+                    onChange={this.handleChange}
                     rows={4}/>
                 </div>
                 <div>
@@ -56,7 +75,9 @@ export default class ForumPage extends React.Component {
                         Create Post
                     </Button>
                 </div>
+                <div className="postHistory">
                 {(this.state.posts.length) && this.mapPosts()}
+                </div>
             </div>
         )
     }
