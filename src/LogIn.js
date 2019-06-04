@@ -39,7 +39,9 @@ class Login extends Component {
   handleStudent = () => {
     //route to the users page, which handles whether student, admin, or company should be rendered.
     this.setState({
-      student: true
+      student: true,
+      username: this.props.user.displayName,
+      photo: this.props.user.photoURL
     });
 
     this.setRedirect();
@@ -49,7 +51,9 @@ class Login extends Component {
     //route to the users page, which handles whether student, admin, or company should be rendered.
     if (this.props.user) {
       this.setState({
-        company: true
+        company: true,
+        username: this.props.user.displayName,
+        photo: this.props.user.photoURL
       });
 
       this.setRedirect();
@@ -78,9 +82,7 @@ class Login extends Component {
     firebaseApp.auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({
-          currentUser: user.uid,
-          username: user.username,
-          photo: user.photoURL
+          currentUser: user.uid
         });
       } else {
         this.setState({
