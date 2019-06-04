@@ -81,9 +81,7 @@ class Users extends React.Component {
       return (
         <Redirect
           to={{
-            pathname: "/users/company/profile",
-            parentState: this.state,
-            changeParent: this.changeParent
+            pathname: "/users/company/profile"
           }}
         />
       );
@@ -91,9 +89,7 @@ class Users extends React.Component {
       return (
         <Redirect
           to={{
-            pathname: "/users/student/profile",
-            parentState: this.state,
-            changeParent: this.changeParent
+            pathname: "/users/student/profile"
           }}
         />
       );
