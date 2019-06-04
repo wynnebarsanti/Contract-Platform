@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "./Navbar.js";
+import StudentNavbar from "./StudentNavbar.js";
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import CameraIcon from '@material-ui/icons/PhotoCamera';
@@ -16,51 +16,49 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import { withStyles } from "@material-ui/core/styles";
 
-
 function MadeWithLove() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {"Built with love by the "}
+      {'Built with love by the '}
       <Link color="inherit" href="https://material-ui.com/">
         Material-UI
       </Link>
-      {" team."}
+      {' team.'}
     </Typography>
   );
 }
 
 const useStyles = theme => ({
   icon: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   heroContent: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6)
+    padding: theme.spacing(8, 0, 6),
   },
   heroButtons: {
-    marginTop: theme.spacing(4)
+    marginTop: theme.spacing(4),
   },
   cardGrid: {
     paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8)
+    paddingBottom: theme.spacing(8),
   },
   card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column"
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   cardMedia: {
-    paddingTop: "56.25%" // 16:9
+    paddingTop: '56.25%', // 16:9
   },
   cardContent: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
 });
-
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
  
@@ -77,7 +75,7 @@ class StudentProfile extends React.Component {
     const { classes } = this.props;
     return (
       <div>
-        <Navbar />
+        <StudentNavbar />
         <React.Fragment>
       <CssBaseline />
       <AppBar position="relative">
@@ -98,63 +96,30 @@ class StudentProfile extends React.Component {
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
               Brief description of student skills
             </Typography>
-            <div
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: "50%",
-                transform: "translate(-50%, -50%)"
-              }}
-            >
-              <Navbar />
-            </div>
-          </Toolbar>
-        </AppBar>
-        <main>
-          {/* Hero unit */}
-          <div className={classes.heroContent}>
-            <Container maxWidth="sm">
-              <Typography
-                component="h1"
-                variant="h2"
-                align="center"
-                color="textPrimary"
-                gutterBottom
-              >
-                Student Name here
-              </Typography>
-              <Typography
-                variant="h5"
-                align="center"
-                color="textSecondary"
-                paragraph
-              >
-                Brief description of student skills
-              </Typography>
-              <div className={classes.heroButtons}>
-                <Grid container spacing={2} justify="center">
-                  <Grid item>
-                    <Button variant="contained" color="primary">
-                      Linked In
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button variant="outlined" color="primary">
-                      GitHub
-                    </Button>
-                  </Grid>
+            <div className={classes.heroButtons}>
+              <Grid container spacing={2} justify="center">
+                <Grid item>
+                  <Button variant="contained" color="primary">
+                    Linked In
+                  </Button>
                 </Grid>
-              </div>
-            </Container>
-          </div>
-          <Container className={classes.cardGrid} maxWidth="md">
-            {/* End hero unit */}
-            <b>current contracts</b>
-            <Grid container spacing={4}>
-              {cards.map(card => (
-                <Grid item key={card} xs={12} sm={6} md={4}>
-                  <Card className={classes.card}>
-                    {/* <CardMedia
+                <Grid item>
+                  <Button variant="outlined" color="primary">
+                    GitHub
+                  </Button>
+                </Grid>
+              </Grid>
+            </div>
+          </Container>
+        </div>
+        <Container className={classes.cardGrid} maxWidth="md">
+          {/* End hero unit */}
+          <b>current contracts</b>
+          <Grid container spacing={4}>
+            {cards.map(card => (
+              <Grid item key={card} xs={12} sm={6} md={4}>
+                <Card className={classes.card}>
+                  {/* <CardMedia
                     className={classes.cardMedia}
                     image="https://source.unsplash.com/random"
                     title="Image title"
