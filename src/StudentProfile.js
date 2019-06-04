@@ -72,7 +72,7 @@ class StudentProfile extends React.Component {
 
   render(){
     //console.log(this.props.location.state)
-    const userInfo = this.props.location.state;
+    const userInfo = this.props.location.parentState;
     console.log(userInfo);
     const { classes } = this.props;
     return (
@@ -90,7 +90,7 @@ class StudentProfile extends React.Component {
                 transform: "translate(-50%, -50%)"
               }}
             >
-              <StudentNavbar />
+              <StudentNavbar userInfo={userInfo}/>
             </div>
         </Toolbar>
       </AppBar>
@@ -99,7 +99,7 @@ class StudentProfile extends React.Component {
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Student Name here
+              {userInfo.username}
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
               Brief description of student skills
