@@ -12,6 +12,11 @@ import {
   Button,
   Typography
 } from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { Redirect } from "react-router-dom";
 
 const firebaseAppAuth = firebaseApp.auth();
@@ -31,58 +36,24 @@ class Login extends Component {
     };
   }
 
-  createInDatabase = () => {
-    const usersRef = firebaseApp
-      .database()
-      .ref(`users/${this.state.currentUser}`);
-    const user = {
-      student: this.state.student,
-      company: this.state.company,
-      linkedIn: "",
-      github: "",
-      currentContracts: [
-        {
-          title: "first contract",
-          description: "hello ther",
-          interested: "q3wr81023984asfd, 23098qskjflasdfj"
-        }
-      ],
-      pastContracts: [
-        {
-          title: "old contract",
-          description: "GOD BLESS YOU",
-          interested: "q3wr81023984asfd, 23098qskjflasdfj"
-        }
-      ],
-      username: this.props.user.displayName,
-      photo: this.props.user.photoURL
-    };
-    usersRef.push(user);
-
-    //check if you already have a user
-  };
-
   handleStudent = () => {
     //route to the users page, which handles whether student, admin, or company should be rendered.
-    this.setState(
-      {
-        student: true
-      },
-      () => this.createInDatabase()
-    );
+    this.setState({
+      student: true
+    });
 
     this.setRedirect();
   };
 
   handleCompany = () => {
     //route to the users page, which handles whether student, admin, or company should be rendered.
-    this.setState(
-      {
+    if (this.props.user) {
+      this.setState({
         company: true
-      },
-      () => this.createInDatabase()
-    );
-    this.setRedirect();
+      });
+
+      this.setRedirect();
+    }
   };
 
   renderRedirect = () => {
@@ -107,7 +78,9 @@ class Login extends Component {
     firebaseApp.auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({
-          currentUser: user.uid
+          currentUser: user.uid,
+          username: user.username,
+          photo: user.photoURL
         });
       } else {
         this.setState({
