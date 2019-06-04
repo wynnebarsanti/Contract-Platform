@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import Navbar from "./StudentNavbar";
+import HeaderLogo from "./HeaderLogo.png";
 
 function MadeWithLove() {
   return (
@@ -69,10 +70,7 @@ export default function StudentContract() {
         <CssBaseline />
         <AppBar position="relative">
           <Toolbar>
-            <CameraIcon className={classes.icon} />
-            <Typography variant="h6" color="inherit" noWrap>
-              Contract Marketplace
-            </Typography>
+          <img src={HeaderLogo} height="80" alt="Logo"/>
             <div
               style={{
                 position: "absolute",
