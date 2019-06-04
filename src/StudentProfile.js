@@ -111,7 +111,7 @@ class StudentProfile extends React.Component {
                   transform: "translate(-50%, -50%)"
                 }}
               >
-                <StudentNavbar />
+                <StudentNavbar userInfo={userInfo} />
               </div>
             </Toolbar>
           </AppBar>
@@ -126,7 +126,7 @@ class StudentProfile extends React.Component {
                   color="textPrimary"
                   gutterBottom
                 >
-                  Student Name here
+                  {userInfo.username}
                 </Typography>
                 <Typography
                   variant="h5"

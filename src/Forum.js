@@ -1,12 +1,15 @@
 import React from "react";
-import Navbar from "./StudentNavbar.js";
-
+import StudentNavbar from "./StudentNavbar.js";
+import ForumPage from "./ForumPage.js"
 class Forum extends React.Component {
   render() {
+    console.log('in forum')
+    console.log(this.props)
     return (
       <div>
-        <Navbar />
+        <StudentNavbar />
         Forum!
+
       </div>
     );
   }
