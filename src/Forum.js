@@ -12,6 +12,7 @@ class Forum extends React.Component {
     return (
       <div>
         <StudentNavbar />
+        <ForumPage />
       </div>
     );
   }
