@@ -1,7 +1,6 @@
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
-import CameraIcon from "@material-ui/icons/PhotoCamera";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -70,13 +69,19 @@ export default function StudentContract() {
         <CssBaseline />
         <AppBar position="relative">
           <Toolbar>
-          <img src={HeaderLogo} height="80" alt="Logo"/>
+            <img src={HeaderLogo} height="80" alt="Logo" />
             <div
               style={{
                 position: "absolute",
                 left: "50%",
                 top: "50%",
-                transform: "translate(-50%, -50%)"
+                transform: "translate(-50%, -50%)",
+                float: "right",
+                textAlign: "right",
+                display: "inline - block",
+                width: "98%",
+                padding: "10px",
+                justifyContent: "space-between"
               }}
             >
               <Navbar />
