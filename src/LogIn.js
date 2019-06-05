@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import withFirebaseAuth from "react-with-firebase-auth";
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import ForumPage from "./ForumPage";
 import firebaseApp from "./firebaseConfig";
 import {
   Container,
@@ -12,11 +11,6 @@ import {
   Button,
   Typography
 } from "@material-ui/core";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import { Redirect } from "react-router-dom";
 import LoginLogo from "./LoginLogo.png";
 
@@ -95,7 +89,6 @@ class Login extends Component {
 
   render() {
     const { user, signOut, signInWithGoogle } = this.props;
-    
 
     return (
       <Container maxWidth="sm">
@@ -123,33 +116,6 @@ class Login extends Component {
               </Button>
             )}
           </Card>
-
-          {/* <Card>
-            <TextField
-              placeholder="LinkedIn Link"
-              required
-              fullWidth
-              variant="outlined"
-              margin="normal"
-              rows={1}
-              rowsMax={1}
-              value={this.state.linkedIn}
-              onChange={e => this.handleValue(e, "linkedIn")}
-            />
-          </Card>
-          <Card>
-            <TextField
-              placeholder="Website Link"
-              required
-              fullWidth
-              variant="outlined"
-              margin="normal"
-              rows={1}
-              rowsMax={1}
-              value={this.state.linkedIn}
-              onChange={e => this.handleValue(e, "website")}
-            />
-          </Card> */}
           <Card>
             <Button variant="outlined" onClick={this.handleStudent}>
               Student

@@ -14,7 +14,8 @@ class StudentNavbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      redirect: false
+      redirect: false,
+      current: "mail"
     };
   }
 

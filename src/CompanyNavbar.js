@@ -26,6 +26,20 @@ class CompanyNavbar extends React.Component {
     }
   };
   render() {
+    var ref = firebase.database().ref("users");
+    ref.once("value").then(function(snapshot) {
+      console.log(
+        snapshot.val()["LN8zU6jfhKgiTyasE0RAPFLzoF02"]["-LgY79g1z8YjsWAETl3H"]
+          .student
+      );
+      for (var key in snapshot.val()) {
+        console.log(key);
+        for (var item of snapshot.val()[key]) {
+          console.log(item.student);
+        }
+      }
+    });
+
     return (
       <div>
         <Button

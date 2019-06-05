@@ -3,7 +3,6 @@ import ForumComment from "./ForumComment.js";
 import ForumPost from "./ForumPost.js";
 import { Button, Input } from "antd";
 import "./ForumPage.css";
-import { FormHelperText } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import firebaseApp from "./firebaseConfig";
 import StudentNavbar from "./StudentNavbar.js";
@@ -11,21 +10,19 @@ import HeaderLogo from "./HeaderLogo.png";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-    },
-  }));
+  root: {
+    flexGrow: 1
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary
+  }
+}));
 
 const { TextArea } = Input;
 export default class ForumPage extends React.Component {
@@ -68,14 +65,16 @@ export default class ForumPage extends React.Component {
     console.log(posts);
     return posts.map(item => {
       return (
-        <div style={{
+        <div
+          style={{
             borderStyle: "solid"
-        }}>
-            <Grid item xs={6}>
-                {item.post}
-                {item.comments}
-            </Grid>
-        </div>  
+          }}
+        >
+          <Grid item xs={6}>
+            {item.post}
+            {item.comments}
+          </Grid>
+        </div>
       );
     });
   };
@@ -141,40 +140,40 @@ export default class ForumPage extends React.Component {
           Developer Forum
         </Typography>
         <Typography variant="h5" align="center" color="textSecondary" paragraph>
-          Learn, share, and build with other developers in the RevTek
-          community!. Give back some knowledge to others and share a post today.
+          Learn, share, and build with other developers in the RevTek community!
+          Give back some knowledge to others and share a post today.
         </Typography>
         {/* </Grid> */}
         <div className="postBar">
-            <div>
+          <div>
             <Input
-                name="title"
-                placeholder="Title of Post"
-                value={this.state.title}
-                onChange={this.handleChange}
+              name="title"
+              placeholder="Title of Post"
+              value={this.state.title}
+              onChange={this.handleChange}
             />
-            </div>
-            <div>
+          </div>
+          <div>
             <TextArea
-                name="details"
-                placeholder="Post details..."
-                value={this.state.details}
-                onChange={this.handleChange}
-                rows={4}
+              name="details"
+              placeholder="Post details..."
+              value={this.state.details}
+              onChange={this.handleChange}
+              rows={4}
             />
-            </div>
-            </div>
-            <div>
-            <Button onClick={this.createPost}>Create Post</Button>
-            </div>
+          </div>
+        </div>
+        <div>
+          <Button onClick={this.createPost}>Create Post</Button>
+        </div>
         <br />
         <br />
         <div className="postHistory">
-        {/* <Grid 
+          {/* <Grid 
         alignContent={"space between"}
         container spacing={3}> */}
           {this.state.posts.length && this.mapPosts()}
-        {/* </Grid> */}
+          {/* </Grid> */}
         </div>
       </div>
     );
