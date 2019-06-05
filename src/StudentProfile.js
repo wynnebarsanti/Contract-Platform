@@ -155,14 +155,18 @@ class StudentProfile extends React.Component {
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
                     <Grid item>
-                      <Button variant="contained" color="primary">
-                        Linked In
-                      </Button>
+                      <a href={currentUser ? currentUser.linkedIn : ""}>
+                        <Button variant="contained" color="primary">
+                          Linked In
+                        </Button>
+                      </a>
                     </Grid>
                     <Grid item>
-                      <Button variant="outlined" color="primary">
-                        GitHub
-                      </Button>
+                      <a href={currentUser ? currentUser.github : ""}>
+                        <Button variant="outlined" color="primary">
+                          GitHub
+                        </Button>
+                      </a>
                     </Grid>
                   </Grid>
                 </div>
@@ -188,9 +192,44 @@ class StudentProfile extends React.Component {
                               variant="h5"
                               component="h2"
                             >
-                              <b>{contract.title}</b>
+                              {contract.title}
                             </Typography>
-                            <Typography>{contract.details}</Typography>
+                            <Typography>{contract.description}</Typography>
+                          </CardContent>
+                          <CardActions>
+                            <Button size="small" color="primary">
+                              View
+                            </Button>
+                            {/* <Button size="small" color="primary">
+                      Edit
+                    </Button> */}
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    ))
+                  : ""}
+              </Grid>
+
+              <b>Past Contracts</b>
+              <Grid container spacing={4}>
+                {currentUser
+                  ? currentUser.pastContracts.map(contract => (
+                      <Grid item key={contract} xs={12} sm={6} md={4}>
+                        <Card className={classes.card}>
+                          {/* <CardMedia
+                    className={classes.cardMedia}
+                    image="https://source.unsplash.com/random"
+                    title="Image title"
+                  /> */}
+                          <CardContent className={classes.cardContent}>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="h2"
+                            >
+                              {contract.title}
+                            </Typography>
+                            <Typography>{contract.description}</Typography>
                           </CardContent>
                           <CardActions>
                             <Button size="small" color="primary">
