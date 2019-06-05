@@ -1,13 +1,7 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+import { Redirect, NavLink } from "react-router-dom";
+import { Menu, Icon } from "antd";
 import firebase from "./firebaseConfig.js";
-
-// required for react-router-dom < 6.0.0
-// see https://github.com/ReactTraining/react-router/issues/6056#issuecomment-435524678
-const AdapterLink = React.forwardRef((props, ref) => (
-  <Link innerRef={ref} {...props} />
-));
 
 class CompanyNavbar extends React.Component {
   state = {
@@ -26,50 +20,59 @@ class CompanyNavbar extends React.Component {
     }
   };
   render() {
-    var ref = firebase.database().ref("users");
-    ref.once("value").then(function(snapshot) {
-      console.log(
-        snapshot.val()["LN8zU6jfhKgiTyasE0RAPFLzoF02"]["-LgY79g1z8YjsWAETl3H"]
-          .student
-      );
-      for (var key in snapshot.val()) {
-        console.log(key);
-        for (var item of snapshot.val()[key]) {
-          console.log(item.student);
-        }
-      }
-    });
-
     return (
       <div>
-        <Button
-          color="inherit"
-          component={AdapterLink}
-          to="/users/company/profile"
+        {this.renderRedirect()}
+        <Menu
+          style={{ background: "transparent", border: "none" }}
+          mode="horizontal"
         >
-          Company Profile
-        </Button>
-        <Button
-          color="inherit"
-          component={AdapterLink}
-          to="/users/company/contracts"
-        >
-          Company Contracts
-        </Button>
-        <Button
-          color="inherit"
-          component={AdapterLink}
-          to="/users/company/students"
-        >
-          Students Available
-        </Button>
-        <Button
-          color="inherit"
-          component={AdapterLink}
-          to="/users/company/students"
-        >
-          Logout
-        </Button>
+          <Menu.Item>
+            <NavLink
+              style={{ color: "white" }}
+              to="/users/company/profile"
+              activeStyle={{
+                color: "white",
+                fontWeight: "bold"
+              }}
+            >
+              <Icon type="home" />
+              Company Profile
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item>
+            <NavLink
+              style={{ color: "white" }}
+              to="/users/company/contracts"
+              activeStyle={{
+                color: "white",
+                fontWeight: "bold"
+              }}
+            >
+              <Icon type="container" />
+              Contracts
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item style={{ color: "white" }}>
+            <NavLink
+              style={{ color: "white" }}
+              to="/users/company/students"
+              activeStyle={{
+                color: "white",
+                fontWeight: "bold"
+              }}
+            >
+              <Icon type="idcard" />
+              Students
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item style={{ color: "white" }}>
+            <NavLink style={{ color: "white" }} onClick={this.setRedirect}>
+              <Icon type="poweroff" />
+              Logout
+            </NavLink>
+          </Menu.Item>
+        </Menu>
       </div>
     );
   }

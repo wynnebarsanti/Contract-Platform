@@ -1,21 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+import { NavLink } from "react-router-dom";
 import firebase from "./firebaseConfig.js";
 import { Redirect } from "react-router-dom";
-
-// required for react-router-dom < 6.0.0
-// see https://github.com/ReactTraining/react-router/issues/6056#issuecomment-435524678
-const AdapterLink = React.forwardRef((props, ref) => (
-  <Link innerRef={ref} {...props} />
-));
+import { Menu, Icon } from "antd";
 
 class StudentNavbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      redirect: false,
-      current: "mail"
+      redirect: false
     };
   }
 
@@ -35,34 +28,56 @@ class StudentNavbar extends React.Component {
     return (
       <div>
         {this.renderRedirect()}
-        <Button
-          color="inherit"
-          component={AdapterLink}
-          to="/users/student/profile"
+        <Menu
+          style={{ background: "transparent", border: "none" }}
+          mode="horizontal"
         >
-          Student Profile
-        </Button>
-        <Button
-          color="inherit"
-          component={AdapterLink}
-          to="/users/student/contracts"
-        >
-          Contracts
-        </Button>
-        <Button
-          color="inherit"
-          component={AdapterLink}
-          to="/users/student/forum"
-        >
-          Forum
-        </Button>
-        <Button
-          color="inherit"
-          component={AdapterLink}
-          onClick={this.setRedirect}
-        >
-          Logout
-        </Button>
+          <Menu.Item>
+            <NavLink
+              style={{ color: "white" }}
+              to="/users/student/profile"
+              activeStyle={{
+                color: "white",
+                fontWeight: "bold"
+              }}
+            >
+              <Icon type="home" />
+              Student Profile
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item>
+            <NavLink
+              style={{ color: "white" }}
+              to="/users/student/contracts"
+              activeStyle={{
+                color: "white",
+                fontWeight: "bold"
+              }}
+            >
+              <Icon type="container" />
+              Contracts
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item style={{ color: "white" }}>
+            <NavLink
+              style={{ color: "white" }}
+              to="/users/student/forum"
+              activeStyle={{
+                color: "white",
+                fontWeight: "bold"
+              }}
+            >
+              <Icon type="edit" />
+              Forum
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item style={{ color: "white" }}>
+            <NavLink style={{ color: "white" }} onClick={this.setRedirect}>
+              <Icon type="poweroff" />
+              Logout
+            </NavLink>
+          </Menu.Item>
+        </Menu>
       </div>
     );
   }

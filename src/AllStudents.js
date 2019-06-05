@@ -15,7 +15,6 @@ import Navbar from "./CompanyNavbar";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
 
-
 function MadeWithLove() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -27,7 +26,6 @@ function MadeWithLove() {
     </Typography>
   );
 }
-
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -66,9 +64,50 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 export default function StudentContract() {
   const classes = useStyles();
 
+  let userList = [];
+
+  var ref = firebaseApp.database().ref("users");
+  ref.once("value").then(function(snapshot) {
+    console.log(
+      snapshot.val()["LN8zU6jfhKgiTyasE0RAPFLzoF02"]["-LgY79g1z8YjsWAETl3H"]
+        .student
+    );
+    for (var key in snapshot.val()) {
+      userList.push(key);
+    }
+  });
+
+  ref.once("value").then(function(snapshot) {
+    console.log(
+      snapshot.val()["LN8zU6jfhKgiTyasE0RAPFLzoF02"]["-LgY79g1z8YjsWAETl3H"]
+        .student
+    );
+    for (var key in snapshot.val()) {
+      userList.push(key);
+    }
+  });
+  /*
+  const tasksRef = firebaseApp
+    .database()
+    .ref("users/" + userList[0])
+    .then(function() {
+      console.log(tasksRef);
+
+      tasksRef.on("value", snapshot => {
+        console.log(Object.values(snapshot.val()));
+        /*
+    if (snapshot.val() != null) {
+      
+      this.setState({ userData: Object.values(snapshot.val()) });
+      this.setState({ tasks: this.state.userData.length });
+      
+      });
+    });
+    */
+
   return (
     <div>
-      {console.log(firebaseApp.database().ref("users"))}
+      {console.log(userList)}
       <React.Fragment>
         <CssBaseline />
         <AppBar position="relative">
@@ -103,7 +142,7 @@ export default function StudentContract() {
                 color="textPrimary"
                 gutterBottom
               >
-                All Students
+                Students
               </Typography>
               <Typography
                 variant="h5"
