@@ -10,6 +10,7 @@ import StudentProfile from "./StudentProfile.js";
 import StudentContract from "./StudentContract.js";
 import Forum from "./ForumPage.js";
 import Users from "./Users.js";
+import Register from "./Register.js";
 
 class App extends React.Component {
   render() {

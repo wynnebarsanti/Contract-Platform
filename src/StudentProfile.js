@@ -16,6 +16,7 @@ import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
 import { Avatar } from "antd";
 
+// formatting for cards from material UI
 function MadeWithLove() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -28,6 +29,7 @@ function MadeWithLove() {
   );
 }
 
+// formatting for cards from material UI
 const useStyles = theme => ({
   icon: {
     marginRight: theme.spacing(2)
@@ -72,11 +74,11 @@ class StudentProfile extends React.Component {
   }
 
   componentDidMount() {
-    const usersRef = firebaseApp.database().ref("users");
-
+    const usersRef = firebaseApp.database().ref(`users/`);
     usersRef.on("value", snap => {
       let update = snap.val() || [];
       this.updateSnap(update);
+      
     });
   }
 
