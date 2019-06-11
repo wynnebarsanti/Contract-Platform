@@ -1,6 +1,7 @@
 import { Comment, Avatar, Form, Button, List, Input } from 'antd';
 import moment from 'moment';
 import React from "react";
+import firebaseApp from "./firebaseConfig";
 
 const { TextArea } = Input;
 
@@ -31,6 +32,7 @@ export default class ForumComment extends React.Component {
     comments: [],
     submitting: false,
     value: '',
+    postId: this.props.postId
   };
 
   handleSubmit = () => {
@@ -42,6 +44,33 @@ export default class ForumComment extends React.Component {
       submitting: true,
     });
 
+    // const postsRef = firebaseApp
+    // .database()
+    // .ref("posts/");
+    // let postParam = "";
+    // postsRef.once("value").then((snapshot) =>{
+    //     // for (var key in snapshot.val()){
+    //     //   console.log(key);
+    //     // }
+    //     snapshot.forEach(childNodes => {
+    //       console.log(childNodes.val().postId)
+    //     })
+    //   }
+    // )
+    
+    const commentsRef = firebaseApp
+    .database()
+    .ref("posts/" + this.props.postId + "/comments");
+    let currentTime = new Date().toLocaleString();
+    const comment = {
+       author: this.props.currentUser[0].username,
+       avatar: this.props.currentUser[0].photo,
+       details: this.state.value,
+       timestamp: currentTime,
+       postId: this.props.postId
+    };
+    commentsRef.push(comment);
+
     setTimeout(() => {
       this.setState({
         submitting: false,
@@ -52,6 +81,7 @@ export default class ForumComment extends React.Component {
             avatar: this.props.currentUser[0].photo,
             content: <p>{this.state.value}</p>,
             datetime: moment().fromNow(),
+            postId: this.props.postId
           },
           ...this.state.comments,
         ],
