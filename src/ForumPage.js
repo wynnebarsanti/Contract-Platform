@@ -32,26 +32,38 @@ export default class ForumPage extends React.Component {
       title: "",
       details: "",
       posts: [],
-      currentUser: null
+      currentUser: null,
+      postId: ""
     };
+
+    this.createInDatabase = this.createInDatabase.bind(this);
   }
 
+
   createPost = event => {
-    console.log("it worked");
-    var newArray = this.state.posts.slice();
-    newArray.push({
-      post: (
-        <ForumPost
-          title={this.state.title}
-          details={this.state.details}
-          currentUser={this.state.currentUser}
-        />
-      ),
-      comments: <ForumComment currentUser={this.state.currentUser} />
-    });
-    this.setState({
-      posts: newArray
-    });
+    this.createInDatabase().then(() => {
+      console.log("it worked");
+      var newArray = this.state.posts.slice();
+      newArray.push({
+        post: (
+          <ForumPost
+            title={this.state.title}
+            details={this.state.details}
+            currentUser={this.state.currentUser}
+            postId={this.state.postId}
+          />
+        ),
+        // Pass postId as a prop to ForumComment
+        comments: <ForumComment 
+                  currentUser={this.state.currentUser}
+                  postId={this.state.postId} />
+      });
+      this.setState({
+        posts: newArray,
+        // postId: this.state.postId + 1
+      });  
+    }
+    ) // retrieve unique postId here by calling Object.keys()
   };
 
   handleChange = event => {
@@ -86,7 +98,29 @@ export default class ForumPage extends React.Component {
       let update = snap.val() || [];
       this.updateSnap(update);
     });
+
+    const postsRef = firebaseApp.database().ref("posts");
+
+    postsRef.on("value", snap => {
+      let update = snap.val() || [];
+      this.updatePosts(update);
+    });
   }
+  updatePosts = value => {
+    console.log(value);
+    return new Promise(resolve => {
+      const { uid } = firebaseApp.auth().currentUser;
+      //let arr = Object.keys(value).map((k) => value[k])
+      this.setState(
+        {
+         postsNew: value
+        },
+        () => {
+          resolve();
+        }
+      );
+    });
+  };
 
   updateSnap = value => {
     return new Promise(resolve => {
@@ -102,6 +136,28 @@ export default class ForumPage extends React.Component {
       );
     });
   };
+
+  async createInDatabase() {
+    let currentTime = new Date().toLocaleString();
+    const postsRef = firebaseApp
+      .database()
+      .ref("posts");
+    const post = {
+      author: this.state.currentUser[0].username,
+      title: this.state.title,
+      details: this.state.details,
+      timestamp: currentTime,
+      // postId: this.state.postId,
+      comments: [],
+    };
+    
+    let postId = await postsRef.push(post).key;
+    console.log(postId);
+    this.setState({
+      postId: postId
+    })
+  };
+
 
   render() {
     //   const classes = useStyles();

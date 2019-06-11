@@ -151,7 +151,7 @@ class StudentProfile extends React.Component {
                   paragraph
                 />
                 <Avatar
-                  size={64}
+                  size={192}
                   src={firebaseApp.auth().currentUser.photoURL}
                 />
                 <div className={classes.heroButtons}>

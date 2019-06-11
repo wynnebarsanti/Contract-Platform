@@ -5,7 +5,6 @@ export default class ForumPost extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            comments: [],
             timestamp: "",
         }
     }
