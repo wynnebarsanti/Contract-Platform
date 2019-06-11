@@ -10,3 +10,12 @@ body {
   flex-direction: row;
   align-items: center;
 }
+
+hr {
+  width: 350px;
+  height: 3px;
+  background-color: rgb(179, 179, 179);
+  border: 0 none;
+  margin-top: 5px;
+  margin-bottom:5px;
+  }
