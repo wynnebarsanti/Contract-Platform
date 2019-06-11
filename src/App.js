@@ -10,11 +10,13 @@ import StudentProfile from "./StudentProfile.js";
 import StudentContract from "./StudentContract.js";
 import Forum from "./ForumPage.js";
 import Users from "./Users.js";
+import Register from "./Register.js";
 
 class App extends React.Component {
  render() {
    return (
-     <div className="App">
+     <body>
+
        <Router>
          <Route exact path="/" component={LogIn} />
          <Route exact path="/users" component={Users} />
@@ -41,7 +43,7 @@ class App extends React.Component {
          />
          <Route exact path="/users/student/forum" component={Forum} />
        </Router>
-     </div>
+     </body>
    );
  }
 }

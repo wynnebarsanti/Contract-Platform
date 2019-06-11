@@ -18,6 +18,7 @@ import { withStyles } from "@material-ui/core/styles";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
 
+// formatting for cards from material UI
 function MadeWithLove() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -30,6 +31,7 @@ function MadeWithLove() {
   );
 }
 
+// formatting for cards from material UI
 const useStyles = theme => ({
   icon: {
     marginRight: theme.spacing(2)
@@ -71,11 +73,11 @@ class StudentProfile extends React.Component {
   }
 
   componentDidMount() {
-    const usersRef = firebaseApp.database().ref("users");
-
+    const usersRef = firebaseApp.database().ref(`users/`);
     usersRef.on("value", snap => {
       let update = snap.val() || [];
       this.updateSnap(update);
+      
     });
   }
 
@@ -91,10 +93,10 @@ class StudentProfile extends React.Component {
   };
 
   render() {
-    const uid = this.props.location.uid;
-    const users = this.state.users;
-    const username = users ? users[uid] : null;
-    console.log(username);
+    console.log(this.props)
+    const uid = this.props.location.state.uid;
+    console.log(uid)
+    console.log(this.state)
     const { classes } = this.props;
     return (
       <div>
