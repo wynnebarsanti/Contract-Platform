@@ -44,19 +44,6 @@ export default class ForumComment extends React.Component {
       submitting: true,
     });
 
-    // const postsRef = firebaseApp
-    // .database()
-    // .ref("posts/");
-    // let postParam = "";
-    // postsRef.once("value").then((snapshot) =>{
-    //     // for (var key in snapshot.val()){
-    //     //   console.log(key);
-    //     // }
-    //     snapshot.forEach(childNodes => {
-    //       console.log(childNodes.val().postId)
-    //     })
-    //   }
-    // )
     
     const commentsRef = firebaseApp
     .database()

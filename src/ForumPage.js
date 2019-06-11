@@ -42,6 +42,7 @@ export default class ForumPage extends React.Component {
     this.createInDatabase = this.createInDatabase.bind(this);
   }
 
+
   createPost = event => {
     this.createInDatabase().then(() => {
       console.log("it worked");
@@ -98,7 +99,29 @@ export default class ForumPage extends React.Component {
       let update = snap.val() || [];
       this.updateSnap(update);
     });
+
+    const postsRef = firebaseApp.database().ref("posts");
+
+    postsRef.on("value", snap => {
+      let update = snap.val() || [];
+      this.updatePosts(update);
+    });
   }
+  updatePosts = value => {
+    console.log(value);
+    return new Promise(resolve => {
+      const { uid } = firebaseApp.auth().currentUser;
+      //let arr = Object.keys(value).map((k) => value[k])
+      this.setState(
+        {
+         postsNew: value
+        },
+        () => {
+          resolve();
+        }
+      );
+    });
+  };
 
   updateSnap = value => {
     return new Promise(resolve => {
