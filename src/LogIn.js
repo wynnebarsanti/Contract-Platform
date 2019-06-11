@@ -126,6 +126,10 @@ class Login extends Component {
   }
 
   loginStudent = () => {
+    if (this.props.user) {
+      this.props.history.push({pathname: '/users/student/profile', state: {uid: firebaseApp.auth().currentUser.uid}});
+    }
+    else{
     firebaseApp.auth().signInWithPopup(this.googleProvider).then( // connect to google account
       (socialAuthUser) => {
         let isNewUser = socialAuthUser.additionalUserInfo.isNewUser;
@@ -139,8 +143,13 @@ class Login extends Component {
       }
     ) 
   }
+  }
 
   loginCompany = () => {
+    if (this.props.user) {
+      this.props.history.push({pathname: '/users/company/profile', state: {uid: firebaseApp.auth().currentUser.uid}});
+    }
+    else{
     firebaseApp.auth().signInWithPopup(this.googleProvider).then(
       (socialAuthUser) => {
         let isNewUser = socialAuthUser.additionalUserInfo.isNewUser;
@@ -153,6 +162,7 @@ class Login extends Component {
         }
       }
     )
+    }
   }
 
   // componentDidMount() {
