@@ -74,21 +74,29 @@ class StudentProfile extends React.Component {
   }
 
   componentDidMount() {
-    const usersRef = firebaseApp.database().ref(`users/`);
+    const usersRef = firebaseApp.database().ref(`students`);
     usersRef.on("value", snap => {
       let update = snap.val() || [];
       this.updateSnap(update);
-      
     });
   }
 
   updateSnap = value => {
     return new Promise(resolve => {
       const { uid } = firebaseApp.auth().currentUser;
+
+      let currentUser = "";
+      for (let user in value) {
+        console.log(value[user].uid);
+        if (value[user].uid === uid) {
+          currentUser = value[user];
+        }
+      }
+
       this.setState(
         {
           users: value,
-          currentUser: Object.keys(value[uid]).map(key => value[uid][key])[0],
+          currentUser: currentUser,
           uid: uid
         },
         () => {
@@ -174,79 +182,6 @@ class StudentProfile extends React.Component {
                 </div>
               </Container>
             </div>
-
-            <Container className={classes.cardGrid} maxWidth="md">
-              {/* End hero unit */}
-              <b>Current Contracts</b>
-              <Grid container spacing={4}>
-                {currentUser
-                  ? currentUser.currentContracts.map(contract => (
-                      <Grid item key={contract} xs={12} sm={6} md={4}>
-                        <Card className={classes.card}>
-                          {/* <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
-                    title="Image title"
-                  /> */}
-                          <CardContent className={classes.cardContent}>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="h2"
-                            >
-                              {contract.title}
-                            </Typography>
-                            <Typography>{contract.description}</Typography>
-                          </CardContent>
-                          <CardActions>
-                            <Button size="small" color="primary">
-                              View
-                            </Button>
-                            {/* <Button size="small" color="primary">
-                      Edit
-                    </Button> */}
-                          </CardActions>
-                        </Card>
-                      </Grid>
-                    ))
-                  : ""}
-              </Grid>
-
-              <b>Past Contracts</b>
-              <Grid container spacing={4}>
-                {currentUser
-                  ? currentUser.pastContracts.map(contract => (
-                      <Grid item key={contract} xs={12} sm={6} md={4}>
-                        <Card className={classes.card}>
-                          {/* <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
-                    title="Image title"
-                  /> */}
-                          <CardContent className={classes.cardContent}>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="h2"
-                            >
-                              {contract.title}
-                            </Typography>
-                            <Typography>{contract.description}</Typography>
-                          </CardContent>
-                          <CardActions>
-                            <Button size="small" color="primary">
-                              View
-                            </Button>
-                            {/* <Button size="small" color="primary">
-                      Edit
-                    </Button> */}
-                          </CardActions>
-                        </Card>
-                      </Grid>
-                    ))
-                  : ""}
-              </Grid>
-            </Container>
           </main>
           {/* Footer */}
           <footer className={classes.footer}>
