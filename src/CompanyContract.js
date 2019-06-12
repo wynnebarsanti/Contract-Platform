@@ -1,5 +1,5 @@
 import React from "react";
-import StudentNavbar from "./StudentNavbar.js";
+import CompanyNavbar from "./StudentNavbar.js";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -119,6 +119,7 @@ class CompanyContract extends React.Component {
 
     return (
       <div>
+        {firebaseApp.auth().currentUser ? "" : this.setRedirect()}
         {this.renderRedirect()}
         <React.Fragment>
           <CssBaseline />
@@ -140,7 +141,7 @@ class CompanyContract extends React.Component {
                   justifyContent: "space-between"
                 }}
               >
-                <StudentNavbar />
+                <CompanyNavbar />
               </div>
             </Toolbar>
           </AppBar>

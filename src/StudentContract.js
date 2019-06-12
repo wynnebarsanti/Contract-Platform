@@ -119,6 +119,7 @@ class StudentContract extends React.Component {
 
     return (
       <div>
+        {firebaseApp.auth().currentUser ? "" : this.setRedirect()}
         {this.renderRedirect()}
         <React.Fragment>
           <CssBaseline />

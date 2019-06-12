@@ -11,22 +11,22 @@ import HeaderLogo from "./HeaderLogo.png";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
 // import moment = require("moment");
-
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-    },
-  }));
+  root: {
+    flexGrow: 1
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary
+  }
+}));
 
 const { TextArea } = Input;
 export default class ForumPage extends React.Component {
@@ -37,7 +37,7 @@ export default class ForumPage extends React.Component {
       details: "",
       posts: [],
       oldPosts: [],
-      oldComments:[],
+      oldComments: [],
       currentUser: null,
       postId: ""
     };
@@ -45,6 +45,17 @@ export default class ForumPage extends React.Component {
     this.createInDatabase = this.createInDatabase.bind(this);
   }
 
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
+  };
+
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    });
+  };
 
   createPost = event => {
     this.createInDatabase().then(() => {
@@ -60,16 +71,18 @@ export default class ForumPage extends React.Component {
           />
         ),
         // Pass postId as a prop to ForumComment
-        comments: <ForumComment 
-                  currentUser={firebaseApp.auth().currentUser}
-                  postId={this.state.postId} />
+        comments: (
+          <ForumComment
+            currentUser={firebaseApp.auth().currentUser}
+            postId={this.state.postId}
+          />
+        )
       });
       this.setState({
-        posts: newArray,
+        posts: newArray
         // postId: this.state.postId + 1
-      });  
-    }
-    ) // retrieve unique postId here by calling Object.keys()
+      });
+    }); // retrieve unique postId here by calling Object.keys()
   };
 
   handleChange = event => {
@@ -84,14 +97,16 @@ export default class ForumPage extends React.Component {
     console.log(posts);
     return posts.map(item => {
       return (
-        <div style={{
+        <div
+          style={{
             borderStyle: "solid"
-        }}>
-            <Grid item xs={6}>
-                {item.post}
-                {item.comments}
-            </Grid>
-        </div>  
+          }}
+        >
+          <Grid item xs={6}>
+            {item.post}
+            {item.comments}
+          </Grid>
+        </div>
       );
     });
   };
@@ -133,7 +148,7 @@ export default class ForumPage extends React.Component {
       //       postId: posts[post].comments[comment].postId
       //     }
       //     newCommentsState.unshift(commentOld);
-      //     <ForumComment 
+      //     <ForumComment
       //       newCommentsState={newCommentsState}
       //     />
       //   }
@@ -144,10 +159,10 @@ export default class ForumPage extends React.Component {
     console.log(value);
     return new Promise(resolve => {
       const { uid } = firebaseApp.auth().currentUser;
-      let arr = Object.keys(value).map((k) => value[k])
+      let arr = Object.keys(value).map(k => value[k]);
       this.setState(
         {
-         postsNew: value
+          postsNew: value
         },
         () => {
           resolve();
@@ -174,15 +189,15 @@ export default class ForumPage extends React.Component {
   updateSnap = value => {
     return new Promise(resolve => {
       const { uid } = firebaseApp.auth().currentUser;
- 
+
       let currentUser = "";
       for (let user in value) {
-      //  console.log(value[user].uid);
+        //  console.log(value[user].uid);
         if (value[user].uid === uid) {
           currentUser = value[user];
         }
       }
- 
+
       this.setState(
         {
           users: value,
@@ -197,31 +212,30 @@ export default class ForumPage extends React.Component {
   };
   async createInDatabase() {
     let currentTime = new Date().toLocaleString();
-    const postsRef = firebaseApp
-      .database()
-      .ref("posts");
+    const postsRef = firebaseApp.database().ref("posts");
     const post = {
       author: firebaseApp.auth().currentUser.displayName,
       title: this.state.title,
       details: this.state.details,
       timestamp: currentTime,
       // postId: this.state.postId,
-      comments: [],
+      comments: []
     };
-    
+
     console.log(post.author);
     let postId = await postsRef.push(post).key;
     console.log(postId);
     this.setState({
       postId: postId
-    })
-  };
-
+    });
+  }
 
   render() {
     //   const classes = useStyles();
     return (
       <div className="container">
+        {firebaseApp.auth().currentUser ? "" : this.setRedirect()}
+        {this.renderRedirect()}
         <CssBaseline />
         <AppBar position="relative">
           <Toolbar>
@@ -255,40 +269,40 @@ export default class ForumPage extends React.Component {
           Developer Forum
         </Typography>
         <Typography variant="h5" align="center" color="textSecondary" paragraph>
-          Learn, share, and build with other developers in the RevTek
-          community! Give back some knowledge to others and share a post today.
+          Learn, share, and build with other developers in the RevTek community!
+          Give back some knowledge to others and share a post today.
         </Typography>
         {/* </Grid> */}
         <div className="postBar">
-            <div>
+          <div>
             <Input
-                name="title"
-                placeholder="Title of Post"
-                value={this.state.title}
-                onChange={this.handleChange}
+              name="title"
+              placeholder="Title of Post"
+              value={this.state.title}
+              onChange={this.handleChange}
             />
-            </div>
-            <div>
+          </div>
+          <div>
             <TextArea
-                name="details"
-                placeholder="Post details..."
-                value={this.state.details}
-                onChange={this.handleChange}
-                rows={4}
+              name="details"
+              placeholder="Post details..."
+              value={this.state.details}
+              onChange={this.handleChange}
+              rows={4}
             />
-            </div>
-            </div>
-            <div>
-            <Button onClick={this.createPost}>Create Post</Button>
-            </div>
+          </div>
+        </div>
+        <div>
+          <Button onClick={this.createPost}>Create Post</Button>
+        </div>
         <br />
         <br />
         <div className="postHistory">
-        {/* <Grid 
+          {/* <Grid 
         alignContent={"space between"}
         container spacing={3}> */}
-          {this.state.posts.length && this.mapPosts()}
-        {/* </Grid> */}
+          {this.state.posts.length > 0 && this.mapPosts()}
+          {/* </Grid> */}
         </div>
       </div>
     );

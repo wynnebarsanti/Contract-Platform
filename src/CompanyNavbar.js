@@ -1,15 +1,78 @@
 import React from "react";
 import { Redirect, NavLink } from "react-router-dom";
 import { Menu, Icon } from "antd";
-import firebase from "./firebaseConfig.js";
+import firebaseApp from "./firebaseConfig.js";
+
+var names = [];
+
+var emails = [];
+
+var githubs = [];
+
+var linkedIns = [];
+
+var photourl = [];
+
+var userList = [];
 
 class CompanyNavbar extends React.Component {
   state = {
-    redirect: false
+    redirect: false,
+    userState: [],
+    emailState: [],
+    githubState: [],
+    linkedinState: [],
+    photoState: []
+  };
+
+  componentDidMount = () => {
+    //might need later
+    var ref = firebaseApp.database().ref("students");
+    /*
+    ref.once("value").then(function(snapshot) {
+      for (var key in snapshot.val()) {
+        userList.push(key);
+      }
+    }); */
+
+    ref.once("value").then(function(snapshot) {
+      for (var key in snapshot.val()) {
+        var tasksRef = firebaseApp.database().ref("students/" + key);
+        tasksRef.on("value", snapshot => {
+          if (snapshot.val() != null) {
+            console.log(Object.values(snapshot.val()));
+            console.log(Object.values(snapshot.val())[3]);
+            emails.push(Object.values(snapshot.val())[0]);
+            githubs.push(Object.values(snapshot.val())[1]);
+            linkedIns.push(Object.values(snapshot.val())[2]);
+            names.push(Object.values(snapshot.val())[3]);
+            photourl.push(Object.values(snapshot.val())[4]);
+          }
+        });
+      }
+    });
+
+    this.setState({
+      userState: names,
+      githubState: githubs,
+      linkedinState: linkedIns,
+      emailState: emails,
+      photoState: photourl
+    });
+
+    /* var tasksRef = firebaseApp
+      .database()
+      .ref("students/" + firebaseApp.auth().currentUser.uid);
+    tasksRef.on("value", snapshot => {
+      if (snapshot.val() != null) {
+        console.log(Object.values(snapshot.val())[0].username);
+      }
+    });
+    console.log(names); */
   };
 
   setRedirect = () => {
-    firebase.auth().signOut();
+    firebaseApp.auth().signOut();
     this.setState({
       redirect: true
     });
@@ -53,10 +116,17 @@ class CompanyNavbar extends React.Component {
               Contracts
             </NavLink>
           </Menu.Item>
-          <Menu.Item style={{ color: "white" }}>
+          <Menu.Item>
             <NavLink
               style={{ color: "white" }}
-              to="/users/company/students"
+              to={{
+                pathname: "/users/company/students",
+                users: this.state.userState,
+                emails: this.state.emailState,
+                github: this.state.githubState,
+                linkedIn: this.state.linkedinState,
+                url: this.state.photoState
+              }}
               activeStyle={{
                 color: "white",
                 fontWeight: "bold"

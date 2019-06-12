@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -8,16 +8,14 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import Navbar from "./CompanyNavbar";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
-import { sizing } from "@material-ui/system";
-import { Redirect } from "react-router-dom";
 
-const useStyles = theme => ({
+const useStyles = makeStyles(theme => ({
   icon: {
     marginRight: theme.spacing(2)
   },
@@ -47,58 +45,56 @@ const useStyles = theme => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6)
   }
-});
+}));
 
-const cards = [0, 1, 2, 3];
+const cards = [0, 1];
 
 var names = [];
+var userList = [];
 
-var emails = [];
+class AllStudentsCopy extends React.Component {
+  state = {
+    users: []
+  };
+  componentDidMount() {
+    var ref = firebaseApp.database().ref("students");
+    ref.once("value").then(function(snapshot) {
+      for (var key in snapshot.val()) {
+        userList.push(key);
+      }
+    });
 
-var githubs = [];
+    ref.once("value").then(snapshot => {
+      for (var key in snapshot.val()) {
+        var tasksRef = firebaseApp.database().ref("students/" + key);
+        tasksRef.on("value", snapshot => {
+          if (snapshot.val() != null) {
+            console.log(Object.values(snapshot.val())[3]);
+            names.push(Object.values(snapshot.val())[3]);
+          }
+        });
+        userList.push(key);
+      }
+      console.log(names[0]);
+    });
 
-var linkedIns = [];
-
-var photourl = [];
-
-class AllStudents extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+    var tasksRef = firebaseApp
+      .database()
+      .ref("students/" + firebaseApp.auth().currentUser.uid);
+    tasksRef.on("value", snapshot => {
+      if (snapshot.val() != null) {
+        console.log(Object.values(snapshot.val())[0].username);
+      }
+    });
+    console.log(names);
   }
 
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to="/" />;
-    }
-  };
-
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-    });
-  };
-
   render() {
-    names = this.props.location.users;
-    emails = this.props.location.emails;
-    githubs = this.props.location.github;
-    linkedIns = this.props.location.linkedIn;
-    photourl = this.props.location.url;
-
-    if (!firebaseApp.auth().currentUser) {
-      this.setRedirect();
-    }
-    this.renderRedirect();
-
-    const { classes } = this.props;
-
     return (
       <div>
         <renderRedirect />
         <useForceUpdate />
         <React.Fragment>
-          {console.log(names)}
           <CssBaseline />
           <AppBar position="relative">
             <Toolbar>
@@ -123,7 +119,7 @@ class AllStudents extends React.Component {
           </AppBar>
           <main>
             {/* Hero unit */}
-            <div className={classes.heroContent}>
+            <div>
               <Container maxWidth="sm">
                 <Typography
                   component="h1"
@@ -142,62 +138,29 @@ class AllStudents extends React.Component {
                 >
                   A list of all the students available to work for companies!
                 </Typography>
-                <div className={classes.heroButtons}>
+                <div>
                   <Grid container spacing={2} justify="center" />
                 </div>
               </Container>
             </div>
-            <Container className={classes.cardGrid} maxWidth="md">
+            <Container maxWidth="md">
               {/* End hero unit */}
 
               <Grid container spacing={4}>
                 {cards.map(card => (
                   <Grid item key={card} xs={12} sm={6} md={4}>
                     <Card>
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue",
-                          fontWeight: "bold",
-                          fontSize: "30px"
-                        }}
-                      >
+                      <CardContent>
+                        <setState />
+                        <setState />
                         {names[card]}
+                        <Typography>Contract Details</Typography>
                       </CardContent>
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue"
-                        }}
-                      >
-                        Email: {emails[card]}
-                      </CardContent>
-
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue",
-
-                          display: "flex"
-                        }}
-                      >
-                        Github: {githubs[card]}
-                      </CardContent>
-
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue",
-
-                          display: "flex"
-                        }}
-                      >
-                        LinkedIn: {linkedIns[card]}
-                      </CardContent>
-
-                      <CardContent style={{ fontFamily: "Helvetica Neue" }}>
-                        <img
-                          src={photourl[card]}
-                          style={{ maxHeight: "70%", maxWidth: "70%" }}
-                        />
-                      </CardContent>
-                      <CardActions />
+                      <CardActions>
+                        <Button size="small" color="primary">
+                          I'm Interested!
+                        </Button>
+                      </CardActions>
                     </Card>
                   </Grid>
                 ))}
@@ -205,7 +168,7 @@ class AllStudents extends React.Component {
             </Container>
           </main>
           {/* Footer */}
-          <footer className={classes.footer}>
+          <footer>
             <Typography variant="h6" align="center" gutterBottom>
               Footer
             </Typography>
@@ -225,4 +188,4 @@ class AllStudents extends React.Component {
   }
 }
 
-export default withStyles(useStyles)(AllStudents);
+export default AllStudentsCopy;
