@@ -8,15 +8,16 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import Navbar from "./CompanyNavbar";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
 import { sizing } from "@material-ui/system";
+import { Redirect } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = theme => ({
   icon: {
     marginRight: theme.spacing(2)
   },
@@ -46,10 +47,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6)
   }
-}));
+});
 
-
-const cards = [0,1,2,3];
+const cards = [0, 1, 2, 3];
 
 var names = [];
 
@@ -61,142 +61,168 @@ var linkedIns = [];
 
 var photourl = [];
 
-export default function StudentContract(props) {
-  const classes = useStyles();
+class AllStudents extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-  names = props.location.users;
-  emails = props.location.emails;
-  githubs = props.location.github;
-  linkedIns = props.location.linkedIn;
-  photourl = props.location.url;
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
+  };
 
-  return (
-    <div>
-      <renderRedirect />
-      <useForceUpdate />
-      <React.Fragment>
-        {console.log(names)}
-        <CssBaseline />
-        <AppBar position="relative">
-          <Toolbar>
-            <img src={HeaderLogo} height="80" alt="Logo" />
-            <div
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: "50%",
-                transform: "translate(-50%, -50%)",
-                float: "right",
-                textAlign: "right",
-                display: "inline - block",
-                width: "98%",
-                padding: "10px",
-                justifyContent: "space-between"
-              }}
-            >
-              <Navbar />
-            </div>
-          </Toolbar>
-        </AppBar>
-        <main>
-          {/* Hero unit */}
-          <div className={classes.heroContent}>
-            <Container maxWidth="sm">
-              <Typography
-                component="h1"
-                variant="h2"
-                align="center"
-                color="textPrimary"
-                gutterBottom
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    });
+  };
+
+  render() {
+    names = this.props.location.users;
+    emails = this.props.location.emails;
+    githubs = this.props.location.github;
+    linkedIns = this.props.location.linkedIn;
+    photourl = this.props.location.url;
+
+    if (!firebaseApp.auth().currentUser) {
+      this.setRedirect();
+    }
+    this.renderRedirect();
+
+    const { classes } = this.props;
+
+    return (
+      <div>
+        <renderRedirect />
+        <useForceUpdate />
+        <React.Fragment>
+          {console.log(names)}
+          <CssBaseline />
+          <AppBar position="relative">
+            <Toolbar>
+              <img src={HeaderLogo} height="80" alt="Logo" />
+              <div
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  float: "right",
+                  textAlign: "right",
+                  display: "inline - block",
+                  width: "98%",
+                  padding: "10px",
+                  justifyContent: "space-between"
+                }}
               >
-                Students
-              </Typography>
-              <Typography
-                variant="h5"
-                align="center"
-                color="textSecondary"
-                paragraph
-              >
-                A list of all the students available to work for companies!
-              </Typography>
-              <div className={classes.heroButtons}>
-                <Grid container spacing={2} justify="center" />
+                <Navbar />
               </div>
+            </Toolbar>
+          </AppBar>
+          <main>
+            {/* Hero unit */}
+            <div className={classes.heroContent}>
+              <Container maxWidth="sm">
+                <Typography
+                  component="h1"
+                  variant="h2"
+                  align="center"
+                  color="textPrimary"
+                  gutterBottom
+                >
+                  Students
+                </Typography>
+                <Typography
+                  variant="h5"
+                  align="center"
+                  color="textSecondary"
+                  paragraph
+                >
+                  A list of all the students available to work for companies!
+                </Typography>
+                <div className={classes.heroButtons}>
+                  <Grid container spacing={2} justify="center" />
+                </div>
+              </Container>
+            </div>
+            <Container className={classes.cardGrid} maxWidth="md">
+              {/* End hero unit */}
+
+              <Grid container spacing={4}>
+                {cards.map(card => (
+                  <Grid item key={card} xs={12} sm={6} md={4}>
+                    <Card>
+                      <CardContent
+                        style={{
+                          fontFamily: "Helvetica Neue",
+                          fontWeight: "bold",
+                          fontSize: "30px"
+                        }}
+                      >
+                        {names[card]}
+                      </CardContent>
+                      <CardContent
+                        style={{
+                          fontFamily: "Helvetica Neue"
+                        }}
+                      >
+                        Email: {emails[card]}
+                      </CardContent>
+
+                      <CardContent
+                        style={{
+                          fontFamily: "Helvetica Neue",
+
+                          display: "flex"
+                        }}
+                      >
+                        Github: {githubs[card]}
+                      </CardContent>
+
+                      <CardContent
+                        style={{
+                          fontFamily: "Helvetica Neue",
+
+                          display: "flex"
+                        }}
+                      >
+                        LinkedIn: {linkedIns[card]}
+                      </CardContent>
+
+                      <CardContent style={{ fontFamily: "Helvetica Neue" }}>
+                        <img
+                          src={photourl[card]}
+                          style={{ maxHeight: "70%", maxWidth: "70%" }}
+                        />
+                      </CardContent>
+                      <CardActions />
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
             </Container>
-          </div>
-          <Container className={classes.cardGrid} maxWidth="md">
-            {/* End hero unit */}
-
-            <Grid container spacing={4}>
-              {cards.map(card => (
-                <Grid item key={card} xs={12} sm={6} md={4}>
-                  <Card>
-                    <CardContent
-                      style={{
-                        fontFamily: "Helvetica Neue",
-                        fontWeight: "bold",
-                        fontSize: "30px"
-                      }}
-                    >
-                      {names[card]}
-                    </CardContent>
-                    <CardContent
-                      style={{
-                        fontFamily: "Helvetica Neue"
-                      }}
-                    >
-                      Email: {emails[card]}
-                    </CardContent>
-
-                    <CardContent
-                      style={{
-                        fontFamily: "Helvetica Neue",
-
-                        display: "flex"
-                      }}
-                    >
-                      Github: {githubs[card]}
-                    </CardContent>
-
-                    <CardContent
-                      style={{
-                        fontFamily: "Helvetica Neue",
-
-                        display: "flex"
-                      }}
-                    >
-                      LinkedIn: {linkedIns[card]}
-                    </CardContent>
-
-                    <CardContent style={{ fontFamily: "Helvetica Neue" }}>
-                      <img
-                        src={photourl[card]}
-                        style={{ maxHeight: "70%", maxWidth: "70%" }}
-                      />
-                    </CardContent>
-                    <CardActions />
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </main>
-        {/* Footer */}
-        <footer className={classes.footer}>
-          <Typography variant="h6" align="center" gutterBottom>
-            Footer
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            align="center"
-            color="textSecondary"
-            component="p"
-          >
-            Something here to give the footer a purpose!
-          </Typography>
-        </footer>
-        {/* End footer */}
-      </React.Fragment>
-    </div>
-  );
+          </main>
+          {/* Footer */}
+          <footer className={classes.footer}>
+            <Typography variant="h6" align="center" gutterBottom>
+              Footer
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              align="center"
+              color="textSecondary"
+              component="p"
+            >
+              Something here to give the footer a purpose!
+            </Typography>
+          </footer>
+          {/* End footer */}
+        </React.Fragment>
+      </div>
+    );
+  }
 }
+
+export default withStyles(useStyles)(AllStudents);
