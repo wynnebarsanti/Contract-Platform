@@ -192,7 +192,6 @@ class Login extends Component {
 
                 {user ? <p>Hello, {user.displayName}</p> : <p> Please connect to your google account.</p>}
 
-            <p>{"\n"}</p>
 
               <div >
                 <div className='login-as'> Login as: </div>
