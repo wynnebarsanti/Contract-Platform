@@ -117,6 +117,8 @@ class Register extends React.Component {
             
             <Container maxWidth="sm">
                 <br/>
+                <hr></hr>
+                <br/>
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Register as a:</FormLabel> 
                     <RadioGroup aria-label="position" name="position" onChange={this.setStatus} row>

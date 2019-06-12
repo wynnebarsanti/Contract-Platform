@@ -15,6 +15,7 @@ import { withStyles } from "@material-ui/core/styles";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
 import { Avatar } from "antd";
+import { Redirect } from "react-router-dom";
 
 // formatting for cards from material UI
 function MadeWithLove() {
@@ -81,28 +82,42 @@ class StudentProfile extends React.Component {
     });
   }
 
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
+  };
+
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    });
+  };
+
   updateSnap = value => {
     return new Promise(resolve => {
-      const { uid } = firebaseApp.auth().currentUser;
+      if (firebaseApp.auth().currentUser) {
+        const { uid } = firebaseApp.auth().currentUser;
 
-      let currentUser = "";
-      for (let user in value) {
-        console.log(value[user].uid);
-        if (value[user].uid === uid) {
-          currentUser = value[user];
+        let currentUser = "";
+        for (let user in value) {
+          console.log(value[user].uid);
+          if (value[user].uid === uid) {
+            currentUser = value[user];
+          }
         }
+
+        this.setState(
+          {
+            users: value,
+            currentUser: currentUser,
+            uid: uid
+          },
+          () => {
+            resolve();
+          }
+        );
       }
-
-      this.setState(
-        {
-          users: value,
-          currentUser: currentUser,
-          uid: uid
-        },
-        () => {
-          resolve();
-        }
-      );
     });
   };
 
@@ -114,6 +129,7 @@ class StudentProfile extends React.Component {
 
     return (
       <div>
+        {this.renderRedirect()}
         <React.Fragment>
           <CssBaseline />
 
@@ -148,9 +164,12 @@ class StudentProfile extends React.Component {
                   variant="h2"
                   align="center"
                   color="textPrimary"
+                  x
                   gutterBottom
                 >
-                  {firebaseApp.auth().currentUser.displayName}
+                  {firebaseApp.auth().currentUser
+                    ? firebaseApp.auth().currentUser.displayName
+                    : this.setRedirect()}
                 </Typography>
                 <Typography
                   variant="h5"
@@ -160,19 +179,31 @@ class StudentProfile extends React.Component {
                 />
                 <Avatar
                   size={192}
-                  src={firebaseApp.auth().currentUser.photoURL}
+                  src={
+                    firebaseApp.auth().currentUser
+                      ? firebaseApp.auth().currentUser.photoURL
+                      : this.setRedirect()
+                  }
                 />
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
                     <Grid item>
-                      <a href={currentUser ? currentUser.linkedIn : ""}>
+                      <a
+                        href={
+                          currentUser ? "https://" + currentUser.linkedIn : ""
+                        }
+                      >
                         <Button variant="contained" color="primary">
                           Linked In
                         </Button>
                       </a>
                     </Grid>
                     <Grid item>
-                      <a href={currentUser ? currentUser.github : ""}>
+                      <a
+                        href={
+                          currentUser ? "https://" + currentUser.github : ""
+                        }
+                      >
                         <Button variant="outlined" color="primary">
                           GitHub
                         </Button>
