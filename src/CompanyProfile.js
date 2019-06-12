@@ -15,6 +15,7 @@ import { withStyles } from "@material-ui/core/styles";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
 import { Avatar } from "antd";
+import { Redirect } from "react-router-dom";
 
 function MadeWithLove() {
   return (
@@ -72,7 +73,7 @@ class CompanyProfile extends React.Component {
   }
 
   componentDidMount() {
-    const usersRef = firebaseApp.database().ref(`companies  `);
+    const usersRef = firebaseApp.database().ref(`companies`);
     usersRef.on("value", snap => {
       let update = snap.val() || [];
       this.updateSnap(update);
@@ -81,26 +82,40 @@ class CompanyProfile extends React.Component {
 
   updateSnap = value => {
     return new Promise(resolve => {
-      const { uid } = firebaseApp.auth().currentUser;
+      if (firebaseApp.auth().currentUser) {
+        const { uid } = firebaseApp.auth().currentUser;
 
-      let currentUser = "";
-      for (let user in value) {
-        console.log(value[user].uid);
-        if (value[user].uid === uid) {
-          currentUser = value[user];
+        let currentUser = "";
+        for (let user in value) {
+          console.log(value[user].uid);
+          if (value[user].uid === uid) {
+            currentUser = value[user];
+          }
         }
+
+        this.setState(
+          {
+            users: value,
+            currentUser: currentUser,
+            uid: uid
+          },
+          () => {
+            resolve();
+          }
+        );
       }
+    });
+  };
 
-      this.setState(
-        {
-          users: value,
-          currentUser: currentUser,
-          uid: uid
-        },
-        () => {
-          resolve();
-        }
-      );
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
+  };
+
+  setRedirect = () => {
+    this.setState({
+      redirect: true
     });
   };
 
@@ -112,6 +127,7 @@ class CompanyProfile extends React.Component {
 
     return (
       <div>
+        {this.renderRedirect()}
         <React.Fragment>
           <CssBaseline />
           <AppBar position="relative">
@@ -146,7 +162,9 @@ class CompanyProfile extends React.Component {
                   color="textPrimary"
                   gutterBottom
                 >
-                  {firebaseApp.auth().currentUser.displayName}
+                  {firebaseApp.auth().currentUser
+                    ? firebaseApp.auth().currentUser.displayName
+                    : this.setRedirect()}
                 </Typography>
                 <Typography
                   variant="h5"
@@ -156,7 +174,11 @@ class CompanyProfile extends React.Component {
                 >
                   <Avatar
                     size={192}
-                    src={firebaseApp.auth().currentUser.photoURL}
+                    src={
+                      firebaseApp.auth().currentUser
+                        ? firebaseApp.auth().currentUser.photoURL
+                        : this.setRedirect()
+                    }
                   />
                 </Typography>
                 <div className={classes.heroButtons}>
