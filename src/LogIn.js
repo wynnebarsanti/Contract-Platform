@@ -14,7 +14,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-
+import {Alert} from 'antd';
 
 const firebaseAppAuth = firebaseApp.auth();
 
@@ -27,6 +27,8 @@ class Login extends Component {
       register: false,
       hasAccount: false,
       firebaseKey: "",
+      loginError: false,
+      registerError: false,
     };
     this.googleProvider = new firebase.auth.GoogleAuthProvider();
   }
@@ -81,7 +83,9 @@ class Login extends Component {
         }
         
         else { // already has account
-          console.log("this email already has an account! ")
+          this.setState({
+            registerError: true,
+          })
         }
       }
     )
@@ -113,7 +117,9 @@ class Login extends Component {
           this.props.history.push({pathname: '/users/company/profile', state: {uid: newCompany.uid}})
         }
         else {
-          console.log("this email already has an account")
+          this.setState({
+            registerError:true,
+          })
         }
       }
     )
@@ -159,7 +165,14 @@ class Login extends Component {
       }
     }
     //if we get here... this means that there is no user?
+    if (this.state.status === "new user"){
+      this.setState({
+        loginError: true,
+      })
+    }
+
   }
+  
 
   redirect = () => {
     if (this.state.status === "student"){
@@ -172,47 +185,6 @@ class Login extends Component {
       console.log("this user does not exist")
     }
   }
-
-
-  // loginStudent = () => {
-  //   if (this.props.user) {
-  //     this.props.history.push({pathname: '/users/student/profile', state: {uid: firebaseApp.auth().currentUser.uid}});
-  //   }
-  //     else{
-  //     firebaseApp.auth().signInWithPopup(this.googleProvider).then( // connect to google account
-  //       (socialAuthUser) => {
-  //         let isNewUser = socialAuthUser.additionalUserInfo.isNewUser;
-  //         if (isNewUser) {
-  //           console.log('you need to create an account!!')
-  //         }
-  //         else {
-  //           // redirect to student profile and pass the uid to profile
-  //           this.props.history.push({pathname: '/users/student/profile', state: {uid: firebaseApp.auth().currentUser.uid}}); // pass google auth uid
-  //         }
-  //       }
-  //     ) 
-  //   }
-  // }
-
-  // loginCompany = () => {
-  //   if (this.props.user) {
-  //     this.props.history.push({pathname: '/users/company/profile', state: {uid: firebaseApp.auth().currentUser.uid}});
-  //   }
-  //   else {
-  //     firebaseApp.auth().signInWithPopup(this.googleProvider).then(
-  //       (socialAuthUser) => {
-  //         let isNewUser = socialAuthUser.additionalUserInfo.isNewUser;
-  //         if (isNewUser) {
-  //           console.log('you need to create an account!!')
-  //         }
-  //         else {
-  //           // redirect to student profile and pass the uid to profile
-  //           this.props.history.push({pathname: '/users/company/profile', state: {uid: firebaseApp.auth().currentUser.uid}}); // pass google auth uid
-  //         }
-  //       }
-  //     )
-  //   }
-  // }
 
   render() {
     const { user, signOut, signInWithGoogle } = this.props;
@@ -227,9 +199,10 @@ class Login extends Component {
 
                 {user ? <p>Hello, {user.displayName}</p> : <p> Please connect to your google account.</p>}
 
-
+                <p> 
+                {this.state.loginError ? <Alert message="Looks like you don't have an account yet-- register below!" type="error" /> : <div></div>}
+                </p>
               <div >
-                <div className='login-as'> Login as: </div>
                 <Button variant="outlined" color="primary" size="medium" onClick={this.login}>
                   Login with Google
                 </Button>
@@ -251,11 +224,12 @@ class Login extends Component {
                 </p>
               </div>
 
-  
             <p>{"\n"}</p>
             <div>
               New to RevTech? <Button size="small" onClick={this.setRegister}>Register Now!</Button>
               {this.state.register? <Register setStudentFields={this.setStudentFields} setCompanyFields={this.setCompanyFields}/> : <div></div>}
+              {this.state.registerError ? <Alert message="This email already has an account! Just log in above." type="error" /> : <div></div>}
+
             </div>
 
         </div>
