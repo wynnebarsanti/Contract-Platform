@@ -14,7 +14,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-
+import {Alert} from 'antd';
 
 const firebaseAppAuth = firebaseApp.auth();
 
@@ -26,6 +26,9 @@ class Login extends Component {
       status: "new user",
       register: false,
       hasAccount: false,
+      firebaseKey: "",
+      loginError: false,
+      registerError: false,
     };
     this.googleProvider = new firebase.auth.GoogleAuthProvider();
   }
@@ -80,7 +83,9 @@ class Login extends Component {
         }
         
         else { // already has account
-          console.log("this email already has an account! ")
+          this.setState({
+            registerError: true,
+          })
         }
       }
     )
@@ -112,7 +117,9 @@ class Login extends Component {
           this.props.history.push({pathname: '/users/company/profile', state: {uid: newCompany.uid}})
         }
         else {
-          console.log("this email already has an account")
+          this.setState({
+            registerError:true,
+          })
         }
       }
     )
@@ -125,59 +132,59 @@ class Login extends Component {
     })
   }
 
-  loginStudent = () => {
+  login = () => {
+    // if there is already a user, check status
     if (this.props.user) {
-      this.props.history.push({pathname: '/users/student/profile', state: {uid: firebaseApp.auth().currentUser.uid}});
+      this.checkStatus()
     }
-    else{
-    firebaseApp.auth().signInWithPopup(this.googleProvider).then( // connect to google account
-      (socialAuthUser) => {
-        let isNewUser = socialAuthUser.additionalUserInfo.isNewUser;
-        if (isNewUser) {
-          console.log('you need to create an account!!')
-        }
-        else {
-          // redirect to student profile and pass the uid to profile
-          this.props.history.push({pathname: '/users/student/profile', state: {uid: firebaseApp.auth().currentUser.uid}}); // pass google auth uid
-        }
-      }
-    ) 
-  }
-  }
-
-  loginCompany = () => {
-    if (this.props.user) {
-      this.props.history.push({pathname: '/users/company/profile', state: {uid: firebaseApp.auth().currentUser.uid}});
-    }
-    else{
-    firebaseApp.auth().signInWithPopup(this.googleProvider).then(
-      (socialAuthUser) => {
-        let isNewUser = socialAuthUser.additionalUserInfo.isNewUser;
-        if (isNewUser) {
-          console.log('you need to create an account!!')
-        }
-        else {
-          // redirect to student profile and pass the uid to profile
-          this.props.history.push({pathname: '/users/company/profile', state: {uid: firebaseApp.auth().currentUser.uid}}); // pass google auth uid
-        }
-      }
-    )
+    else {  // no current user, so first sign in, then chck status
+      firebaseApp.auth().signInWithPopup(this.googleProvider).then(this.checkStatus);
     }
   }
 
-  // componentDidMount() {
-  //   firebaseApp.auth().onAuthStateChanged(user => {
-  //     if (user) {
-  //       this.setState({
-  //         currentUser: user.uid
-  //       });
-  //     } else {
-  //       this.setState({
-  //         currentUser: "no_login"
-  //       });
-  //     }
-  //   });
-  // }
+  checkStatus = () => {
+    console.log('inside checkstatus')
+    let googleAuthId = firebaseApp.auth().currentUser.uid; // save google authentication id
+    let allStudents = this.state.allStudents;
+    let allCompanies = this.state.allCompanies;
+    for (let student in allStudents) {  // check list of all students
+      if (allStudents[student].uid === googleAuthId) {
+        // student gives you firebase key!
+        this.setState({
+          firebaseKey: student,
+          status: "student"
+        }, this.redirect) // found a match, redirect to student profile!!
+      }
+    }
+    for (let company in allCompanies) { // check list of all companies
+      if (allCompanies[company].uid === googleAuthId) {
+        this.setState({
+          firebaseKey: company,
+          status: "company"
+        }, this.redirect) // found a match, redirect to company profile!
+      }
+    }
+    //if we get here... this means that there is no user?
+    if (this.state.status === "new user"){
+      this.setState({
+        loginError: true,
+      })
+    }
+
+  }
+  
+
+  redirect = () => {
+    if (this.state.status === "student"){
+      this.props.history.push({pathname: '/users/student/profile', state: {firebaseKey: this.state.firebaseKey}});
+    }
+    else if (this.state.status === "company"){
+      this.props.history.push({pathname: '/users/company/profile', state: {firebaseKey: this.state.firebaseKey}});
+    }
+    else {  // some error, and state never updated properly
+      console.log("this user does not exist")
+    }
+  }
 
   render() {
     const { user, signOut, signInWithGoogle } = this.props;
@@ -192,16 +199,17 @@ class Login extends Component {
 
                 {user ? <p>Hello, {user.displayName}</p> : <p> Please connect to your google account.</p>}
 
-
+                <p> 
+                {this.state.loginError ? <Alert message="Looks like you don't have an account yet-- register below!" type="error" /> : <div></div>}
+                </p>
               <div >
-                <div className='login-as'> Login as: </div>
-                <Button variant="outlined" color="primary" size="medium" onClick={this.loginStudent}>
-                  Student
+                <Button variant="outlined" color="primary" size="medium" onClick={this.login}>
+                  Login with Google
                 </Button>
                 
-                <Button variant="outlined" color="primary" size="medium" onClick={this.loginCompany}>
+                {/* <Button variant="outlined" color="primary" size="medium" onClick={this.loginCompany}>
                   Company
-                </Button>
+                </Button> */}
                 <p>
                   { (user) ? 
                     <div>
@@ -216,11 +224,12 @@ class Login extends Component {
                 </p>
               </div>
 
-  
             <p>{"\n"}</p>
             <div>
               New to RevTech? <Button size="small" onClick={this.setRegister}>Register Now!</Button>
               {this.state.register? <Register setStudentFields={this.setStudentFields} setCompanyFields={this.setCompanyFields}/> : <div></div>}
+              {this.state.registerError ? <Alert message="This email already has an account! Just log in above." type="error" /> : <div></div>}
+
             </div>
 
         </div>
@@ -237,6 +246,26 @@ class Login extends Component {
       </Container>
     );
   }
+
+
+  componentDidMount () {
+    const studentsRef = firebaseApp.database().ref(`students/`);
+    studentsRef.on("value", snap => {
+      let students = snap.val();
+      this.setState({
+        allStudents: students,
+      })
+    });
+    const companiesRef = firebaseApp.database().ref(`companies`);
+    companiesRef.on("value", snap => {
+      let companies = snap.val();
+      this.setState({
+        allCompanies: companies,
+      })
+    });
+  }
+
+
 }
 
 export default withFirebaseAuth({
