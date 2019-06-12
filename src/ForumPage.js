@@ -15,6 +15,8 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
+// import moment = require("moment");
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -244,6 +246,8 @@ export default class ForumPage extends React.Component {
     //   const classes = useStyles();
     return (
       <div className="container">
+        {firebaseApp.auth().currentUser ? "" : this.setRedirect()}
+        {this.renderRedirect()}
         <CssBaseline />
         <AppBar position="relative">
           <Toolbar>

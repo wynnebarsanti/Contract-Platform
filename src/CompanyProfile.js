@@ -184,11 +184,7 @@ class CompanyProfile extends React.Component {
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
                     <Grid item>
-                      <a
-                        href={
-                          currentUser ? "https://" + currentUser.website : ""
-                        }
-                      >
+                      <a href={currentUser ? currentUser.website : ""}>
                         <Button variant="contained" color="primary">
                           Website
                         </Button>
