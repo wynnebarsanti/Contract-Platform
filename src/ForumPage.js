@@ -241,7 +241,17 @@ export default class ForumPage extends React.Component {
       postId: postId
     });
   }
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
+  };
 
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    });
+  };
   render() {
     //   const classes = useStyles();
     return (
