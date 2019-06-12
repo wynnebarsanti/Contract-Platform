@@ -50,8 +50,8 @@ export default class ForumComment extends React.Component {
     .ref("posts/" + this.props.postId + "/comments");
     let currentTime = new Date().toLocaleString();
     const comment = {
-       author: this.props.currentUser[0].username,
-       avatar: this.props.currentUser[0].photo,
+       author: this.props.currentUser.displayName,
+       avatar: this.props.currentUser.photoURL,
        details: this.state.value,
        timestamp: currentTime,
        postId: this.props.postId
@@ -64,8 +64,8 @@ export default class ForumComment extends React.Component {
         value: '',
         comments: [
           {
-            author: this.props.currentUser[0].username,
-            avatar: this.props.currentUser[0].photo,
+            author: this.props.currentUser.displayName,
+            avatar: this.props.currentUser.photoURL,
             content: <p>{this.state.value}</p>,
             datetime: moment().fromNow(),
             postId: this.props.postId
@@ -92,8 +92,8 @@ export default class ForumComment extends React.Component {
           style={{width:"550px"}}
           avatar={
             <Avatar
-              src={this.props.currentUser[0].photo}
-              alt={this.props.currentUser[0].username}
+              src={this.props.currentUser.photoURL}
+              alt={this.props.currentUser.displayName}
             />
           }
           content={
