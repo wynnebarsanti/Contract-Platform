@@ -14,6 +14,7 @@ import Link from "@material-ui/core/Link";
 import { withStyles } from "@material-ui/core/styles";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
+import { Avatar } from "antd";
 
 function MadeWithLove() {
   return (
@@ -71,8 +72,7 @@ class CompanyProfile extends React.Component {
   }
 
   componentDidMount() {
-    const usersRef = firebaseApp.database().ref("users");
-
+    const usersRef = firebaseApp.database().ref(`companies  `);
     usersRef.on("value", snap => {
       let update = snap.val() || [];
       this.updateSnap(update);
@@ -82,10 +82,19 @@ class CompanyProfile extends React.Component {
   updateSnap = value => {
     return new Promise(resolve => {
       const { uid } = firebaseApp.auth().currentUser;
+
+      let currentUser = "";
+      for (let user in value) {
+        console.log(value[user].uid);
+        if (value[user].uid === uid) {
+          currentUser = value[user];
+        }
+      }
+
       this.setState(
         {
           users: value,
-          currentUser: Object.keys(value[uid]).map(key => value[uid][key]),
+          currentUser: currentUser,
           uid: uid
         },
         () => {
@@ -145,19 +154,23 @@ class CompanyProfile extends React.Component {
                   color="textSecondary"
                   paragraph
                 >
-                  {currentUser ? currentUser[0].photo : ""}
+                  <Avatar
+                    size={192}
+                    src={firebaseApp.auth().currentUser.photoURL}
+                  />
                 </Typography>
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
                     <Grid item>
-                      <Button variant="contained" color="primary">
-                        Linked In
-                      </Button>
-                    </Grid>
-                    <Grid item>
-                      <Button variant="outlined" color="primary">
-                        GitHub
-                      </Button>
+                      <a
+                        href={
+                          currentUser ? "https://" + currentUser.website : ""
+                        }
+                      >
+                        <Button variant="contained" color="primary">
+                          Website
+                        </Button>
+                      </a>
                     </Grid>
                   </Grid>
                 </div>

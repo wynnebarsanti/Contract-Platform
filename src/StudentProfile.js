@@ -148,6 +148,7 @@ class StudentProfile extends React.Component {
                   variant="h2"
                   align="center"
                   color="textPrimary"
+                  x
                   gutterBottom
                 >
                   {firebaseApp.auth().currentUser.displayName}
