@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -14,18 +14,7 @@ import Link from "@material-ui/core/Link";
 import Navbar from "./CompanyNavbar";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
-
-function MadeWithLove() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Built with love by the "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Material-UI
-      </Link>
-      {" team."}
-    </Typography>
-  );
-}
+import { sizing } from "@material-ui/system";
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -59,56 +48,34 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-export default function StudentContract() {
+const cards = [0,1,2,3];
+
+var names = [];
+
+var emails = [];
+
+var githubs = [];
+
+var linkedIns = [];
+
+var photourl = [];
+
+export default function StudentContract(props) {
   const classes = useStyles();
 
-  let userList = [];
-
-  var ref = firebaseApp.database().ref("users");
-  ref.once("value").then(function(snapshot) {
-    console.log(
-      snapshot.val()["LN8zU6jfhKgiTyasE0RAPFLzoF02"]["-LgY79g1z8YjsWAETl3H"]
-        .student
-    );
-    for (var key in snapshot.val()) {
-      userList.push(key);
-    }
-  });
-
-  ref.once("value").then(function(snapshot) {
-    console.log(
-      snapshot.val()["LN8zU6jfhKgiTyasE0RAPFLzoF02"]["-LgY79g1z8YjsWAETl3H"]
-        .student
-    );
-    for (var key in snapshot.val()) {
-      userList.push(key);
-    }
-  });
-  /*
-  const tasksRef = firebaseApp
-    .database()
-    .ref("users/" + userList[0])
-    .then(function() {
-      console.log(tasksRef);
-
-      tasksRef.on("value", snapshot => {
-        console.log(Object.values(snapshot.val()));
-        /*
-    if (snapshot.val() != null) {
-      
-      this.setState({ userData: Object.values(snapshot.val()) });
-      this.setState({ tasks: this.state.userData.length });
-      
-      });
-    });
-    */
+  names = props.location.users;
+  emails = props.location.emails;
+  githubs = props.location.github;
+  linkedIns = props.location.linkedIn;
+  photourl = props.location.url;
 
   return (
     <div>
-      {console.log(userList)}
+      <renderRedirect />
+      <useForceUpdate />
       <React.Fragment>
+        {console.log(names)}
         <CssBaseline />
         <AppBar position="relative">
           <Toolbar>
@@ -159,21 +126,55 @@ export default function StudentContract() {
           </div>
           <Container className={classes.cardGrid} maxWidth="md">
             {/* End hero unit */}
+
             <Grid container spacing={4}>
               {cards.map(card => (
                 <Grid item key={card} xs={12} sm={6} md={4}>
-                  <Card className={classes.card}>
-                    <CardContent className={classes.cardContent}>
-                      <Typography gutterBottom variant="h5" component="h2">
-                        Contract Name
-                      </Typography>
-                      <Typography>Contract Details</Typography>
+                  <Card>
+                    <CardContent
+                      style={{
+                        fontFamily: "Helvetica Neue",
+                        fontWeight: "bold",
+                        fontSize: "30px"
+                      }}
+                    >
+                      {names[card]}
                     </CardContent>
-                    <CardActions>
-                      <Button size="small" color="primary">
-                        I'm Interested!
-                      </Button>
-                    </CardActions>
+                    <CardContent
+                      style={{
+                        fontFamily: "Helvetica Neue"
+                      }}
+                    >
+                      Email: {emails[card]}
+                    </CardContent>
+
+                    <CardContent
+                      style={{
+                        fontFamily: "Helvetica Neue",
+
+                        display: "flex"
+                      }}
+                    >
+                      Github: {githubs[card]}
+                    </CardContent>
+
+                    <CardContent
+                      style={{
+                        fontFamily: "Helvetica Neue",
+
+                        display: "flex"
+                      }}
+                    >
+                      LinkedIn: {linkedIns[card]}
+                    </CardContent>
+
+                    <CardContent style={{ fontFamily: "Helvetica Neue" }}>
+                      <img
+                        src={photourl[card]}
+                        style={{ maxHeight: "70%", maxWidth: "70%" }}
+                      />
+                    </CardContent>
+                    <CardActions />
                   </Card>
                 </Grid>
               ))}
@@ -193,7 +194,6 @@ export default function StudentContract() {
           >
             Something here to give the footer a purpose!
           </Typography>
-          <MadeWithLove />
         </footer>
         {/* End footer */}
       </React.Fragment>
