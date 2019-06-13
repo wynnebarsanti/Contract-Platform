@@ -157,6 +157,24 @@ class CompanyProfile extends React.Component {
     });
   };
 
+  handleClick = (event, card) => {
+    event.preventDefault();
+    const { all_contracts } = this.state;
+    console.log(all_contracts);
+    let contract_key = "";
+    Object.keys(all_contracts).map(key => {
+      if ((all_contracts[key].details = card.details)) {
+        contract_key = key;
+      }
+    });
+    console.log(`${contract_key}`);
+    const contractRef = firebaseApp.database().ref(`contracts/${contract_key}`);
+
+    contractRef.remove().then(() => {
+      console.log("remove succeeded");
+    });
+  };
+
   render() {
     // const { users } = this.state;
     // const { uid } = this.state.uid;
@@ -255,12 +273,13 @@ class CompanyProfile extends React.Component {
                         <Typography>{card.details}</Typography>
                       </CardContent>
                       <CardActions>
-                        {/* <Button size="small" color="primary">
-                          I'm Interested!
-                        </Button> */}
-                        {/* <Button size="small" color="primary">
-                      Edit
-                    </Button> */}
+                        <Button
+                          size="small"
+                          color="primary"
+                          onClick={event => this.handleClick(event, card)}
+                        >
+                          Delete
+                        </Button>
                       </CardActions>
                     </Card>
                   </Grid>
@@ -270,18 +289,10 @@ class CompanyProfile extends React.Component {
           </main>
           {/* Footer */}
           <footer className={classes.footer}>
-            <Typography variant="h6" align="center" gutterBottom>
-              Footer
+            <Typography variant="h8" align="center" gutterBottom>
+              © Copyright 2019 | RevTech | All Rights Reserved | Privacy Policy
+              | Terms and Conditions
             </Typography>
-            <Typography
-              variant="subtitle1"
-              align="center"
-              color="textSecondary"
-              component="p"
-            >
-              Something here to give the footer a purpose!
-            </Typography>
-            <MadeWithLove />
           </footer>
           {/* End footer */}
         </React.Fragment>

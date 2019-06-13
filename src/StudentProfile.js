@@ -214,18 +214,10 @@ class StudentProfile extends React.Component {
           </main>
           {/* Footer */}
           <footer className={classes.footer}>
-            <Typography variant="h6" align="center" gutterBottom>
-              Footer
+            <Typography variant="h8" align="center" gutterBottom>
+              © Copyright 2019 | RevTech | All Rights Reserved | Privacy Policy
+              | Terms and Conditions
             </Typography>
-            <Typography
-              variant="subtitle1"
-              align="center"
-              color="textSecondary"
-              component="p"
-            >
-              Something here to give the footer a purpose!
-            </Typography>
-            <MadeWithLove />
           </footer>
           {/* End footer */}
         </React.Fragment>
