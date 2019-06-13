@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -10,11 +9,9 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import Link from "@material-ui/core/Link";
 import Navbar from "./CompanyNavbar";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
-import { sizing } from "@material-ui/system";
 import { Redirect } from "react-router-dom";
 
 const useStyles = theme => ({
@@ -48,8 +45,6 @@ const useStyles = theme => ({
     padding: theme.spacing(6)
   }
 });
-
-const cards = [0, 1, 2, 3];
 
 var names = [];
 
@@ -151,8 +146,8 @@ class AllStudents extends React.Component {
               {/* End hero unit */}
 
               <Grid container spacing={4}>
-                {cards.map(card => (
-                  <Grid item key={card} xs={12} sm={6} md={4}>
+                {names.map((card, index) => (
+                  <Grid item key={index} xs={12} sm={6} md={4}>
                     <Card>
                       <CardContent
                         style={{
@@ -161,14 +156,14 @@ class AllStudents extends React.Component {
                           fontSize: "30px"
                         }}
                       >
-                        {names[card]}
+                        {names[index]}
                       </CardContent>
                       <CardContent
                         style={{
                           fontFamily: "Helvetica Neue"
                         }}
                       >
-                        Email: {emails[card]}
+                        Email: {emails[index]}
                       </CardContent>
 
                       <CardContent
@@ -178,7 +173,7 @@ class AllStudents extends React.Component {
                           display: "flex"
                         }}
                       >
-                        Github: {githubs[card]}
+                        Github: {githubs[index]}
                       </CardContent>
 
                       <CardContent
@@ -193,7 +188,8 @@ class AllStudents extends React.Component {
 
                       <CardContent style={{ fontFamily: "Helvetica Neue" }}>
                         <img
-                          src={photourl[card]}
+                          alt="photos"
+                          src={photourl[index]}
                           style={{ maxHeight: "70%", maxWidth: "70%" }}
                         />
                       </CardContent>
