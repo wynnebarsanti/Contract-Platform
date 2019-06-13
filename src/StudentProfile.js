@@ -188,14 +188,20 @@ class StudentProfile extends React.Component {
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
                     <Grid item>
-                      <a href={currentUser ? currentUser.linkedIn : ""}>
+                      <a
+                        target="_blank"
+                        href={currentUser ? currentUser.linkedIn : ""}
+                      >
                         <Button variant="contained" color="primary">
                           Linked In
                         </Button>
                       </a>
                     </Grid>
                     <Grid item>
-                      <a href={currentUser ? currentUser.github : ""}>
+                      <a
+                        target="_blank"
+                        href={currentUser ? currentUser.github : ""}
+                      >
                         <Button variant="outlined" color="primary">
                           GitHub
                         </Button>
@@ -208,18 +214,10 @@ class StudentProfile extends React.Component {
           </main>
           {/* Footer */}
           <footer className={classes.footer}>
-            <Typography variant="h6" align="center" gutterBottom>
-              Footer
+            <Typography variant="h8" align="center" gutterBottom>
+              © Copyright 2019 | RevTech | All Rights Reserved | Privacy Policy
+              | Terms and Conditions
             </Typography>
-            <Typography
-              variant="subtitle1"
-              align="center"
-              color="textSecondary"
-              component="p"
-            >
-              Something here to give the footer a purpose!
-            </Typography>
-            <MadeWithLove />
           </footer>
           {/* End footer */}
         </React.Fragment>

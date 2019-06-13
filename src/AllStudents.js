@@ -81,17 +81,12 @@ class AllStudents extends React.Component {
     linkedIns = this.props.location.linkedIn;
     photourl = this.props.location.url;
 
-    if (!firebaseApp.auth().currentUser) {
-      this.setRedirect();
-    }
-    this.renderRedirect();
-
     const { classes } = this.props;
 
     return (
       <div>
-        <renderRedirect />
-        <useForceUpdate />
+        {firebaseApp.auth().currentUser ? "" : this.setRedirect()}
+        {this.renderRedirect()}
         <React.Fragment>
           {console.log(names)}
           <CssBaseline />
@@ -146,72 +141,67 @@ class AllStudents extends React.Component {
               {/* End hero unit */}
 
               <Grid container spacing={4}>
-                {names.map((card, index) => (
-                  <Grid item key={index} xs={12} sm={6} md={4}>
-                    <Card>
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue",
-                          fontWeight: "bold",
-                          fontSize: "30px"
-                        }}
-                      >
-                        {names[index]}
-                      </CardContent>
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue"
-                        }}
-                      >
-                        Email: {emails[index]}
-                      </CardContent>
+                {names
+                  ? names.map((card, index) => (
+                      <Grid item key={index} xs={12} sm={6} md={4}>
+                        <Card>
+                          <CardContent
+                            style={{
+                              fontFamily: "Helvetica Neue",
+                              fontWeight: "bold",
+                              fontSize: "30px"
+                            }}
+                          >
+                            {names[index]}
+                          </CardContent>
+                          <CardContent
+                            style={{
+                              fontFamily: "Helvetica Neue"
+                            }}
+                          >
+                            Email: {emails[index]}
+                          </CardContent>
 
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue",
+                          <CardContent
+                            style={{
+                              fontFamily: "Helvetica Neue",
 
-                          display: "flex"
-                        }}
-                      >
-                        Github: {githubs[index]}
-                      </CardContent>
+                              display: "flex"
+                            }}
+                          >
+                            Github: {githubs[index]}
+                          </CardContent>
 
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue",
+                          <CardContent
+                            style={{
+                              fontFamily: "Helvetica Neue",
 
-                          display: "flex"
-                        }}
-                      >
-                        LinkedIn: {linkedIns[card]}
-                      </CardContent>
+                              display: "flex"
+                            }}
+                          >
+                            LinkedIn: {linkedIns[card]}
+                          </CardContent>
 
-                      <CardContent style={{ fontFamily: "Helvetica Neue" }}>
-                        <img
-                          alt="photos"
-                          src={photourl[index]}
-                          style={{ maxHeight: "70%", maxWidth: "70%" }}
-                        />
-                      </CardContent>
-                      <CardActions />
-                    </Card>
-                  </Grid>
-                ))}
+                          <CardContent style={{ fontFamily: "Helvetica Neue" }}>
+                            <img
+                              alt="photos"
+                              src={photourl[index]}
+                              style={{ maxHeight: "70%", maxWidth: "70%" }}
+                            />
+                          </CardContent>
+                          <CardActions />
+                        </Card>
+                      </Grid>
+                    ))
+                  : ""}
               </Grid>
             </Container>
           </main>
           {/* Footer */}
           <footer className={classes.footer}>
-            <Typography variant="h6" align="center" gutterBottom>
-              Footer
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              align="center"
-              color="textSecondary"
-              component="p"
-            >
-              Something here to give the footer a purpose!
+            <Typography variant="h8" align="center" gutterBottom>
+              © Copyright 2019 | RevTech | All Rights Reserved | Privacy Policy
+              | Terms and Conditions
             </Typography>
           </footer>
           {/* End footer */}
