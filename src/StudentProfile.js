@@ -222,6 +222,7 @@ class StudentProfile extends React.Component {
                   />
                   <div style={{ justifyContent: "space-between" }}>
                     <a
+                      target="_blank"
                       href={currentUser ? currentUser.linkedIn : ""}
                       padding="50px"
                     >
@@ -229,7 +230,10 @@ class StudentProfile extends React.Component {
                         Linked In
                       </Button>
                     </a>
-                    <a href={currentUser ? currentUser.github : ""}>
+                    <a
+                      target="_blank"
+                      href={currentUser ? currentUser.github : ""}
+                    >
                       <Button variant="outlined" color="primary">
                         GitHub
                       </Button>
