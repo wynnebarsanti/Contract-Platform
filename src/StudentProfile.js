@@ -16,6 +16,7 @@ import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
 import { Avatar } from "antd";
 import { Redirect } from "react-router-dom";
+import { Modal } from "antd";
 
 // formatting for cards from material UI
 function MadeWithLove() {
@@ -64,8 +65,6 @@ const useStyles = theme => ({
   }
 });
 
-const cards = [1, 2, 3, 4];
-
 var names = [];
 
 var information = [];
@@ -80,7 +79,8 @@ class StudentProfile extends React.Component {
     this.state = {
       currentUser: null,
       uid: "",
-      all_contracts: []
+      all_contracts: [],
+      visible: false
     };
   }
 
@@ -102,6 +102,26 @@ class StudentProfile extends React.Component {
     if (this.state.redirect) {
       return <Redirect to="/" />;
     }
+  };
+
+  showModal = () => {
+    this.setState({
+      visible: true
+    });
+  };
+
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
   };
 
   setRedirect = () => {
@@ -282,9 +302,24 @@ class StudentProfile extends React.Component {
                                   marginTop: "20px"
                                 }}
                               >
-                                <Button size="small" color="primary">
+                                <Button
+                                  size="small"
+                                  color="primary"
+                                  onClick={this.showModal}
+                                >
                                   View
                                 </Button>
+                                <Modal
+                                  title={card.title}
+                                  visible={this.state.visible}
+                                  onOk={this.handleOk}
+                                  onCancel={this.handleCancel}
+                                >
+                                  {console.log(card)}
+                                  <p>{card.details}</p>
+                                  <p>{card.payment}</p>
+                                  <p>{card.date_created}</p>
+                                </Modal>
                               </CardActions>
                             </Card>
                           </Grid>
@@ -331,9 +366,23 @@ class StudentProfile extends React.Component {
                                   marginTop: "20px"
                                 }}
                               >
-                                <Button size="small" color="primary">
+                                <Button
+                                  size="small"
+                                  color="primary"
+                                  onClick={this.showModal}
+                                >
                                   View
                                 </Button>
+                                <Modal
+                                  title={card.title}
+                                  visible={this.state.visible}
+                                  onOk={this.handleOk}
+                                  onCancel={this.handleCancel}
+                                >
+                                  <p>{card.description}</p>
+                                  <p>{card.payment}</p>
+                                  <p>{card.date_created}</p>
+                                </Modal>
                               </CardActions>
                             </Card>
                           </Grid>
