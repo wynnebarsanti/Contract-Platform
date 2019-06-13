@@ -193,7 +193,7 @@ class Login extends Component {
       <Container className="login" maxWidth="sm">
           <img src={LoginLogo} alt="Logo" width='220px' />
 
-          <div class="login-form">
+          <div className="login-form">
             
             <p>{"\n"}</p>
 

@@ -14,6 +14,7 @@ import Link from "@material-ui/core/Link";
 import { withStyles } from "@material-ui/core/styles";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
+import * as firebase from 'firebase/app';
 import { Avatar } from "antd";
 import { Redirect } from "react-router-dom";
 
@@ -67,37 +68,75 @@ class CompanyProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: null,
-      uid: ""
+      currentCompany: null,
+      uid: "",
+      company_contracts: []
     };
   }
 
   componentDidMount() {
-    const usersRef = firebaseApp.database().ref(`companies`);
-    usersRef.on("value", snap => {
-      let update = snap.val() || [];
-      this.updateSnap(update);
+    const companiesRef = firebaseApp.database().ref(`companies`);
+    const googleUID = firebaseApp.auth().currentUser;
+    companiesRef.on("value", snap => {
+      let companies = snap.val();
+      // let currentCompany = '';
+      // let firebaseKey = '';
+      // for (let company in companies) {
+      //   if (companies[company].uid === googleUID){
+      //     firebaseKey = company;
+      //     currentCompany = companies[company];
+      //     this.setState({
+      //       all_companies: companies,
+      //       currentCompany: currentCompany,
+      //       firebaseKey: firebaseKey
+      //     }, this.getContracts)
+      //   }
+      // }
+      this.updateSnap(companies).then(this.getContracts);
     });
   }
 
-  updateSnap = value => {
+  getContracts = () => {
+    console.log('inside getCOntracts')
+    const contractsRef = firebaseApp.database().ref(`contracts/`);
+    contractsRef.on("value", snap => {
+      let contracts = snap.val();
+      console.log(contracts)
+      let company_contracts = [];
+      for (let contract in contracts) {
+        if (this.state.currentCompany.uid === contracts[contract].company_id){
+          company_contracts.push(contracts[contract])
+        }
+      }
+      this.setState({
+        all_contracts: contracts,
+        company_contracts: company_contracts
+      })
+    })
+
+  }
+
+  updateSnap = companies => {
     return new Promise(resolve => {
       if (firebaseApp.auth().currentUser) {
         const { uid } = firebaseApp.auth().currentUser;
 
-        let currentUser = "";
-        for (let user in value) {
-          console.log(value[user].uid);
-          if (value[user].uid === uid) {
-            currentUser = value[user];
+        let currentCompany = '';
+        let firebaseKey = "";
+        for (let company in companies) {
+          //console.log(value[user].uid);
+          if (companies[company].uid === uid) {
+            firebaseKey = company;
+            currentCompany = companies[company];
+            //console.log(currentCompany)
           }
         }
 
         this.setState(
           {
-            users: value,
-            currentUser: currentUser,
-            uid: uid
+            all_companies: companies,
+            currentCompany: currentCompany,
+            firebaseKey: firebaseKey
           },
           () => {
             resolve();
@@ -120,11 +159,10 @@ class CompanyProfile extends React.Component {
   };
 
   render() {
-    const { users } = this.state;
-    const { uid } = this.state.uid;
-    const { currentUser } = this.state;
+    // const { users } = this.state;
+    // const { uid } = this.state.uid;
+    const { currentCompany } = this.state;
     const { classes } = this.props;
-
     return (
       <div>
         {this.renderRedirect()}
@@ -162,9 +200,8 @@ class CompanyProfile extends React.Component {
                   color="textPrimary"
                   gutterBottom
                 >
-                  {firebaseApp.auth().currentUser
-                    ? firebaseApp.auth().currentUser.displayName
-                    : this.setRedirect()}
+                  {this.state.currentCompany
+                  ? this.state.currentCompany.name : <div></div> }
                 </Typography>
                 <Typography
                   variant="h5"
@@ -184,7 +221,7 @@ class CompanyProfile extends React.Component {
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
                     <Grid item>
-                      <a href={currentUser ? currentUser.website : ""}>
+                      <a href={currentCompany ? currentCompany.website : ""}>
                         <Button variant="contained" color="primary">
                           Website
                         </Button>
@@ -196,9 +233,9 @@ class CompanyProfile extends React.Component {
             </div>
             <Container className={classes.cardGrid} maxWidth="md">
               {/* End hero unit */}
-              <b>current contracts</b>
+              <b>All Contracts</b>
               <Grid container spacing={4}>
-                {cards.map(card => (
+                {this.state.company_contracts.map(card => (
                   <Grid item key={card} xs={12} sm={6} md={4}>
                     <Card className={classes.card}>
                       {/* <CardMedia
@@ -208,14 +245,14 @@ class CompanyProfile extends React.Component {
                   /> */}
                       <CardContent className={classes.cardContent}>
                         <Typography gutterBottom variant="h5" component="h2">
-                          Contract Name
+                          {card.title}
                         </Typography>
-                        <Typography>Contract Details</Typography>
+                        <Typography>{card.details}</Typography>
                       </CardContent>
                       <CardActions>
-                        <Button size="small" color="primary">
-                          View
-                        </Button>
+                        {/* <Button size="small" color="primary">
+                          I'm Interested!
+                        </Button> */}
                         {/* <Button size="small" color="primary">
                       Edit
                     </Button> */}
