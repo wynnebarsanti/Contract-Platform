@@ -10,6 +10,7 @@ import StudentProfile from "./StudentProfile.js";
 import StudentContract from "./StudentContract.js";
 import Forum from "./ForumPage.js";
 import Register from "./Register.js";
+import NewContract from "./NewContract";
 
 class App extends React.Component {
   render() {
@@ -39,6 +40,7 @@ class App extends React.Component {
             component={StudentContract}
           />
           <Route exact path="/users/student/forum" component={Forum} />
+          <Route exact path='/users/company/newcontract' component={NewContract}/>
         </Router>
       </div>
     );
