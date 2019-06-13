@@ -33,12 +33,21 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 );
 
 export default class ForumComment extends React.Component {
-  state = {
-    comments: this.props.oldComments || [],
-    submitting: false,
-    value: "",
-    postId: this.props.postId
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      comments: this.props.oldComments || [],
+      submitting: false,
+      value: "",
+      postId: this.props.postId
+    };
+  }
+
+  getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      comments: nextProps.oldComments
+    };
+  }
 
   handleSubmit = () => {
     if (!this.state.value) {

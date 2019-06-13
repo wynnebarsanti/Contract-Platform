@@ -55,7 +55,7 @@ export default class ForumPage extends React.Component {
           <ForumPost
             title={this.state.title}
             details={this.state.details}
-            currentUser={firebaseApp.auth().currentUser}
+            currentUser={firebaseApp.auth().currentUser} //this is just the persons name
             postId={this.state.postId}
           />
         ),
