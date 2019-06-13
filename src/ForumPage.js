@@ -254,6 +254,7 @@ export default class ForumPage extends React.Component {
           </Toolbar>
         </AppBar>
         {/* <Grid item xs ={12}> */}
+        <br/>
         <Typography
           component="h1"
           variant="h2"
