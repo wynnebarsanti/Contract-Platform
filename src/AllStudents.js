@@ -132,9 +132,9 @@ class AllStudents extends React.Component {
                 >
                   A list of all the students available to work for companies!
                 </Typography>
-                <div className={classes.heroButtons}>
+                {/* <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center" />
-                </div>
+                </div> */}
               </Container>
             </div>
             <Container className={classes.cardGrid} maxWidth="md">
