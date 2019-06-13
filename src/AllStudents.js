@@ -13,6 +13,8 @@ import Navbar from "./CompanyNavbar";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
 import { Redirect } from "react-router-dom";
+import githubLogo from "./githubLogo.png";
+import linkedinLogo from "./linkedinLogo.png";
 
 const useStyles = theme => ({
   icon: {
@@ -166,20 +168,30 @@ class AllStudents extends React.Component {
                             style={{
                               fontFamily: "Helvetica Neue",
 
-                              display: "flex"
+                              display: "flex-end"
                             }}
-                          >
-                            Github: {githubs[index]}
-                          </CardContent>
-
-                          <CardContent
-                            style={{
-                              fontFamily: "Helvetica Neue",
-
-                              display: "flex"
-                            }}
-                          >
-                            LinkedIn: {linkedIns[card]}
+                          > 
+                            <div marginRight="50px">
+                              <a href={githubs[index]}>
+                                <img
+                                  alt="logo"
+                                  src={githubLogo}
+                                  justifyContent="center"
+                                  height="48px"
+                                  width="48px"
+                                  marginRight="50px"
+                                />
+                              </a>
+                              <a href={linkedIns[index]}>
+                                <img
+                                  alt="logo"
+                                  src={linkedinLogo}
+                                  justifyContent="center"
+                                  height="48px"
+                                  width="55px"
+                                />
+                              </a>
+                            </div>
                           </CardContent>
 
                           <CardContent style={{ fontFamily: "Helvetica Neue" }}>

@@ -30,13 +30,14 @@ function MadeWithLove() {
   );
 }
 
+// formatting for cards from material UI
 const useStyles = theme => ({
   icon: {
     marginRight: theme.spacing(2)
   },
   heroContent: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6)
+    padding: theme.spacing(8, 0.5, 6)
   },
   heroButtons: {
     marginTop: theme.spacing(4)
@@ -48,7 +49,8 @@ const useStyles = theme => ({
   card: {
     height: "100%",
     display: "flex",
-    flexDirection: "column"
+    padding: "20px",
+    marginTop: "50px"
   },
   cardMedia: {
     paddingTop: "56.25%" // 16:9
@@ -209,26 +211,27 @@ class CompanyProfile extends React.Component {
           <main>
             {/* Hero unit */}
             <div className={classes.heroContent}>
-              <Container maxWidth="sm">
-                <Typography
-                  component="h1"
-                  variant="h2"
-                  align="center"
-                  color="textPrimary"
-                  gutterBottom
-                >
-                  {this.state.currentCompany ? (
-                    this.state.currentCompany.name.toUpperCase()
-                  ) : (
-                    <div />
-                  )}
-                </Typography>
-                <Typography
-                  variant="h5"
-                  align="center"
-                  color="textSecondary"
-                  paragraph
-                >
+              <Grid container spacing={2}>
+                <Grid item xs={3} style={{ display: "flex-start" }}>
+                  <Typography
+                    component="h1"
+                    variant="h2"
+                    color="textPrimary"
+                    x
+                    gutterBottom
+                  >
+                    {this.state.currentCompany ? (
+                      this.state.currentCompany.name.toUpperCase()
+                    ) : (
+                      <div />
+                    )}
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    align="center"
+                    color="textSecondary"
+                    paragraph
+                  />
                   <Avatar
                     size={192}
                     src={
@@ -237,55 +240,176 @@ class CompanyProfile extends React.Component {
                         : this.setRedirect()
                     }
                   />
-                </Typography>
+                  <div style={{ justifyContent: "space-between" }}>
+                    <a
+                      target="_blank"
+                      href={currentCompany ? currentCompany.website : ""}
+                    >
+                      <Button variant="contained" color="primary">
+                        Website
+                      </Button>
+                    </a>
+                  </div>
+                </Grid>
+                <Grid item xs={9} style={{ display: "flex-start" }}>
+                  <Grid container spacing={6}>
+                    <Grid item xs={12} sm={6}>
+                      <Typography
+                        component="h1"
+                        variant="h4"
+                        align="center"
+                        marginRight="0px"
+                        color="textPrimary"
+                        x
+                        gutterBottom
+                      >
+                        Current Contracts
+                      </Typography>
+                      <div align="center" display="flex-start">
+                        {this.state.company_contracts.map((card, index) => (
+                          <Grid
+                            item
+                            key={index}
+                            xs={12}
+                            sm={6}
+                            md={12}
+                            align="center"
+                          >
+                            <Card className={classes.card}>
+                              <CardContent className={classes.cardContent}>
+                                <Typography
+                                  gutterBottom
+                                  variant="h5"
+                                  component="h2"
+                                >
+                                  {card.title}
+                                </Typography>
+                                <Typography>{card.details}</Typography>
+                              </CardContent>
+                              <CardActions
+                                style={{
+                                  display: "center",
+                                  justifyItems: "center",
+                                  marginTop: "20px"
+                                }}
+                              >
+                                <Button size="small" color="primary">
+                                  View
+                                </Button>
+                              </CardActions>
+                            </Card>
+                          </Grid>
+                        ))}
+                      </div>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography
+                        component="h1"
+                        variant="h4"
+                        align="center"
+                        marginRight="0px"
+                        color="textPrimary"
+                        x
+                        gutterBottom
+                      >
+                        Past Contracts
+                      </Typography>
+                      <div align="center" display="flex-start">
+                        {this.state.company_contracts.map(card => (
+                          <Grid
+                            item
+                            key={card}
+                            xs={12}
+                            sm={6}
+                            md={12}
+                            align="center"
+                          >
+                            <Card className={classes.card}>
+                              <CardContent className={classes.cardContent}>
+                                <Typography
+                                  gutterBottom
+                                  variant="h5"
+                                  component="h2"
+                                >
+                                  {card.title}
+                                </Typography>
+                                <Typography>{card.details}</Typography>
+                              </CardContent>
+                              <CardActions
+                                style={{
+                                  display: "center",
+                                  justifyItems: "center",
+                                  marginTop: "20px"
+                                }}
+                              >
+                                <Button size="small" color="primary">
+                                  View
+                                </Button>
+                              </CardActions>
+                            </Card>
+                          </Grid>
+                        ))}
+                      </div>
+                    </Grid>
+                  </Grid>
+                  {/* <Typography
+                    component="h1"
+                    variant="h2"
+                    align="center"
+                    marginRight="0px"
+                    color="textPrimary"
+                    x
+                    gutterBottom
+                  >
+                    Contracts
+                  </Typography>
+                  <div align="center" display="flex-start">
+                    {cards.map(card => (
+                      <Grid
+                        item
+                        key={card}
+                        xs={12}
+                        sm={6}
+                        md={8}
+                        align="center"
+                      >
+                        <Card className={classes.card}>
+                          <CardContent className={classes.cardContent}>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="h2"
+                            >
+                              Contract Name
+                            </Typography>
+                            <Typography>Contract Details</Typography>
+                          </CardContent>
+                          <CardActions
+                            style={{
+                              display: "center",
+                              justifyItems: "center",
+                              marginTop: "20px"
+                            }}
+                          >
+                            <Button size="small" color="primary">
+                              View
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </div> */}
+                </Grid>
+              </Grid>
+              <Container maxWidth="sm">
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
-                    <Grid item>
-                      <a
-                        target="_blank"
-                        href={currentCompany ? currentCompany.website : ""}
-                      >
-                        <Button variant="contained" color="primary">
-                          Website
-                        </Button>
-                      </a>
-                    </Grid>
+                    <Grid item />
+                    <Grid item />
                   </Grid>
                 </div>
               </Container>
             </div>
-            <Container className={classes.cardGrid} maxWidth="md">
-              {/* End hero unit */}
-
-              <Grid container spacing={4}>
-                {this.state.company_contracts.map(card => (
-                  <Grid item key={card} xs={12} sm={6} md={4}>
-                    <Card className={classes.card}>
-                      {/* <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
-                    title="Image title"
-                  /> */}
-                      <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          {card.title}
-                        </Typography>
-                        <Typography>{card.details}</Typography>
-                      </CardContent>
-                      <CardActions>
-                        <Button
-                          size="small"
-                          color="primary"
-                          onClick={event => this.handleClick(event, card)}
-                        >
-                          Delete
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            </Container>
           </main>
           {/* Footer */}
           <footer className={classes.footer}>
