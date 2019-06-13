@@ -14,7 +14,7 @@ import Link from "@material-ui/core/Link";
 import { withStyles } from "@material-ui/core/styles";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
-import * as firebase from 'firebase/app';
+import * as firebase from "firebase/app";
 import { Avatar } from "antd";
 import { Redirect } from "react-router-dom";
 
@@ -97,31 +97,30 @@ class CompanyProfile extends React.Component {
   }
 
   getContracts = () => {
-    console.log('inside getCOntracts')
+    console.log("inside getCOntracts");
     const contractsRef = firebaseApp.database().ref(`contracts/`);
     contractsRef.on("value", snap => {
       let contracts = snap.val();
-      console.log(contracts)
+      console.log(contracts);
       let company_contracts = [];
       for (let contract in contracts) {
-        if (this.state.currentCompany.uid === contracts[contract].company_id){
-          company_contracts.push(contracts[contract])
+        if (this.state.currentCompany.uid === contracts[contract].company_id) {
+          company_contracts.push(contracts[contract]);
         }
       }
       this.setState({
         all_contracts: contracts,
         company_contracts: company_contracts
-      })
-    })
-
-  }
+      });
+    });
+  };
 
   updateSnap = companies => {
     return new Promise(resolve => {
       if (firebaseApp.auth().currentUser) {
         const { uid } = firebaseApp.auth().currentUser;
 
-        let currentCompany = '';
+        let currentCompany = "";
         let firebaseKey = "";
         for (let company in companies) {
           //console.log(value[user].uid);
@@ -200,8 +199,11 @@ class CompanyProfile extends React.Component {
                   color="textPrimary"
                   gutterBottom
                 >
-                  {this.state.currentCompany
-                  ? this.state.currentCompany.name : <div></div> }
+                  {this.state.currentCompany ? (
+                    this.state.currentCompany.name.toUpperCase()
+                  ) : (
+                    <div />
+                  )}
                 </Typography>
                 <Typography
                   variant="h5"
@@ -221,7 +223,10 @@ class CompanyProfile extends React.Component {
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
                     <Grid item>
-                      <a href={currentCompany ? currentCompany.website : ""}>
+                      <a
+                        target="_blank"
+                        href={currentCompany ? currentCompany.website : ""}
+                      >
                         <Button variant="contained" color="primary">
                           Website
                         </Button>

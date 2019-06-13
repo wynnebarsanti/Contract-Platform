@@ -188,14 +188,20 @@ class StudentProfile extends React.Component {
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
                     <Grid item>
-                      <a href={currentUser ? currentUser.linkedIn : ""}>
+                      <a
+                        target="_blank"
+                        href={currentUser ? currentUser.linkedIn : ""}
+                      >
                         <Button variant="contained" color="primary">
                           Linked In
                         </Button>
                       </a>
                     </Grid>
                     <Grid item>
-                      <a href={currentUser ? currentUser.github : ""}>
+                      <a
+                        target="_blank"
+                        href={currentUser ? currentUser.github : ""}
+                      >
                         <Button variant="outlined" color="primary">
                           GitHub
                         </Button>
