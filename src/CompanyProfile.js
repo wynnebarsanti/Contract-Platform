@@ -256,7 +256,7 @@ class CompanyProfile extends React.Component {
             </div>
             <Container className={classes.cardGrid} maxWidth="md">
               {/* End hero unit */}
-              <b>All Contracts</b>
+
               <Grid container spacing={4}>
                 {this.state.company_contracts.map(card => (
                   <Grid item key={card} xs={12} sm={6} md={4}>
