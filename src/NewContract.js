@@ -5,8 +5,7 @@ import HeaderLogo from "./HeaderLogo.png";
 import { makeStyles } from '@material-ui/core/styles';
 import "./NewContract.css"
 import firebaseApp from "./firebaseConfig";
-
-
+import {Alert} from 'antd'
 
 class NewContract extends React.Component {
 
@@ -14,7 +13,8 @@ class NewContract extends React.Component {
         contract_title: "",
         contract_details: "",
         compensation: "",
-        addedSuccess: false
+        addedSuccess: false,
+        addedFailuee: false,
     }
 
     setTitle = (input) => {
@@ -29,31 +29,42 @@ class NewContract extends React.Component {
         })
     }
 
-    setCompensaton = (input) => {
+    setCompensation = (input) => {
         this.setState({
-            compensation: ""
+            compensation: input
         })
     }
 
     addContract = () => {
-        const contractsRef = firebaseApp.database().ref(`contracts/`);
-        let company_id = firebaseApp.auth().currentUser.uid;
-        let currentDate = new Date().toLocaleString();
-        let newContract = {
-            title: this.state.contract_title,
-            details: this.state.contract_details,
-            date_created: currentDate,
-            payment: this.state.compensation,
-            date_claimed: null,
-            date_completed: null,
-            company_id: company_id,
-            student_id: null,
+        // if any fields are left blank, give an error message!
+        console.log(this.state)
+        if (this.state.contract_title === "" || this.state.contract_details === "" || this.state.compensation === ""){
+            this.setState({
+                addedSuccess: false,
+                addedFailure: true,
+            })
         }
-        contractsRef.push(newContract);
-        this.setState({
-            addedSuccess: true,
-        })
-        this.clearForm();
+        else {
+            console.log('got to else')
+            const contractsRef = firebaseApp.database().ref(`contracts/`);
+            let company_id = firebaseApp.auth().currentUser.uid;
+            let currentDate = new Date().toLocaleString();
+            let newContract = {
+                title: this.state.contract_title,
+                details: this.state.contract_details,
+                date_created: currentDate,
+                payment: this.state.compensation,
+                date_claimed: null,
+                date_completed: null,
+                company_id: company_id,
+                student_id: null,
+            }
+            contractsRef.push(newContract);
+            this.setState({
+                addedSuccess: true,
+                addedFailure: false,
+            }, this.clearForm())
+        }
     }
 
     clearForm = () => {
@@ -88,8 +99,11 @@ class NewContract extends React.Component {
 
                 <br/>
                 <h1>Post a New Contract</h1>
-                <form id="create-contract-form">
                     <div className='new-contract'>
+                        {this.state.addedSuccess ? <Alert message="Form Submitted!" type="success"/> : <div>Input your contract information below.</div>}
+                        {this.state.addedFailure ? <Alert message="Please fill out every field" type="error"/> : <div></div>}
+                        <form id="create-contract-form">
+                            <div className='form'>
                             <TextField
                                 id="outlined-name"
                                 placeholder="Contract Title"
@@ -107,7 +121,7 @@ class NewContract extends React.Component {
                             <TextField
                                 placeholder="$$$"
                                 label="Compensation"
-                                onChange={(e)=>this.setCompensaton(e.target.value)}
+                                onChange={(e)=>this.setCompensation(e.target.value)}
                             />
                             <br/>
                             <Button 
@@ -116,10 +130,12 @@ class NewContract extends React.Component {
                                 size='large'
                                 onClick={this.addContract}
                             >
-                                Post!
+                                Post Contract
                             </Button>
+                            </div>
+                            </form>
+
                     </div>
-                </form>
 
             </body>
         )

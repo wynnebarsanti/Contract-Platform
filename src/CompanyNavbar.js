@@ -40,8 +40,8 @@ class CompanyNavbar extends React.Component {
         var tasksRef = firebaseApp.database().ref("students/" + key);
         tasksRef.on("value", snapshot => {
           if (snapshot.val() != null) {
-            console.log(Object.values(snapshot.val()));
-            console.log(Object.values(snapshot.val())[3]);
+            //console.log(Object.values(snapshot.val()));
+            //console.log(Object.values(snapshot.val())[3]);
             emails.push(Object.values(snapshot.val())[0]);
             githubs.push(Object.values(snapshot.val())[1]);
             linkedIns.push(Object.values(snapshot.val())[2]);
