@@ -13,7 +13,9 @@ var linkedIns = [];
 
 var photourl = [];
 
-var userList = [];
+var realCount = 0;
+
+var list = [];
 
 class CompanyNavbar extends React.Component {
   state = {
@@ -22,7 +24,8 @@ class CompanyNavbar extends React.Component {
     emailState: [],
     githubState: [],
     linkedinState: [],
-    photoState: []
+    photoState: [],
+    num: 0
   };
 
   componentDidMount = () => {
@@ -36,19 +39,24 @@ class CompanyNavbar extends React.Component {
     }); */
 
     ref.once("value").then(function(snapshot) {
-      for (var key in snapshot.val()) {
-        var tasksRef = firebaseApp.database().ref("students/" + key);
-        tasksRef.on("value", snapshot => {
-          if (snapshot.val() != null) {
-            console.log(Object.values(snapshot.val()));
-            console.log(Object.values(snapshot.val())[3]);
-            emails.push(Object.values(snapshot.val())[0]);
-            githubs.push(Object.values(snapshot.val())[1]);
-            linkedIns.push(Object.values(snapshot.val())[2]);
-            names.push(Object.values(snapshot.val())[3]);
-            photourl.push(Object.values(snapshot.val())[4]);
-          }
-        });
+      var count = 0;
+      if (names.length === 0) {
+        for (var key in snapshot.val()) {
+          var tasksRef = firebaseApp.database().ref("students/" + key);
+          tasksRef.on("value", snapshot => {
+            if (snapshot.val() != null) {
+              console.log(Object.values(snapshot.val()));
+              console.log(Object.values(snapshot.val())[3]);
+              emails.push(Object.values(snapshot.val())[0]);
+              githubs.push(Object.values(snapshot.val())[1]);
+              linkedIns.push(Object.values(snapshot.val())[2]);
+              names.push(Object.values(snapshot.val())[3]);
+              photourl.push(Object.values(snapshot.val())[4]);
+            }
+          });
+          count++;
+        }
+        realCount = count;
       }
     });
 
@@ -57,7 +65,8 @@ class CompanyNavbar extends React.Component {
       githubState: githubs,
       linkedinState: linkedIns,
       emailState: emails,
-      photoState: photourl
+      photoState: photourl,
+      num: realCount
     });
 
     /* var tasksRef = firebaseApp
@@ -106,14 +115,14 @@ class CompanyNavbar extends React.Component {
           <Menu.Item>
             <NavLink
               style={{ color: "white" }}
-              to="/users/company/newcontract"
+              to="/users/company/contracts"
               activeStyle={{
                 color: "white",
                 fontWeight: "bold"
               }}
             >
               <Icon type="container" />
-              New Contract
+              Contracts
             </NavLink>
           </Menu.Item>
           <Menu.Item>
@@ -125,7 +134,8 @@ class CompanyNavbar extends React.Component {
                 emails: this.state.emailState,
                 github: this.state.githubState,
                 linkedIn: this.state.linkedinState,
-                url: this.state.photoState
+                url: this.state.photoState,
+                num: realCount
               }}
               activeStyle={{
                 color: "white",
@@ -133,7 +143,7 @@ class CompanyNavbar extends React.Component {
               }}
             >
               <Icon type="idcard" />
-              View Students
+              Students
             </NavLink>
           </Menu.Item>
           <Menu.Item style={{ color: "white" }}>
