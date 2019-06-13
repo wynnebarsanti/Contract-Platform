@@ -71,7 +71,7 @@ class StudentContract extends React.Component {
     this.state = {
       currentUser: null,
       uid: "",
-      all_contracts: [],
+      all_contracts: []
     };
   }
 
@@ -97,11 +97,12 @@ class StudentContract extends React.Component {
 
   updateSnap = contracts => {
     return new Promise(resolve => {
-        
       let all_contracts = [];
 
       for (let contract in contracts){
-        all_contracts.push(contracts[contract]);
+        let new_contract = contracts[contract];
+        new_contract["firebaseKey"] = contract;
+        all_contracts.push(new_contract);
       }
       this.setState(
           {
@@ -114,14 +115,33 @@ class StudentContract extends React.Component {
       }
     );
   }
+
   
+  addInterest = (contractFirebaseKey) => {
+    let currentStudentUID = firebaseApp.auth().currentUser.uid; // google auth id
+    let all_interested = [];
+    all_interested.push(currentStudentUID)
+    const interestedStudentsRef = firebaseApp.database().ref(`contracts/${contractFirebaseKey}/interested_students`);
+    interestedStudentsRef.on("value", snap => {
+      let studentIDs = snap.val();
+      if (studentIDs){
+        Object.keys(studentIDs).map(
+          (key) => {
+            all_interested.push(studentIDs[key])
+          }
+        )
+      }
+    })
+    interestedStudentsRef.set(all_interested);
+
+  }
+
 
   render() {
     const { users } = this.state;
     const { uid } = this.state.uid;
     const { currentUser } = this.state;
     const { classes } = this.props;
-
     return (
       <div>
         {firebaseApp.auth().currentUser ? "" : this.setRedirect()}
@@ -152,9 +172,9 @@ class StudentContract extends React.Component {
           </AppBar>
 
           <main>
-          <Container className={classes.cardGrid} maxWidth="md">
+            <Container className={classes.cardGrid} maxWidth="md">
               {/* End hero unit */}
-              <b>All Contracts</b>
+
               <Grid container spacing={4}>
                 {this.state.all_contracts.map(card => (
                   <Grid item key={card} xs={12} sm={6} md={4}>
@@ -166,7 +186,7 @@ class StudentContract extends React.Component {
                         <Typography>{card.details}</Typography>
                       </CardContent>
                       <CardActions>
-                        <Button size="small" color="primary">
+                        <Button size="small" color="primary" onClick={()=>this.addInterest(card.firebaseKey)}>
                           I'm Interested!
                         </Button>
                         {/* <Button size="small" color="primary">
@@ -181,18 +201,10 @@ class StudentContract extends React.Component {
           </main>
           {/* Footer */}
           <footer className={classes.footer}>
-            <Typography variant="h6" align="center" gutterBottom>
-              Footer
+            <Typography variant="h8" align="center" gutterBottom>
+              © Copyright 2019 | RevTech | All Rights Reserved | Privacy Policy
+              | Terms and Conditions
             </Typography>
-            <Typography
-              variant="subtitle1"
-              align="center"
-              color="textSecondary"
-              component="p"
-            >
-              Something here to give the footer a purpose!
-            </Typography>
-            <MadeWithLove />
           </footer>
           {/* End footer */}
         </React.Fragment>

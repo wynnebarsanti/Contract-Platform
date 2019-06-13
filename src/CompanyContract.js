@@ -159,7 +159,6 @@ class CompanyContract extends React.Component {
             >
               Something here to give the footer a purpose!
             </Typography>
-            <MadeWithLove />
           </footer>
           {/* End footer */}
         </React.Fragment>

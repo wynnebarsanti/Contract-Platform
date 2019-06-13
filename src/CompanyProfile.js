@@ -14,7 +14,7 @@ import Link from "@material-ui/core/Link";
 import { withStyles } from "@material-ui/core/styles";
 import HeaderLogo from "./HeaderLogo.png";
 import firebaseApp from "./firebaseConfig.js";
-import * as firebase from 'firebase/app';
+import * as firebase from "firebase/app";
 import { Avatar } from "antd";
 import { Redirect } from "react-router-dom";
 
@@ -97,31 +97,29 @@ class CompanyProfile extends React.Component {
   }
 
   getContracts = () => {
-    console.log('inside getCOntracts')
+    console.log("inside getCOntracts");
     const contractsRef = firebaseApp.database().ref(`contracts/`);
     contractsRef.on("value", snap => {
       let contracts = snap.val();
-      console.log(contracts)
       let company_contracts = [];
       for (let contract in contracts) {
-        if (this.state.currentCompany.uid === contracts[contract].company_id){
-          company_contracts.push(contracts[contract])
+        if (this.state.currentCompany.uid === contracts[contract].company_id) {
+          company_contracts.push(contracts[contract]);
         }
       }
       this.setState({
         all_contracts: contracts,
         company_contracts: company_contracts
-      })
-    })
-
-  }
+      });
+    });
+  };
 
   updateSnap = companies => {
     return new Promise(resolve => {
       if (firebaseApp.auth().currentUser) {
         const { uid } = firebaseApp.auth().currentUser;
 
-        let currentCompany = '';
+        let currentCompany = "";
         let firebaseKey = "";
         for (let company in companies) {
           //console.log(value[user].uid);
@@ -155,6 +153,25 @@ class CompanyProfile extends React.Component {
   setRedirect = () => {
     this.setState({
       redirect: true
+    });
+  };
+
+  handleClick = (event, card) => {
+    event.preventDefault();
+    const { all_contracts } = this.state;
+    console.log(all_contracts);
+    let contract_key = "";
+    Object.keys(all_contracts).map(key => {
+      if ((all_contracts[key].details = card.details)) {
+        contract_key = key;
+      }
+    });
+
+    console.log(`${contract_key}`);
+    const contractRef = firebaseApp.database().ref(`contracts/${contract_key}`);
+
+    contractRef.remove().then(() => {
+      console.log("remove succeeded");
     });
   };
 
@@ -200,8 +217,11 @@ class CompanyProfile extends React.Component {
                   color="textPrimary"
                   gutterBottom
                 >
-                  {this.state.currentCompany
-                  ? this.state.currentCompany.name : <div></div> }
+                  {this.state.currentCompany ? (
+                    this.state.currentCompany.name.toUpperCase()
+                  ) : (
+                    <div />
+                  )}
                 </Typography>
                 <Typography
                   variant="h5"
@@ -221,7 +241,10 @@ class CompanyProfile extends React.Component {
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
                     <Grid item>
-                      <a href={currentCompany ? currentCompany.website : ""}>
+                      <a
+                        target="_blank"
+                        href={currentCompany ? currentCompany.website : ""}
+                      >
                         <Button variant="contained" color="primary">
                           Website
                         </Button>
@@ -233,7 +256,7 @@ class CompanyProfile extends React.Component {
             </div>
             <Container className={classes.cardGrid} maxWidth="md">
               {/* End hero unit */}
-              <b>All Contracts</b>
+
               <Grid container spacing={4}>
                 {this.state.company_contracts.map(card => (
                   <Grid item key={card} xs={12} sm={6} md={4}>
@@ -250,12 +273,13 @@ class CompanyProfile extends React.Component {
                         <Typography>{card.details}</Typography>
                       </CardContent>
                       <CardActions>
-                        {/* <Button size="small" color="primary">
-                          I'm Interested!
-                        </Button> */}
-                        {/* <Button size="small" color="primary">
-                      Edit
-                    </Button> */}
+                        <Button
+                          size="small"
+                          color="primary"
+                          onClick={event => this.handleClick(event, card)}
+                        >
+                          Delete
+                        </Button>
                       </CardActions>
                     </Card>
                   </Grid>
@@ -265,18 +289,10 @@ class CompanyProfile extends React.Component {
           </main>
           {/* Footer */}
           <footer className={classes.footer}>
-            <Typography variant="h6" align="center" gutterBottom>
-              Footer
+            <Typography variant="h8" align="center" gutterBottom>
+              © Copyright 2019 | RevTech | All Rights Reserved | Privacy Policy
+              | Terms and Conditions
             </Typography>
-            <Typography
-              variant="subtitle1"
-              align="center"
-              color="textSecondary"
-              component="p"
-            >
-              Something here to give the footer a purpose!
-            </Typography>
-            <MadeWithLove />
           </footer>
           {/* End footer */}
         </React.Fragment>
