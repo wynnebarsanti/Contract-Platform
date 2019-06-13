@@ -12,6 +12,8 @@ class StudentNavbar extends React.Component {
     };
   }
 
+  
+
   setRedirect = () => {
     firebase.auth().signOut();
     this.setState({
@@ -25,6 +27,7 @@ class StudentNavbar extends React.Component {
   };
 
   render() {
+    console.log(this.props.titles)
     return (
       <div>
         {this.renderRedirect()}
@@ -35,7 +38,11 @@ class StudentNavbar extends React.Component {
           <Menu.Item>
             <NavLink
               style={{ color: "white" }}
-              to="/users/student/profile"
+              to={{
+                pathname: "/users/student/profile",
+                titles: this.props.titles,
+                details: this.props.details
+              }}
               activeStyle={{
                 color: "white",
                 fontWeight: "bold"

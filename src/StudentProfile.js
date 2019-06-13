@@ -37,7 +37,7 @@ const useStyles = theme => ({
   },
   heroContent: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6)
+    padding: theme.spacing(8, 0.5, 6)
   },
   heroButtons: {
     marginTop: theme.spacing(4)
@@ -49,7 +49,8 @@ const useStyles = theme => ({
   card: {
     height: "100%",
     display: "flex",
-    flexDirection: "column"
+    padding: "20px",
+    marginTop: "50px"
   },
   cardMedia: {
     paddingTop: "56.25%" // 16:9
@@ -63,14 +64,23 @@ const useStyles = theme => ({
   }
 });
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const cards = [1, 2, 3, 4];
+
+var names = [];
+
+var information = [];
+
+var stateNames = [];
+
+var stateInformation = [];
 
 class StudentProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentUser: null,
-      uid: ""
+      uid: "",
+      all_contracts: []
     };
   }
 
@@ -79,6 +89,12 @@ class StudentProfile extends React.Component {
     usersRef.on("value", snap => {
       let update = snap.val() || [];
       this.updateSnap(update);
+    });
+
+    const contractsRef = firebaseApp.database().ref(`contracts`);
+    contractsRef.on("value", snap => {
+      let contracts = snap.val() || [];
+      this.updateContract(contracts);
     });
   }
 
@@ -101,7 +117,7 @@ class StudentProfile extends React.Component {
 
         let currentUser = "";
         for (let user in value) {
-          //console.log(value[user].uid);
+          console.log(value[user].uid);
           if (value[user].uid === uid) {
             currentUser = value[user];
           }
@@ -121,14 +137,33 @@ class StudentProfile extends React.Component {
     });
   };
 
+  updateContract = contracts => {
+    return new Promise(resolve => {
+      let all_contracts = [];
+
+      for (let contract in contracts) {
+        all_contracts.push(contracts[contract]);
+      }
+      this.setState(
+        {
+          all_contracts: all_contracts
+        },
+        () => {
+          resolve();
+        }
+      );
+    });
+  };
+
   render() {
+    console.log(this.state.titles);
     const { users } = this.state;
     const { uid } = this.state.uid;
     const { currentUser } = this.state;
     const { classes } = this.props;
 
     return (
-      <div>
+      <div marginRight="0px">
         {this.renderRedirect()}
         <React.Fragment>
           <CssBaseline />
@@ -150,7 +185,7 @@ class StudentProfile extends React.Component {
                   justifyContent: "space-between"
                 }}
               >
-                <StudentNavbar />
+                <StudentNavbar titles={names} details={information} />
               </div>
             </Toolbar>
           </AppBar>
@@ -158,55 +193,204 @@ class StudentProfile extends React.Component {
           <main>
             {/* Hero unit */}
             <div className={classes.heroContent}>
+              <Grid container spacing={2}>
+                <Grid item xs={3} style={{ display: "flex-start" }}>
+                  <Typography
+                    component="h1"
+                    variant="h2"
+                    color="textPrimary"
+                    x
+                    gutterBottom
+                  >
+                    {firebaseApp.auth().currentUser
+                      ? firebaseApp.auth().currentUser.displayName
+                      : this.setRedirect()}
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    align="center"
+                    color="textSecondary"
+                    paragraph
+                  />
+                  <Avatar
+                    size={192}
+                    src={
+                      firebaseApp.auth().currentUser
+                        ? firebaseApp.auth().currentUser.photoURL
+                        : this.setRedirect()
+                    }
+                  />
+                  <div style={{ justifyContent: "space-between" }}>
+                    <a
+                      href={currentUser ? currentUser.linkedIn : ""}
+                      padding="50px"
+                    >
+                      <Button variant="contained" color="primary">
+                        Linked In
+                      </Button>
+                    </a>
+                    <a href={currentUser ? currentUser.github : ""}>
+                      <Button variant="outlined" color="primary">
+                        GitHub
+                      </Button>
+                    </a>
+                  </div>
+                </Grid>
+                <Grid item xs={9} style={{ display: "flex-start" }}>
+                  <Grid container spacing={6}>
+                    <Grid item xs={12} sm={6}>
+                      <Typography
+                        component="h1"
+                        variant="h4"
+                        align="center"
+                        marginRight="0px"
+                        color="textPrimary"
+                        x
+                        gutterBottom
+                      >
+                        Current Contracts
+                      </Typography>
+                      <div align="center" display="flex-start">
+                        {this.state.all_contracts.map((card, index) => (
+                          <Grid
+                            item
+                            key={index}
+                            xs={12}
+                            sm={6}
+                            md={12}
+                            align="center"
+                          >
+                            <Card className={classes.card}>
+                              <CardContent className={classes.cardContent}>
+                                <Typography
+                                  gutterBottom
+                                  variant="h5"
+                                  component="h2"
+                                >
+                                  {card.title}
+                                </Typography>
+                                <Typography>{card.details}</Typography>
+                              </CardContent>
+                              <CardActions
+                                style={{
+                                  display: "center",
+                                  justifyItems: "center",
+                                  marginTop: "20px"
+                                }}
+                              >
+                                <Button size="small" color="primary">
+                                  View
+                                </Button>
+                              </CardActions>
+                            </Card>
+                          </Grid>
+                        ))}
+                      </div>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography
+                        component="h1"
+                        variant="h4"
+                        align="center"
+                        marginRight="0px"
+                        color="textPrimary"
+                        x
+                        gutterBottom
+                      >
+                        Past Contracts
+                      </Typography>
+                      <div align="center" display="flex-start">
+                        {this.state.all_contracts.map(card => (
+                          <Grid
+                            item
+                            key={card}
+                            xs={12}
+                            sm={6}
+                            md={12}
+                            align="center"
+                          >
+                            <Card className={classes.card}>
+                              <CardContent className={classes.cardContent}>
+                                <Typography
+                                  gutterBottom
+                                  variant="h5"
+                                  component="h2"
+                                >
+                                  {card.title}
+                                </Typography>
+                                <Typography>{card.details}</Typography>
+                              </CardContent>
+                              <CardActions
+                                style={{
+                                  display: "center",
+                                  justifyItems: "center",
+                                  marginTop: "20px"
+                                }}
+                              >
+                                <Button size="small" color="primary">
+                                  View
+                                </Button>
+                              </CardActions>
+                            </Card>
+                          </Grid>
+                        ))}
+                      </div>
+                    </Grid>
+                  </Grid>
+                  {/* <Typography
+                    component="h1"
+                    variant="h2"
+                    align="center"
+                    marginRight="0px"
+                    color="textPrimary"
+                    x
+                    gutterBottom
+                  >
+                    Contracts
+                  </Typography>
+                  <div align="center" display="flex-start">
+                    {cards.map(card => (
+                      <Grid
+                        item
+                        key={card}
+                        xs={12}
+                        sm={6}
+                        md={8}
+                        align="center"
+                      >
+                        <Card className={classes.card}>
+                          <CardContent className={classes.cardContent}>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="h2"
+                            >
+                              Contract Name
+                            </Typography>
+                            <Typography>Contract Details</Typography>
+                          </CardContent>
+                          <CardActions
+                            style={{
+                              display: "center",
+                              justifyItems: "center",
+                              marginTop: "20px"
+                            }}
+                          >
+                            <Button size="small" color="primary">
+                              View
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </div> */}
+                </Grid>
+              </Grid>
               <Container maxWidth="sm">
-                <Typography
-                  component="h1"
-                  variant="h2"
-                  align="center"
-                  color="textPrimary"
-                  x
-                  gutterBottom
-                >
-                  {firebaseApp.auth().currentUser
-                    ? firebaseApp.auth().currentUser.displayName
-                    : this.setRedirect()}
-                </Typography>
-                <Typography
-                  variant="h5"
-                  align="center"
-                  color="textSecondary"
-                  paragraph
-                />
-                <Avatar
-                  size={192}
-                  src={
-                    firebaseApp.auth().currentUser
-                      ? firebaseApp.auth().currentUser.photoURL
-                      : this.setRedirect()
-                  }
-                />
                 <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center">
-                    <Grid item>
-                      <a
-                        target="_blank"
-                        href={currentUser ? currentUser.linkedIn : ""}
-                      >
-                        <Button variant="contained" color="primary">
-                          Linked In
-                        </Button>
-                      </a>
-                    </Grid>
-                    <Grid item>
-                      <a
-                        target="_blank"
-                        href={currentUser ? currentUser.github : ""}
-                      >
-                        <Button variant="outlined" color="primary">
-                          GitHub
-                        </Button>
-                      </a>
-                    </Grid>
+                    <Grid item />
+                    <Grid item />
                   </Grid>
                 </div>
               </Container>
