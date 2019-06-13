@@ -85,16 +85,33 @@ class StudentProfile extends React.Component {
   }
 
   componentDidMount() {
+    const currentUser = firebaseApp.auth().currentUser.uid;
     const usersRef = firebaseApp.database().ref(`students`);
     usersRef.on("value", snap => {
       let update = snap.val() || [];
       this.updateSnap(update);
     });
-
+    let all_contracts=[];
     const contractsRef = firebaseApp.database().ref(`contracts`);
     contractsRef.on("value", snap => {
       let contracts = snap.val() || [];
-      this.updateContract(contracts);
+      for (let contract in contracts){
+        let students = contracts[contract].interested_students;
+        if (students === undefined) {
+          console.log('no interested students')
+        }
+        else{
+          console.log(students)
+          for (let i = 0; i < students.length; i ++){
+            if (students[i] === currentUser){
+              all_contracts.push(contracts[contract])
+            }
+          }
+        }
+      }
+      this.setState({
+        all_contracts: all_contracts
+      })
     });
   }
 
@@ -158,11 +175,20 @@ class StudentProfile extends React.Component {
   };
 
   updateContract = contracts => {
+    let uid = firebaseApp.auth().currentUser.uid;
+    console.log(uid)
     return new Promise(resolve => {
       let all_contracts = [];
 
       for (let contract in contracts) {
-        all_contracts.push(contracts[contract]);
+        let student_array = contracts[contract].interested_students;
+        console.log(student_array)
+        for (let i = 0; i < student_array.length; i++) {
+          if (student_array[0] === uid){
+            console.log(contracts[contract])
+            all_contracts.push(contracts[contract])
+          }
+        }
       }
       this.setState(
         {
