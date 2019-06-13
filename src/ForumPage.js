@@ -40,7 +40,7 @@ export default class ForumPage extends React.Component {
       oldPosts: [],
       oldComments: [],
       currentUser: null,
-      postId: ""
+      postid: ""
     };
 
     this.createInDatabase = this.createInDatabase.bind(this);
@@ -48,30 +48,23 @@ export default class ForumPage extends React.Component {
 
   createPost = event => {
     this.createInDatabase().then(() => {
-      console.log("it worked");
-      var newArray = this.state.posts.slice();
-      newArray.unshift({
-        post: (
-          <ForumPost
-            title={this.state.title}
-            details={this.state.details}
-            currentUser={firebaseApp.auth().currentUser} //this is just the persons name
-            postId={this.state.postId}
-          />
-        ),
-        // Pass postId as a prop to ForumComment
-        comments: (
-          <ForumComment
-            currentUser={firebaseApp.auth().currentUser}
-            postId={this.state.postId}
-          />
-        )
-      });
-      this.setState({
-        posts: newArray
-        // postId: this.state.postId + 1
-      });
-    }); // retrieve unique postId here by calling Object.keys()
+      //   console.log(this.state.postid);
+      //   var newArray = this.state.posts.slice();
+      //   newArray.unshift({
+      //     post: (
+      //       <ForumPost
+      //         title={this.state.title}
+      //         details={this.state.details}
+      //         currentUser={firebaseApp.auth().currentUser.displayName} //this is just the persons name
+      //       />
+      //     ),
+      //     // Pass postId as a prop to ForumComment
+      //     comments: <ForumComment comments={[]} postid={this.state.postid} />
+      //   });
+      //   this.setState({
+      //     posts: newArray
+      //   });
+    });
   };
 
   handleChange = event => {
@@ -80,10 +73,8 @@ export default class ForumPage extends React.Component {
     });
   };
 
-  // to render existing posts/comments
-  mapOldPosts = () => {
+  mapAllPosts = () => {
     let oldPosts = this.state.oldPosts;
-    console.log(oldPosts);
     return oldPosts.map(item => {
       return (
         <div
@@ -101,28 +92,28 @@ export default class ForumPage extends React.Component {
   };
 
   // to render posts/comments made in real-time
-  mapPosts = () => {
-    let posts = this.state.posts;
-    console.log(posts);
-    return posts.map(item => {
-      return (
-        <div
-          style={{
-            borderStyle: "solid"
-          }}
-        >
-          <Grid item xs={6}>
-            {item.post}
-            {item.comments}
-          </Grid>
-        </div>
-      );
-    });
-  };
+  // mapPosts = () => {
+  //   let posts = this.state.posts;
+  //   console.log(posts);
+  //   return posts.map(item => {
+  //     return (
+  //       <div
+  //         style={{
+  //           borderStyle: "solid",
+  //           padding: "20px"
+  //         }}
+  //       >
+  //         <Grid item xs={6}>
+  //           {item.post}
+  //           {item.comments}
+  //         </Grid>
+  //       </div>
+  //     );
+  //   });
+  // };
 
   componentDidMount() {
     const usersRef = firebaseApp.database().ref("students");
-
     usersRef.on("value", snap => {
       let update = snap.val() || [];
       this.updateSnap(update);
@@ -132,13 +123,11 @@ export default class ForumPage extends React.Component {
 
     postsRef.on("value", snap => {
       let posts = snap.val() || [];
+      // console.log(posts);
       this.updatePosts(posts);
-
-      // to render old posts/comments
+      // console.log(posts);
       let oldPostsState = [];
       for (let post in posts) {
-        // console.log(posts[post].title)
-        // console.log(post);
         let oldComments = [];
         for (let comment in posts[post].comments) {
           const oldComment = {
@@ -146,7 +135,7 @@ export default class ForumPage extends React.Component {
             avatar: posts[post].comments[comment].avatar,
             content: posts[post].comments[comment].details,
             dateTime: moment().fromNow(),
-            postId: posts[post].comments[comment].postId
+            postid: posts[post].comments[comment].postid
           };
           oldComments.unshift(oldComment);
         }
@@ -156,10 +145,10 @@ export default class ForumPage extends React.Component {
               title={posts[post].title}
               details={posts[post].details}
               currentUser={posts[post].author}
-              postId={post}
+              postid={post}
             />
           ),
-          comments: <ForumComment postId={post} oldComments={oldComments} />
+          comments: <ForumComment postid={post} oldComments={oldComments} />
         });
       }
       this.setState({
@@ -182,21 +171,6 @@ export default class ForumPage extends React.Component {
       );
     });
   };
-
-  // updateSnap = value => {
-  //   return new Promise(resolve => {
-  //     const { uid } = firebaseApp.auth().currentUser;
-  //     this.setState(
-  //       {
-  //         users: value,
-  //         currentUser: Object.keys(value[uid]).map(key => value[uid][key])
-  //       },
-  //       () => {
-  //         resolve();
-  //       }
-  //     );
-  //   });
-  // };
 
   updateSnap = value => {
     return new Promise(resolve => {
@@ -234,11 +208,10 @@ export default class ForumPage extends React.Component {
       comments: []
     };
 
-    console.log(post.author);
-    let postId = await postsRef.push(post).key;
-    console.log(postId);
+    let postid = await postsRef.push(post).key;
+    console.log(postid);
     this.setState({
-      postId: postId
+      postid: postid
     });
   }
   renderRedirect = () => {
@@ -323,8 +296,8 @@ export default class ForumPage extends React.Component {
           {/* <Grid 
         alignContent={"space between"}
         container spacing={3}> */}
-          {this.state.oldPosts.length > 0 && this.mapOldPosts()}
-          {this.state.posts.length > 0 && this.mapPosts()}
+          {this.state.oldPosts.length > 0 && this.mapAllPosts()}
+          {/* {this.state.posts.length > 0 && this.mapPosts()} */}
           {/* </Grid> */}
         </div>
       </div>

@@ -36,10 +36,10 @@ export default class ForumComment extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      comments: this.props.oldComments || [],
+      comments: this.props.oldComments,
       submitting: false,
       value: "",
-      postId: this.props.postId
+      postid: this.props.postid
     };
   }
 
@@ -60,14 +60,14 @@ export default class ForumComment extends React.Component {
 
     const commentsRef = firebaseApp
       .database()
-      .ref("posts/" + this.props.postId + "/comments");
+      .ref("posts/" + this.props.postid + "/comments");
     let currentTime = new Date().toLocaleString();
     const comment = {
       author: firebaseApp.auth().currentUser.displayName,
       avatar: firebaseApp.auth().currentUser.photoURL,
       details: this.state.value,
       timestamp: currentTime,
-      postId: this.props.postId
+      postid: this.props.postid
     };
     commentsRef.push(comment);
 
@@ -81,7 +81,7 @@ export default class ForumComment extends React.Component {
             avatar: firebaseApp.auth().currentUser.photoURL,
             content: <p>{this.state.value}</p>,
             datetime: moment().fromNow(),
-            postId: this.props.postId
+            postid: this.props.postid
           },
           ...this.state.comments
         ]
