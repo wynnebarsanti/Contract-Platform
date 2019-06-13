@@ -116,14 +116,14 @@ class CompanyNavbar extends React.Component {
           <Menu.Item>
             <NavLink
               style={{ color: "white" }}
-              to="/users/company/contracts"
+              to="/users/company/newcontract"
               activeStyle={{
                 color: "white",
                 fontWeight: "bold"
               }}
             >
               <Icon type="container" />
-              Contracts
+              New Contract
             </NavLink>
           </Menu.Item>
           <Menu.Item>
@@ -144,7 +144,7 @@ class CompanyNavbar extends React.Component {
               }}
             >
               <Icon type="idcard" />
-              Students
+              View Students
             </NavLink>
           </Menu.Item>
           <Menu.Item style={{ color: "white" }}>
