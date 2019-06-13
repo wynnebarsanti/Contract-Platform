@@ -39,6 +39,7 @@ class CompanyNavbar extends React.Component {
     }); */
 
     ref.once("value").then(function(snapshot) {
+
       var count = 0;
       if (names.length === 0) {
         for (var key in snapshot.val()) {

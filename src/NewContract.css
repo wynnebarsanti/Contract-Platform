@@ -12,9 +12,11 @@
 body {
     display: flex;
     flex-direction: column;
-
 }
 
-h1 {
-    
+.form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    padding: center;
 }
