@@ -70,15 +70,16 @@ class StudentContract extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
-      uid: ""
+      uid: "",
+      all_contracts: [],
     };
   }
 
   componentDidMount() {
-    const usersRef = firebaseApp.database().ref(`contracts`);
-    usersRef.on("value", snap => {
-      let update = snap.val() || [];
-      this.updateSnap(update);
+    const contractsRef = firebaseApp.database().ref(`contracts`);
+    contractsRef.on("value", snap => {
+      let contracts = snap.val() || [];
+      this.updateSnap(contracts);
     });
   }
 
@@ -94,22 +95,26 @@ class StudentContract extends React.Component {
     });
   };
 
-  updateSnap = value => {
+  updateSnap = contracts => {
     return new Promise(resolve => {
-      if (firebaseApp.auth().currentUser) {
-        const { uid } = firebaseApp.auth().currentUser;
+        
+      let all_contracts = [];
 
-        this.setState(
+      for (let contract in contracts){
+        all_contracts.push(contracts[contract]);
+      }
+      this.setState(
           {
-            contracts: value
+            all_contracts: all_contracts
           },
           () => {
             resolve();
           }
         );
       }
-    });
-  };
+    );
+  }
+  
 
   render() {
     const { users } = this.state;
@@ -146,6 +151,34 @@ class StudentContract extends React.Component {
             </Toolbar>
           </AppBar>
 
+          <main>
+          <Container className={classes.cardGrid} maxWidth="md">
+              {/* End hero unit */}
+              <b>All Contracts</b>
+              <Grid container spacing={4}>
+                {this.state.all_contracts.map(card => (
+                  <Grid item key={card} xs={12} sm={6} md={4}>
+                    <Card className={classes.card}>
+                      <CardContent className={classes.cardContent}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {card.title}
+                        </Typography>
+                        <Typography>{card.details}</Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Button size="small" color="primary">
+                          I'm Interested!
+                        </Button>
+                        {/* <Button size="small" color="primary">
+                      Edit
+                    </Button> */}
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </Container>
+          </main>
           {/* Footer */}
           <footer className={classes.footer}>
             <Typography variant="h6" align="center" gutterBottom>
