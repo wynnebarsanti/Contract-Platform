@@ -167,13 +167,6 @@ class NewContract extends React.Component {
               </Button>
             </div>
           </form>
-
-          <footer className={classes.footer}>
-            <Typography variant="h8" align="center" gutterBottom>
-              © Copyright 2019 | RevTech | All Rights Reserved | Privacy Policy
-              | Terms and Conditions
-            </Typography>
-          </footer>
         </div>
       </body>
     );

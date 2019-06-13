@@ -167,6 +167,7 @@ class CompanyProfile extends React.Component {
         contract_key = key;
       }
     });
+
     console.log(`${contract_key}`);
     const contractRef = firebaseApp.database().ref(`contracts/${contract_key}`);
 
