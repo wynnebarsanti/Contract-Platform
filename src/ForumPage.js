@@ -68,7 +68,10 @@ export default class ForumPage extends React.Component {
         )
       });
       this.setState({
-        posts: newArray
+        posts: newArray,
+        title: "",
+        details: ""
+
         // postId: this.state.postId + 1
       });
     }); // retrieve unique postId here by calling Object.keys()
