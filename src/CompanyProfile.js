@@ -101,7 +101,6 @@ class CompanyProfile extends React.Component {
     const contractsRef = firebaseApp.database().ref(`contracts/`);
     contractsRef.on("value", snap => {
       let contracts = snap.val();
-      console.log(contracts)
       let company_contracts = [];
       for (let contract in contracts) {
         if (this.state.currentCompany.uid === contracts[contract].company_id){

@@ -101,7 +101,7 @@ class StudentProfile extends React.Component {
 
         let currentUser = "";
         for (let user in value) {
-          console.log(value[user].uid);
+          //console.log(value[user].uid);
           if (value[user].uid === uid) {
             currentUser = value[user];
           }
