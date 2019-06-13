@@ -14,6 +14,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
+import moment from "moment";
 // import moment = require("moment");
 import { Redirect } from "react-router-dom";
 
@@ -44,18 +45,6 @@ export default class ForumPage extends React.Component {
 
     this.createInDatabase = this.createInDatabase.bind(this);
   }
-
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to="/" />;
-    }
-  };
-
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-    });
-  };
 
   createPost = event => {
     this.createInDatabase().then(() => {
@@ -88,6 +77,26 @@ export default class ForumPage extends React.Component {
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
+    });
+  };
+
+  // to render existing posts/comments
+  mapOldPosts = () => {
+    let oldPosts = this.state.oldPosts;
+    console.log(oldPosts);
+    return oldPosts.map(item => {
+      return (
+        <div
+          style={{
+            borderStyle: "solid"
+          }}
+        >
+          <Grid item xs={6}>
+            {item.post}
+            {item.comments}
+          </Grid>
+        </div>
+      );
     });
   };
 
@@ -126,37 +135,40 @@ export default class ForumPage extends React.Component {
       this.updatePosts(posts);
 
       // to render old posts/comments
-      // let newPostsState = [];
-      // let newCommentsState = [];
-      // for(let post in posts){
-      //   console.log(posts[post].title)
-      //   console.log(post);
-      //   newPostsState.unshift(
-      //       <ForumPost
-      //         title={posts[post].title}
-      //         details={posts[post].details}
-      //         currentUser={posts[post].author}
-      //         postId={post}
-      //     />
-      //   )
-      //   for(let comment in posts[post].comments){
-      //     const commentOld = {
-      //       author: posts[post].comments[comment].author,
-      //       avatar: posts[post].comments[comment].avatar,
-      //       content: posts[post].comments[comment].details,
-      //       dateTime: moment().fromNow(),
-      //       postId: posts[post].comments[comment].postId
-      //     }
-      //     newCommentsState.unshift(commentOld);
-      //     <ForumComment
-      //       newCommentsState={newCommentsState}
-      //     />
-      //   }
-      // }
+      let oldPostsState = [];
+      for (let post in posts) {
+        // console.log(posts[post].title)
+        // console.log(post);
+        let oldComments = [];
+        for (let comment in posts[post].comments) {
+          const oldComment = {
+            author: posts[post].comments[comment].author,
+            avatar: posts[post].comments[comment].avatar,
+            content: posts[post].comments[comment].details,
+            dateTime: moment().fromNow(),
+            postId: posts[post].comments[comment].postId
+          };
+          oldComments.unshift(oldComment);
+        }
+        oldPostsState.unshift({
+          post: (
+            <ForumPost
+              title={posts[post].title}
+              details={posts[post].details}
+              currentUser={posts[post].author}
+              postId={post}
+            />
+          ),
+          comments: <ForumComment postId={post} oldComments={oldComments} />
+        });
+      }
+      this.setState({
+        oldPosts: oldPostsState
+      });
     });
   }
   updatePosts = value => {
-    console.log(value);
+    // console.log(value);
     return new Promise(resolve => {
       const { uid } = firebaseApp.auth().currentUser;
       let arr = Object.keys(value).map(k => value[k]);
@@ -229,7 +241,17 @@ export default class ForumPage extends React.Component {
       postId: postId
     });
   }
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
+  };
 
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    });
+  };
   render() {
     //   const classes = useStyles();
     return (
@@ -301,6 +323,7 @@ export default class ForumPage extends React.Component {
           {/* <Grid 
         alignContent={"space between"}
         container spacing={3}> */}
+          {this.state.oldPosts.length > 0 && this.mapOldPosts()}
           {this.state.posts.length > 0 && this.mapPosts()}
           {/* </Grid> */}
         </div>

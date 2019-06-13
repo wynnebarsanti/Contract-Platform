@@ -1,5 +1,5 @@
-import { Comment, Avatar, Form, Button, List, Input } from 'antd';
-import moment from 'moment';
+import { Comment, Avatar, Form, Button, List, Input } from "antd";
+import moment from "moment";
 import React from "react";
 import firebaseApp from "./firebaseConfig";
 
@@ -8,7 +8,7 @@ const { TextArea } = Input;
 const CommentList = ({ comments }) => (
   <List
     dataSource={comments}
-    header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
+    header={`${comments.length} ${comments.length > 1 ? "replies" : "reply"}`}
     itemLayout="horizontal"
     renderItem={props => <Comment {...props} />}
   />
@@ -20,7 +20,12 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
       <TextArea rows={4} onChange={onChange} value={value} />
     </Form.Item>
     <Form.Item>
-      <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
+      <Button
+        htmlType="submit"
+        loading={submitting}
+        onClick={onSubmit}
+        type="primary"
+      >
         Add Comment
       </Button>
     </Form.Item>
@@ -29,9 +34,9 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 
 export default class ForumComment extends React.Component {
   state = {
-    comments: [],
+    comments: this.props.oldComments || [],
     submitting: false,
-    value: '',
+    value: "",
     postId: this.props.postId
   };
 
@@ -41,44 +46,43 @@ export default class ForumComment extends React.Component {
     }
 
     this.setState({
-      submitting: true,
+      submitting: true
     });
 
-    
     const commentsRef = firebaseApp
-    .database()
-    .ref("posts/" + this.props.postId + "/comments");
+      .database()
+      .ref("posts/" + this.props.postId + "/comments");
     let currentTime = new Date().toLocaleString();
     const comment = {
-       author: this.props.currentUser.displayName,
-       avatar: this.props.currentUser.photoURL,
-       details: this.state.value,
-       timestamp: currentTime,
-       postId: this.props.postId
+      author: firebaseApp.auth().currentUser.displayName,
+      avatar: firebaseApp.auth().currentUser.photoURL,
+      details: this.state.value,
+      timestamp: currentTime,
+      postId: this.props.postId
     };
     commentsRef.push(comment);
 
     setTimeout(() => {
       this.setState({
         submitting: false,
-        value: '',
+        value: "",
         comments: [
           {
-            author: this.props.currentUser.displayName,
-            avatar: this.props.currentUser.photoURL,
+            author: firebaseApp.auth().currentUser.displayName,
+            avatar: firebaseApp.auth().currentUser.photoURL,
             content: <p>{this.state.value}</p>,
             datetime: moment().fromNow(),
             postId: this.props.postId
           },
-          ...this.state.comments,
-        ],
+          ...this.state.comments
+        ]
       });
     }, 1000);
   };
 
   handleChange = e => {
     this.setState({
-      value: e.target.value,
+      value: e.target.value
     });
   };
 
@@ -89,11 +93,11 @@ export default class ForumComment extends React.Component {
       <div>
         {comments.length > 0 && <CommentList comments={comments} />}
         <Comment
-          style={{width:"550px"}}
+          style={{ width: "550px" }}
           avatar={
             <Avatar
-              src={this.props.currentUser.photoURL}
-              alt={this.props.currentUser.displayName}
+              src={firebaseApp.auth().currentUser.photoURL}
+              alt={firebaseApp.auth().currentUser.displayName}
             />
           }
           content={
@@ -110,4 +114,3 @@ export default class ForumComment extends React.Component {
     );
   }
 }
-
