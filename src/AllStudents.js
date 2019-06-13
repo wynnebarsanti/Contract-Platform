@@ -15,7 +15,6 @@ import firebaseApp from "./firebaseConfig.js";
 import { Redirect } from "react-router-dom";
 import githubLogo from "./githubLogo.png";
 import linkedinLogo from "./linkedinLogo.png";
-
 const useStyles = theme => ({
   icon: {
     marginRight: theme.spacing(2)
@@ -114,9 +113,10 @@ class AllStudents extends React.Component {
             </Toolbar>
           </AppBar>
           <main>
-            {/* Hero unit */}
-            <div className={classes.heroContent}>
+             {/* Hero unit */}
+              <div className={classes.heroContent}>
               <Container maxWidth="sm">
+           <br/>
                 <Typography
                   component="h1"
                   variant="h2"
@@ -124,7 +124,7 @@ class AllStudents extends React.Component {
                   color="textPrimary"
                   gutterBottom
                 >
-                  Students
+                  All Students
                 </Typography>
                 <Typography
                   variant="h5"
@@ -134,11 +134,12 @@ class AllStudents extends React.Component {
                 >
                   A list of all the students available to work for companies!
                 </Typography>
-                {/* <div className={classes.heroButtons}>
+                                {/* <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center" />
                 </div> */}
               </Container>
             </div>
+
             <Container className={classes.cardGrid} maxWidth="md">
               {/* End hero unit */}
 
@@ -171,6 +172,18 @@ class AllStudents extends React.Component {
                               display: "flex-end"
                             }}
                           >
+                            Github: {githubs[index]}
+                          </CardContent>
+
+                          <CardContent
+                            style={{
+                              fontFamily: "Helvetica Neue",
+
+                              display: "flex"
+                            }}
+                          >
+                            LinkedIn: {linkedIns[card]}
+
                             <div marginRight="50px">
                               <a target="_blank" href={githubs[index]}>
                                 <img
