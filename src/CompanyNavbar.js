@@ -46,8 +46,8 @@ class CompanyNavbar extends React.Component {
           var tasksRef = firebaseApp.database().ref("students/" + key);
           tasksRef.on("value", snapshot => {
             if (snapshot.val() != null) {
-              console.log(Object.values(snapshot.val()));
-              console.log(Object.values(snapshot.val())[3]);
+              //console.log(Object.values(snapshot.val()));
+              //console.log(Object.values(snapshot.val())[3]);
               emails.push(Object.values(snapshot.val())[0]);
               githubs.push(Object.values(snapshot.val())[1]);
               linkedIns.push(Object.values(snapshot.val())[2]);
@@ -116,14 +116,14 @@ class CompanyNavbar extends React.Component {
           <Menu.Item>
             <NavLink
               style={{ color: "white" }}
-              to="/users/company/contracts"
+              to="/users/company/newcontract"
               activeStyle={{
                 color: "white",
                 fontWeight: "bold"
               }}
             >
               <Icon type="container" />
-              Contracts
+              New Contract
             </NavLink>
           </Menu.Item>
           <Menu.Item>
@@ -144,7 +144,7 @@ class CompanyNavbar extends React.Component {
               }}
             >
               <Icon type="idcard" />
-              Students
+              View Students
             </NavLink>
           </Menu.Item>
           <Menu.Item style={{ color: "white" }}>
