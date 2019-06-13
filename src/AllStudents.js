@@ -183,8 +183,9 @@ class AllStudents extends React.Component {
                             }}
                           >
                             LinkedIn: {linkedIns[card]}
+
                             <div marginRight="50px">
-                              <a href={githubs[index]}>
+                              <a target="_blank" href={githubs[index]}>
                                 <img
                                   alt="logo"
                                   src={githubLogo}
@@ -194,7 +195,7 @@ class AllStudents extends React.Component {
                                   marginRight="50px"
                                 />
                               </a>
-                              <a href={linkedIns[index]}>
+                              <a target="_blank" href={linkedIns[index]}>
                                 <img
                                   alt="logo"
                                   src={linkedinLogo}
