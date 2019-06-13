@@ -99,26 +99,49 @@ class StudentContract extends React.Component {
     return new Promise(resolve => {
       let all_contracts = [];
 
-      for (let contract in contracts) {
-        all_contracts.push(contracts[contract]);
+      for (let contract in contracts){
+        let new_contract = contracts[contract];
+        new_contract["firebaseKey"] = contract;
+        all_contracts.push(new_contract);
       }
       this.setState(
-        {
-          all_contracts: all_contracts
-        },
-        () => {
-          resolve();
-        }
-      );
-    });
-  };
+          {
+            all_contracts: all_contracts
+          },
+          () => {
+            resolve();
+          }
+        );
+      }
+    );
+  }
+
+  
+  addInterest = (contractFirebaseKey) => {
+    let currentStudentUID = firebaseApp.auth().currentUser.uid; // google auth id
+    let all_interested = [];
+    all_interested.push(currentStudentUID)
+    const interestedStudentsRef = firebaseApp.database().ref(`contracts/${contractFirebaseKey}/interested_students`);
+    interestedStudentsRef.on("value", snap => {
+      let studentIDs = snap.val();
+      if (studentIDs){
+        Object.keys(studentIDs).map(
+          (key) => {
+            all_interested.push(studentIDs[key])
+          }
+        )
+      }
+    })
+    interestedStudentsRef.set(all_interested);
+
+  }
+
 
   render() {
     const { users } = this.state;
     const { uid } = this.state.uid;
     const { currentUser } = this.state;
     const { classes } = this.props;
-
     return (
       <div>
         {firebaseApp.auth().currentUser ? "" : this.setRedirect()}
@@ -163,7 +186,7 @@ class StudentContract extends React.Component {
                         <Typography>{card.details}</Typography>
                       </CardContent>
                       <CardActions>
-                        <Button size="small" color="primary">
+                        <Button size="small" color="primary" onClick={()=>this.addInterest(card.firebaseKey)}>
                           I'm Interested!
                         </Button>
                         {/* <Button size="small" color="primary">
