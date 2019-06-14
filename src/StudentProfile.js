@@ -86,65 +86,68 @@ class StudentProfile extends React.Component {
   }
 
   componentDidMount() {
-    const currentUser = firebaseApp.auth().currentUser.uid;
-    const usersRef = firebaseApp.database().ref(`students`);
-    usersRef.on("value", snap => {
-      let update = snap.val() || [];
-      this.updateSnap(update);
-    });
-    let all_contracts = []; // get a list of all contracts!
-    const contractsRef = firebaseApp.database().ref(`contracts`);
-    contractsRef.on("value", snap => {
-      let contracts = snap.val() || [];
-      for (let contract in contracts) {
-        let students = contracts[contract].interested_students;
-        if (students === undefined) {
-          console.log("no interested students");
-        } else {
-          // only add to all_contracts if the student is listed as interested
-          for (let i = 0; i < students.length; i++) {
-            if (students[i] === currentUser) {
-              let new_contract = contracts[contract];
-              new_contract['firebaseKey'] = contract;
-              all_contracts.push(contracts[contract]);
+    if (firebaseApp.auth().currentUser) {
+      const currentUser = firebaseApp.auth().currentUser.uid;
+      const usersRef = firebaseApp.database().ref(`students`);
+      usersRef.on("value", snap => {
+        let update = snap.val() || [];
+        this.updateSnap(update);
+      });
+      let all_contracts = []; // get a list of all contracts!
+      const contractsRef = firebaseApp.database().ref(`contracts`);
+      contractsRef.on("value", snap => {
+        let contracts = snap.val() || [];
+        for (let contract in contracts) {
+          let students = contracts[contract].interested_students;
+          if (students === undefined) {
+            console.log("no interested students");
+          } else {
+            // only add to all_contracts if the student is listed as interested
+            for (let i = 0; i < students.length; i++) {
+              if (students[i] === currentUser) {
+                let new_contract = contracts[contract];
+                new_contract["firebaseKey"] = contract;
+                all_contracts.push(contracts[contract]);
+              }
             }
           }
         }
-      }
-      // separate into past and current
-      let current_contracts = [];
-      let past_contracts = [];
-      console.log(all_contracts)
-      for (let contract in all_contracts) {
-        if (all_contracts[contract].date_completed){ // if date_completed is not null...
-          past_contracts.push(all_contracts[contract]);
+        // separate into past and current
+        let current_contracts = [];
+        let past_contracts = [];
+        console.log(all_contracts);
+        for (let contract in all_contracts) {
+          if (all_contracts[contract].date_completed) {
+            // if date_completed is not null...
+            past_contracts.push(all_contracts[contract]);
+          } else {
+            current_contracts.push(all_contracts[contract]);
+          }
         }
-        else {
-          current_contracts.push(all_contracts[contract]);
-
-        }
-      }
-      console.log(current_contracts)
-      this.setState({
-        past_contracts: past_contracts,
-        current_contracts: current_contracts
+        console.log(current_contracts);
+        this.setState({
+          past_contracts: past_contracts,
+          current_contracts: current_contracts
+        });
       });
-
-    });
+    }
   }
 
-  contractCompleted = (contractFirebaseKey) => {
+  contractCompleted = contractFirebaseKey => {
     // set the date_completed of that contract
-    const dateCompletedRef = firebaseApp.database().ref(`contracts/${contractFirebaseKey}/date_completed`);
+    const dateCompletedRef = firebaseApp
+      .database()
+      .ref(`contracts/${contractFirebaseKey}/date_completed`);
     let date_completed = new Date().toLocaleString();
     dateCompletedRef.set(date_completed);
 
     // only current user is interested (delete other people in array);
     const currentStudent = [firebaseApp.auth().currentUser.uid];
-    const interestedStudentsRef = firebaseApp.database().ref(`contracts/${contractFirebaseKey}/interested_students`);
-    interestedStudentsRef.set(currentStudent).then(this.componentDidMount()) // 
-  }
-
+    const interestedStudentsRef = firebaseApp
+      .database()
+      .ref(`contracts/${contractFirebaseKey}/interested_students`);
+    interestedStudentsRef.set(currentStudent).then(this.componentDidMount()); //
+  };
 
   renderRedirect = () => {
     if (this.state.redirect) {
@@ -335,7 +338,9 @@ class StudentProfile extends React.Component {
                                 <Button
                                   size="small"
                                   color="primary"
-                                  onClick={()=>this.contractCompleted(card.firebaseKey)}
+                                  onClick={() =>
+                                    this.contractCompleted(card.firebaseKey)
+                                  }
                                 >
                                   Completed
                                 </Button>
