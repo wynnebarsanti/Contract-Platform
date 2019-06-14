@@ -219,6 +219,7 @@ class CompanyProfile extends React.Component {
                     color="textPrimary"
                     x
                     gutterBottom
+                    style={{marginBottom: "40px"}}
                   >
                     {this.state.currentCompany ? (
                       this.state.currentCompany.name.toUpperCase()
@@ -239,13 +240,18 @@ class CompanyProfile extends React.Component {
                         ? firebaseApp.auth().currentUser.photoURL
                         : this.setRedirect()
                     }
+                    style={{marginBottom: "40px"}}
                   />
                   <div style={{ justifyContent: "space-between" }}>
                     <a
                       target="_blank"
                       href={currentCompany ? currentCompany.website : ""}
                     >
-                      <Button variant="contained" color="primary">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        marginTop="400px"
+                      >
                         Website
                       </Button>
                     </a>
@@ -285,6 +291,7 @@ class CompanyProfile extends React.Component {
                                   {card.title}
                                 </Typography>
                                 <Typography>{card.details}</Typography>
+                                <Typography>${card.payment}</Typography>
                               </CardContent>
                               <CardActions
                                 style={{
@@ -328,12 +335,13 @@ class CompanyProfile extends React.Component {
                               <CardContent className={classes.cardContent}>
                                 <Typography
                                   gutterBottom
-                                  variant="h5"
+                                  variant="h"
                                   component="h2"
                                 >
                                   {card.title}
                                 </Typography>
                                 <Typography>{card.details}</Typography>
+                                <Typography>${card.payment}</Typography>
                               </CardContent>
                               <CardActions
                                 style={{
