@@ -72,7 +72,9 @@ class CompanyProfile extends React.Component {
     this.state = {
       currentCompany: null,
       uid: "",
-      company_contracts: []
+      company_contracts: [],
+      current_contracts: [],
+      past_contracts: []
     };
   }
 
@@ -109,9 +111,22 @@ class CompanyProfile extends React.Component {
           company_contracts.push(contracts[contract]);
         }
       }
+      // sort current and past
+      let current_contracts = [];
+      let past_contracts = [];
+      for (let contract in company_contracts){
+        if (company_contracts[contract].date_completed){
+          past_contracts.push(company_contracts[contract])
+        }
+        else {
+          current_contracts.push(company_contracts[contract])
+        }
+      }
       this.setState({
         all_contracts: contracts,
-        company_contracts: company_contracts
+        company_contracts: company_contracts,
+        current_contracts: current_contracts,
+        past_contracts: past_contracts
       });
     });
   };
@@ -178,8 +193,7 @@ class CompanyProfile extends React.Component {
   };
 
   render() {
-    // const { users } = this.state;
-    // const { uid } = this.state.uid;
+
     const { currentCompany } = this.state;
     const { classes } = this.props;
     return (
@@ -272,7 +286,7 @@ class CompanyProfile extends React.Component {
                         Current Contracts
                       </Typography>
                       <div align="center" display="flex-start">
-                        {this.state.company_contracts.map((card, index) => (
+                        {this.state.current_contracts.map((card, index) => (
                           <Grid
                             item
                             key={index}
@@ -291,7 +305,7 @@ class CompanyProfile extends React.Component {
                                   {card.title}
                                 </Typography>
                                 <Typography>{card.details}</Typography>
-                                <Typography>${card.payment}</Typography>
+                                <Typography>Payment Offered: ${card.payment}</Typography>
                               </CardContent>
                               <CardActions
                                 style={{
@@ -322,7 +336,7 @@ class CompanyProfile extends React.Component {
                         Past Contracts
                       </Typography>
                       <div align="center" display="flex-start">
-                        {this.state.company_contracts.map(card => (
+                        {this.state.past_contracts.map(card => (
                           <Grid
                             item
                             key={card}
@@ -341,72 +355,15 @@ class CompanyProfile extends React.Component {
                                   {card.title}
                                 </Typography>
                                 <Typography>{card.details}</Typography>
-                                <Typography>${card.payment}</Typography>
+                                <Typography> Amout Paid: ${card.payment}</Typography>
                               </CardContent>
-                              <CardActions
-                                style={{
-                                  display: "center",
-                                  justifyItems: "center",
-                                  marginTop: "20px"
-                                }}
-                              >
-                                <Button size="small" color="primary">
-                                  View
-                                </Button>
-                              </CardActions>
                             </Card>
                           </Grid>
                         ))}
                       </div>
                     </Grid>
                   </Grid>
-                  {/* <Typography
-                    component="h1"
-                    variant="h2"
-                    align="center"
-                    marginRight="0px"
-                    color="textPrimary"
-                    x
-                    gutterBottom
-                  >
-                    Contracts
-                  </Typography>
-                  <div align="center" display="flex-start">
-                    {cards.map(card => (
-                      <Grid
-                        item
-                        key={card}
-                        xs={12}
-                        sm={6}
-                        md={8}
-                        align="center"
-                      >
-                        <Card className={classes.card}>
-                          <CardContent className={classes.cardContent}>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="h2"
-                            >
-                              Contract Name
-                            </Typography>
-                            <Typography>Contract Details</Typography>
-                          </CardContent>
-                          <CardActions
-                            style={{
-                              display: "center",
-                              justifyItems: "center",
-                              marginTop: "20px"
-                            }}
-                          >
-                            <Button size="small" color="primary">
-                              View
-                            </Button>
-                          </CardActions>
-                        </Card>
-                      </Grid>
-                    ))}
-                  </div> */}
+                  
                 </Grid>
               </Grid>
               <Container maxWidth="sm">
