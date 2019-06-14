@@ -80,7 +80,7 @@ class StudentProfile extends React.Component {
       currentUser: null,
       uid: "",
       current_contracts: [],
-      past_contracts:[],
+      past_contracts: [],
       visible: false
     };
   }
@@ -92,7 +92,7 @@ class StudentProfile extends React.Component {
       let update = snap.val() || [];
       this.updateSnap(update);
     });
-    let all_contracts = []; // get a list of all contracts! 
+    let all_contracts = []; // get a list of all contracts!
     const contractsRef = firebaseApp.database().ref(`contracts`);
     contractsRef.on("value", snap => {
       let contracts = snap.val() || [];
@@ -113,26 +113,25 @@ class StudentProfile extends React.Component {
       let current_contracts = [];
       let past_contracts = [];
       for (let contract in all_contracts) {
-        if (contract.date_completed){ // if date_completed is not null...
+        if (contract.date_completed) {
+          // if date_completed is not null...
           past_contracts.push(contract);
-        }
-        else {
+        } else {
           current_contracts.push(contract);
         }
       }
       this.setState({
         past_contracts: past_contracts,
         current_contracts: current_contracts
-
       });
-    }
+    });
   }
 
   contractCompleted = () => {
     // set the date_completed of that contract
     // only current user is interested (delete other people in array)
-    // call componentDidMount again to update 
-  }
+    // call componentDidMount again to update
+  };
 
   renderRedirect = () => {
     if (this.state.redirect) {
@@ -192,7 +191,6 @@ class StudentProfile extends React.Component {
       }
     });
   };
-
 
   render() {
     console.log(this.state.titles);
