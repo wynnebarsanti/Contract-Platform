@@ -114,12 +114,11 @@ class CompanyProfile extends React.Component {
       // sort current and past
       let current_contracts = [];
       let past_contracts = [];
-      for (let contract in company_contracts){
-        if (company_contracts[contract].date_completed){
-          past_contracts.push(company_contracts[contract])
-        }
-        else {
-          current_contracts.push(company_contracts[contract])
+      for (let contract in company_contracts) {
+        if (company_contracts[contract].date_completed) {
+          past_contracts.push(company_contracts[contract]);
+        } else {
+          current_contracts.push(company_contracts[contract]);
         }
       }
       this.setState({
@@ -176,24 +175,26 @@ class CompanyProfile extends React.Component {
   handleClick = (event, card) => {
     event.preventDefault();
     const { all_contracts } = this.state;
-    console.log(all_contracts);
     let contract_key = "";
-    Object.keys(all_contracts).map(key => {
-      if ((all_contracts[key].details = card.details)) {
-        contract_key = key;
-      }
-    });
+    if (all_contracts) {
+      Object.keys(all_contracts).map(key => {
+        if ((all_contracts[key].date_created = card.date_created)) {
+          contract_key = key;
+        }
+      });
 
-    console.log(`${contract_key}`);
-    const contractRef = firebaseApp.database().ref(`contracts/${contract_key}`);
+      console.log(`${contract_key}`);
+      const contractRef = firebaseApp
+        .database()
+        .ref(`contracts/${contract_key}`);
 
-    contractRef.remove().then(() => {
-      console.log("remove succeeded");
-    });
+      contractRef.remove().then(() => {
+        console.log("remove succeeded");
+      });
+    }
   };
 
   render() {
-
     const { currentCompany } = this.state;
     const { classes } = this.props;
     return (
@@ -233,7 +234,7 @@ class CompanyProfile extends React.Component {
                     color="textPrimary"
                     x
                     gutterBottom
-                    style={{marginBottom: "40px"}}
+                    style={{ marginBottom: "40px" }}
                   >
                     {this.state.currentCompany ? (
                       this.state.currentCompany.name.toUpperCase()
@@ -254,7 +255,7 @@ class CompanyProfile extends React.Component {
                         ? firebaseApp.auth().currentUser.photoURL
                         : this.setRedirect()
                     }
-                    style={{marginBottom: "40px"}}
+                    style={{ marginBottom: "40px" }}
                   />
                   <div style={{ justifyContent: "space-between" }}>
                     <a
@@ -305,7 +306,9 @@ class CompanyProfile extends React.Component {
                                   {card.title}
                                 </Typography>
                                 <Typography>{card.details}</Typography>
-                                <Typography>Payment Offered: ${card.payment}</Typography>
+                                <Typography>
+                                  Payment Offered: ${card.payment}
+                                </Typography>
                               </CardContent>
                               <CardActions
                                 style={{
@@ -314,8 +317,14 @@ class CompanyProfile extends React.Component {
                                   marginTop: "20px"
                                 }}
                               >
-                                <Button size="small" color="primary">
-                                  View
+                                <Button
+                                  size="small"
+                                  color="primary"
+                                  onClick={event =>
+                                    this.handleClick(event, card)
+                                  }
+                                >
+                                  Delete
                                 </Button>
                               </CardActions>
                             </Card>
@@ -355,7 +364,10 @@ class CompanyProfile extends React.Component {
                                   {card.title}
                                 </Typography>
                                 <Typography>{card.details}</Typography>
-                                <Typography> Amout Paid: ${card.payment}</Typography>
+                                <Typography>
+                                  {" "}
+                                  Amout Paid: ${card.payment}
+                                </Typography>
                               </CardContent>
                             </Card>
                           </Grid>
@@ -363,7 +375,6 @@ class CompanyProfile extends React.Component {
                       </div>
                     </Grid>
                   </Grid>
-                  
                 </Grid>
               </Grid>
               <Container maxWidth="sm">
