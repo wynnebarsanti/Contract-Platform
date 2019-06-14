@@ -349,9 +349,7 @@ class StudentProfile extends React.Component {
                                   </Button>
                                 </CardActions>
                                 </Typography>
-                              </CardContent>
-                                  onClick={() =>
-                              
+                              </CardContent>                              
                             </Card>
                           </Grid>
                         ))}
