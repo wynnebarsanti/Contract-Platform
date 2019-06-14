@@ -113,10 +113,10 @@ class AllStudents extends React.Component {
             </Toolbar>
           </AppBar>
           <main>
-             {/* Hero unit */}
-              <div className={classes.heroContent}>
+            {/* Hero unit */}
+            <div className={classes.heroContent}>
               <Container maxWidth="sm">
-           <br/>
+                <br />
                 <Typography
                   component="h1"
                   variant="h2"
@@ -134,7 +134,7 @@ class AllStudents extends React.Component {
                 >
                   A list of all the students available to work for companies!
                 </Typography>
-                                {/* <div className={classes.heroButtons}>
+                {/* <div className={classes.heroButtons}>
                   <Grid container spacing={2} justify="center" />
                 </div> */}
               </Container>
@@ -182,8 +182,7 @@ class AllStudents extends React.Component {
                               display: "flex"
                             }}
                           >
-                            LinkedIn: {linkedIns[card]}
-
+                            " " {linkedIns[card]}
                             <div marginRight="50px">
                               <a target="_blank" href={githubs[index]}>
                                 <img

@@ -85,33 +85,35 @@ class StudentProfile extends React.Component {
   }
 
   componentDidMount() {
-    const currentUser = firebaseApp.auth().currentUser.uid;
-    const usersRef = firebaseApp.database().ref(`students`);
-    usersRef.on("value", snap => {
-      let update = snap.val() || [];
-      this.updateSnap(update);
-    });
-    let all_contracts = [];
-    const contractsRef = firebaseApp.database().ref(`contracts`);
-    contractsRef.on("value", snap => {
-      let contracts = snap.val() || [];
-      for (let contract in contracts) {
-        let students = contracts[contract].interested_students;
-        if (students === undefined) {
-          console.log("no interested students");
-        } else {
-          console.log(students);
-          for (let i = 0; i < students.length; i++) {
-            if (students[i] === currentUser) {
-              all_contracts.push(contracts[contract]);
+    if (firebaseApp.auth().currentUser) {
+      const currentUser = firebaseApp.auth().currentUser.uid;
+      const usersRef = firebaseApp.database().ref(`students`);
+      usersRef.on("value", snap => {
+        let update = snap.val() || [];
+        this.updateSnap(update);
+      });
+      let all_contracts = [];
+      const contractsRef = firebaseApp.database().ref(`contracts`);
+      contractsRef.on("value", snap => {
+        let contracts = snap.val() || [];
+        for (let contract in contracts) {
+          let students = contracts[contract].interested_students;
+          if (students === undefined) {
+            console.log("no interested students");
+          } else {
+            console.log(students);
+            for (let i = 0; i < students.length; i++) {
+              if (students[i] === currentUser) {
+                all_contracts.push(contracts[contract]);
+              }
             }
           }
         }
-      }
-      this.setState({
-        all_contracts: all_contracts
+        this.setState({
+          all_contracts: all_contracts
+        });
       });
-    });
+    }
   }
 
   renderRedirect = () => {
@@ -210,6 +212,7 @@ class StudentProfile extends React.Component {
     return (
       <div marginRight="0px">
         {}
+        {firebaseApp.auth().currentUser ? "" : this.setRedirect()}
         {this.renderRedirect()}
         <React.Fragment>
           <CssBaseline />
