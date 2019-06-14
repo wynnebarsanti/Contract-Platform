@@ -144,88 +144,90 @@ class AllStudents extends React.Component {
               {/* End hero unit */}
 
               <Grid container spacing={4}>
-                {names.map((card, index) => (
-                  <Grid item key={index} xs={12} sm={6} md={4}>
-                    <Card>
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue",
-                          fontWeight: "bold",
-                          fontSize: "30px"
-                        }}
-                      >
-                        {names[index]}
-                      </CardContent>
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue"
-                        }}
-                      >
-                        Email: {emails[index]}
-                      </CardContent>
-
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue",
-
-                          display: "flex-end"
-                        }}
-                      />
-
-                      <CardContent
-                        style={{
-                          fontFamily: "Helvetica Neue",
-
-                          display: "flex"
-                        }}
-                      >
-                        {linkedIns[card]}
-                        <div
-                          marginRight="50px"
-                          style={{ marginLeft: "60px", marginTop: "0px" }}
-                        >
-                          <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={githubs[index]}
+                {names
+                  ? names.map((card, index) => (
+                      <Grid item key={index} xs={12} sm={6} md={4}>
+                        <Card>
+                          <CardContent
+                            style={{
+                              fontFamily: "Helvetica Neue",
+                              fontWeight: "bold",
+                              fontSize: "30px"
+                            }}
                           >
-                            <img
-                              alt="logo"
-                              src={githubLogo}
-                              justifyContent="center"
-                              height="48px"
-                              width="48px"
+                            {names[index]}
+                          </CardContent>
+                          <CardContent
+                            style={{
+                              fontFamily: "Helvetica Neue"
+                            }}
+                          >
+                            Email: {emails[index]}
+                          </CardContent>
+
+                          <CardContent
+                            style={{
+                              fontFamily: "Helvetica Neue",
+
+                              display: "flex-end"
+                            }}
+                          />
+
+                          <CardContent
+                            style={{
+                              fontFamily: "Helvetica Neue",
+
+                              display: "flex"
+                            }}
+                          >
+                            {linkedIns[card]}
+                            <div
                               marginRight="50px"
-                            />
-                          </a>
-                          <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={linkedIns[index]}
-                            style={{ marginLeft: "20px" }}
-                          >
-                            <img
-                              alt="logo"
-                              src={linkedinLogo}
-                              justifyContent="center"
-                              height="48px"
-                              width="55px"
-                            />
-                          </a>
-                        </div>
-                      </CardContent>
+                              style={{ marginLeft: "60px", marginTop: "0px" }}
+                            >
+                              <a
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href={githubs[index]}
+                              >
+                                <img
+                                  alt="logo"
+                                  src={githubLogo}
+                                  justifyContent="center"
+                                  height="48px"
+                                  width="48px"
+                                  marginRight="50px"
+                                />
+                              </a>
+                              <a
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href={linkedIns[index]}
+                                style={{ marginLeft: "20px" }}
+                              >
+                                <img
+                                  alt="logo"
+                                  src={linkedinLogo}
+                                  justifyContent="center"
+                                  height="48px"
+                                  width="55px"
+                                />
+                              </a>
+                            </div>
+                          </CardContent>
 
-                      <CardContent style={{ fontFamily: "Helvetica Neue" }}>
-                        <img
-                          alt="photos"
-                          src={photourl[index]}
-                          style={{ maxHeight: "70%", maxWidth: "70%" }}
-                        />
-                      </CardContent>
-                      <CardActions />
-                    </Card>
-                  </Grid>
-                ))}
+                          <CardContent style={{ fontFamily: "Helvetica Neue" }}>
+                            <img
+                              alt="photos"
+                              src={photourl[index]}
+                              style={{ maxHeight: "70%", maxWidth: "70%" }}
+                            />
+                          </CardContent>
+                          <CardActions />
+                        </Card>
+                      </Grid>
+                    ))
+                  : ""}
               </Grid>
             </Container>
           </main>
