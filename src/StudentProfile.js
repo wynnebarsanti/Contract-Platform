@@ -91,27 +91,26 @@ class StudentProfile extends React.Component {
       let update = snap.val() || [];
       this.updateSnap(update);
     });
-    let all_contracts=[];
+    let all_contracts = [];
     const contractsRef = firebaseApp.database().ref(`contracts`);
     contractsRef.on("value", snap => {
       let contracts = snap.val() || [];
-      for (let contract in contracts){
+      for (let contract in contracts) {
         let students = contracts[contract].interested_students;
         if (students === undefined) {
-          console.log('no interested students')
-        }
-        else{
-          console.log(students)
-          for (let i = 0; i < students.length; i ++){
-            if (students[i] === currentUser){
-              all_contracts.push(contracts[contract])
+          console.log("no interested students");
+        } else {
+          console.log(students);
+          for (let i = 0; i < students.length; i++) {
+            if (students[i] === currentUser) {
+              all_contracts.push(contracts[contract]);
             }
           }
         }
       }
       this.setState({
         all_contracts: all_contracts
-      })
+      });
     });
   }
 
@@ -176,17 +175,17 @@ class StudentProfile extends React.Component {
 
   updateContract = contracts => {
     let uid = firebaseApp.auth().currentUser.uid;
-    console.log(uid)
+    console.log(uid);
     return new Promise(resolve => {
       let all_contracts = [];
 
       for (let contract in contracts) {
         let student_array = contracts[contract].interested_students;
-        console.log(student_array)
+        console.log(student_array);
         for (let i = 0; i < student_array.length; i++) {
-          if (student_array[0] === uid){
-            console.log(contracts[contract])
-            all_contracts.push(contracts[contract])
+          if (student_array[0] === uid) {
+            console.log(contracts[contract]);
+            all_contracts.push(contracts[contract]);
           }
         }
       }
@@ -210,6 +209,7 @@ class StudentProfile extends React.Component {
 
     return (
       <div marginRight="0px">
+        {}
         {this.renderRedirect()}
         <React.Fragment>
           <CssBaseline />
@@ -335,17 +335,6 @@ class StudentProfile extends React.Component {
                                 >
                                   View
                                 </Button>
-                                <Modal
-                                  title={card.title}
-                                  visible={this.state.visible}
-                                  onOk={this.handleOk}
-                                  onCancel={this.handleCancel}
-                                >
-                                  {console.log(card)}
-                                  <p>{card.details}</p>
-                                  <p>{card.payment}</p>
-                                  <p>{card.date_created}</p>
-                                </Modal>
                               </CardActions>
                             </Card>
                           </Grid>
@@ -399,16 +388,6 @@ class StudentProfile extends React.Component {
                                 >
                                   View
                                 </Button>
-                                <Modal
-                                  title={card.title}
-                                  visible={this.state.visible}
-                                  onOk={this.handleOk}
-                                  onCancel={this.handleCancel}
-                                >
-                                  <p>{card.description}</p>
-                                  <p>{card.payment}</p>
-                                  <p>{card.date_created}</p>
-                                </Modal>
                               </CardActions>
                             </Card>
                           </Grid>
