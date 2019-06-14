@@ -81,7 +81,7 @@ class StudentProfile extends React.Component {
       currentUser: null,
       uid: "",
       current_contracts: [],
-      past_contracts:[],
+      past_contracts: [],
       visible: false
     };
   }
@@ -93,7 +93,7 @@ class StudentProfile extends React.Component {
       let update = snap.val() || [];
       this.updateSnap(update);
     });
-    let all_contracts = []; // get a list of all contracts! 
+    let all_contracts = []; // get a list of all contracts!
     const contractsRef = firebaseApp.database().ref(`contracts`);
     contractsRef.on("value", snap => {
       let contracts = snap.val() || [];
@@ -118,12 +118,11 @@ class StudentProfile extends React.Component {
       console.log(all_contracts)
       for (let contract in all_contracts) {
         if (all_contracts[contract].date_completed){ // if date_completed is not null...
-          console.log(`completed: ${all_contracts[contract]}`)
           past_contracts.push(all_contracts[contract]);
         }
         else {
-          console.log(`current:${all_contracts[contract]}`)
           current_contracts.push(all_contracts[contract]);
+
         }
       }
       console.log(current_contracts)
@@ -131,12 +130,12 @@ class StudentProfile extends React.Component {
         past_contracts: past_contracts,
         current_contracts: current_contracts
       });
-    })
+
+    });
   }
 
   contractCompleted = (contractFirebaseKey) => {
     // set the date_completed of that contract
-    console.log(`firebase key:${contractFirebaseKey}`)
     const dateCompletedRef = firebaseApp.database().ref(`contracts/${contractFirebaseKey}/date_completed`);
     let date_completed = new Date().toLocaleString();
     dateCompletedRef.set(date_completed);
@@ -146,6 +145,7 @@ class StudentProfile extends React.Component {
     const interestedStudentsRef = firebaseApp.database().ref(`contracts/${contractFirebaseKey}/interested_students`);
     interestedStudentsRef.set(currentStudent).then(this.componentDidMount()) // 
   }
+
 
   renderRedirect = () => {
     if (this.state.redirect) {
@@ -204,7 +204,6 @@ class StudentProfile extends React.Component {
       }
     });
   };
-
 
   render() {
     const { users } = this.state;

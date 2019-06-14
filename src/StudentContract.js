@@ -211,9 +211,7 @@ class StudentContract extends React.Component {
                         <Button size="small" color="primary" onClick={()=>this.addInterest(card.firebaseKey)} style={{marginLeft:"60px"}}>
                           I'm Interested!
                         </Button>
-                        {/* <Button size="small" color="primary">
-                      Edit
-                    </Button> */}
+
                       </CardActions>
                     </Card>
                   </Grid>
