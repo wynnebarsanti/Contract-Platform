@@ -123,8 +123,9 @@ class StudentProfile extends React.Component {
       this.setState({
         past_contracts: past_contracts,
         current_contracts: current_contracts
+
       });
-    });
+    }
   }
 
   contractCompleted = () => {
@@ -203,6 +204,7 @@ class StudentProfile extends React.Component {
     return (
       <div marginRight="0px">
         {}
+        {firebaseApp.auth().currentUser ? "" : this.setRedirect()}
         {this.renderRedirect()}
         <React.Fragment>
           <CssBaseline />
