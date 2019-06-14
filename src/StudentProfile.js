@@ -42,17 +42,16 @@ const useStyles = theme => ({
   },
   heroButtons: {
     marginTop: theme.spacing(4),
-    marginLeft: '60px'
+    marginLeft: "60px"
   },
   cardGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8)
   },
   card: {
-
     padding: "20px",
     marginTop: "50px",
-    marginLeft:"50px",
+    marginLeft: "50px",
     height: "100%",
     display: "flex",
     flexDirection: "column"
@@ -258,6 +257,7 @@ class StudentProfile extends React.Component {
                     color="textPrimary"
                     x
                     gutterBottom
+                    style={{ marginBottom: "50px" }}
                   >
                     {firebaseApp.auth().currentUser
                       ? firebaseApp.auth().currentUser.displayName
@@ -276,6 +276,7 @@ class StudentProfile extends React.Component {
                         ? firebaseApp.auth().currentUser.photoURL
                         : this.setRedirect()
                     }
+                    style={{ marginBottom: "50px" }}
                   />
                   <div style={{ justifyContent: "space-between" }}>
                     <a
@@ -291,7 +292,11 @@ class StudentProfile extends React.Component {
                       target="_blank"
                       href={currentUser ? currentUser.github : ""}
                     >
-                      <Button variant="outlined" color="primary">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginLeft: "15px" }}
+                      >
                         GitHub
                       </Button>
                     </a>
@@ -331,24 +336,26 @@ class StudentProfile extends React.Component {
                                   {card.title}
                                 </Typography>
                                 <Typography>{card.details}</Typography>
-                                </CardContent>                              
-                                Payment: ${card.payment}
-                                  <CardActions
-                                  // style={{
-                                  //   display: "center",
-                                  //   justifyItems: "center",
-                                  //   marginTop: "20px"
-                                  // }}
-                                >
+                              </CardContent>
+                              Payment: ${card.payment}
+                              <CardActions
+                              // style={{
+                              //   display: "center",
+                              //   justifyItems: "center",
+                              //   marginTop: "20px"
+                              // }}
+                              >
                                 <Button
-                                    size="small"
-                                    color="primary"
-                                    onClick={()=>this.contractCompleted(card.firebaseKey) }
-                                    style={{marginLeft:"112px"}}
-                                  >
-                                    Completed
-                                  </Button>
-                                </CardActions>
+                                  size="small"
+                                  color="primary"
+                                  onClick={() =>
+                                    this.contractCompleted(card.firebaseKey)
+                                  }
+                                  style={{ marginLeft: "150px" }}
+                                >
+                                  Completed
+                                </Button>
+                              </CardActions>
                             </Card>
                           </Grid>
                         ))}
