@@ -79,7 +79,8 @@ class StudentProfile extends React.Component {
     this.state = {
       currentUser: null,
       uid: "",
-      all_contracts: [],
+      current_contracts: [],
+      past_contracts:[],
       visible: false
     };
   }
@@ -91,7 +92,7 @@ class StudentProfile extends React.Component {
       let update = snap.val() || [];
       this.updateSnap(update);
     });
-    let all_contracts = [];
+    let all_contracts = []; // get a list of all contracts! 
     const contractsRef = firebaseApp.database().ref(`contracts`);
     contractsRef.on("value", snap => {
       let contracts = snap.val() || [];
@@ -100,7 +101,7 @@ class StudentProfile extends React.Component {
         if (students === undefined) {
           console.log("no interested students");
         } else {
-          console.log(students);
+          // only add to all_contracts if the student is listed as interested
           for (let i = 0; i < students.length; i++) {
             if (students[i] === currentUser) {
               all_contracts.push(contracts[contract]);
@@ -108,10 +109,28 @@ class StudentProfile extends React.Component {
           }
         }
       }
+      // separate into past and current
+      let current_contracts = [];
+      let past_contracts = [];
+      for (let contract in all_contracts) {
+        if (contract.date_completed){ // if date_completed is not null...
+          past_contracts.push(contract);
+        }
+        else {
+          current_contracts.push(contract);
+        }
+      }
       this.setState({
-        all_contracts: all_contracts
+        past_contracts: past_contracts,
+        current_contracts: current_contracts
       });
     });
+  }
+
+  contractCompleted = () => {
+    // set the date_completed of that contract
+    // only current user is interested (delete other people in array)
+    // call componentDidMount again to update 
   }
 
   renderRedirect = () => {
@@ -173,32 +192,6 @@ class StudentProfile extends React.Component {
     });
   };
 
-  updateContract = contracts => {
-    let uid = firebaseApp.auth().currentUser.uid;
-    console.log(uid);
-    return new Promise(resolve => {
-      let all_contracts = [];
-
-      for (let contract in contracts) {
-        let student_array = contracts[contract].interested_students;
-        console.log(student_array);
-        for (let i = 0; i < student_array.length; i++) {
-          if (student_array[0] === uid) {
-            console.log(contracts[contract]);
-            all_contracts.push(contracts[contract]);
-          }
-        }
-      }
-      this.setState(
-        {
-          all_contracts: all_contracts
-        },
-        () => {
-          resolve();
-        }
-      );
-    });
-  };
 
   render() {
     console.log(this.state.titles);
@@ -354,7 +347,7 @@ class StudentProfile extends React.Component {
                         Past Contracts
                       </Typography>
                       <div align="center" display="flex-start">
-                        {this.state.all_contracts.map(card => (
+                        {this.state.past_contracts.map(card => (
                           <Grid
                             item
                             key={card}
@@ -374,21 +367,6 @@ class StudentProfile extends React.Component {
                                 </Typography>
                                 <Typography>{card.details}</Typography>
                               </CardContent>
-                              <CardActions
-                                style={{
-                                  display: "center",
-                                  justifyItems: "center",
-                                  marginTop: "20px"
-                                }}
-                              >
-                                <Button
-                                  size="small"
-                                  color="primary"
-                                  onClick={this.showModal}
-                                >
-                                  View
-                                </Button>
-                              </CardActions>
                             </Card>
                           </Grid>
                         ))}
