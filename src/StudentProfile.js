@@ -104,6 +104,8 @@ class StudentProfile extends React.Component {
           // only add to all_contracts if the student is listed as interested
           for (let i = 0; i < students.length; i++) {
             if (students[i] === currentUser) {
+              let new_contract = contracts[contract];
+              new_contract['firebaseKey'] = contract;
               all_contracts.push(contracts[contract]);
             }
           }
@@ -112,26 +114,37 @@ class StudentProfile extends React.Component {
       // separate into past and current
       let current_contracts = [];
       let past_contracts = [];
+      console.log(all_contracts)
       for (let contract in all_contracts) {
-        if (contract.date_completed) {
-          // if date_completed is not null...
-          past_contracts.push(contract);
-        } else {
-          current_contracts.push(contract);
+        if (all_contracts[contract].date_completed){ // if date_completed is not null...
+          past_contracts.push(all_contracts[contract]);
+        }
+        else {
+          current_contracts.push(all_contracts[contract]);
+
         }
       }
+      console.log(current_contracts)
       this.setState({
         past_contracts: past_contracts,
         current_contracts: current_contracts
       });
+
     });
   }
 
-  contractCompleted = () => {
+  contractCompleted = (contractFirebaseKey) => {
     // set the date_completed of that contract
-    // only current user is interested (delete other people in array)
-    // call componentDidMount again to update
-  };
+    const dateCompletedRef = firebaseApp.database().ref(`contracts/${contractFirebaseKey}/date_completed`);
+    let date_completed = new Date().toLocaleString();
+    dateCompletedRef.set(date_completed);
+
+    // only current user is interested (delete other people in array);
+    const currentStudent = [firebaseApp.auth().currentUser.uid];
+    const interestedStudentsRef = firebaseApp.database().ref(`contracts/${contractFirebaseKey}/interested_students`);
+    interestedStudentsRef.set(currentStudent).then(this.componentDidMount()) // 
+  }
+
 
   renderRedirect = () => {
     if (this.state.redirect) {
@@ -172,7 +185,6 @@ class StudentProfile extends React.Component {
 
         let currentUser = "";
         for (let user in value) {
-          console.log(value[user].uid);
           if (value[user].uid === uid) {
             currentUser = value[user];
           }
@@ -193,7 +205,6 @@ class StudentProfile extends React.Component {
   };
 
   render() {
-    console.log(this.state.titles);
     const { users } = this.state;
     const { uid } = this.state.uid;
     const { currentUser } = this.state;
@@ -294,7 +305,7 @@ class StudentProfile extends React.Component {
                         Current Contracts
                       </Typography>
                       <div align="center" display="flex-start">
-                        {this.state.all_contracts.map((card, index) => (
+                        {this.state.current_contracts.map((card, index) => (
                           <Grid
                             item
                             key={index}
@@ -324,9 +335,9 @@ class StudentProfile extends React.Component {
                                 <Button
                                   size="small"
                                   color="primary"
-                                  onClick={this.showModal}
+                                  onClick={()=>this.contractCompleted(card.firebaseKey)}
                                 >
-                                  View
+                                  Completed
                                 </Button>
                               </CardActions>
                             </Card>
@@ -373,53 +384,6 @@ class StudentProfile extends React.Component {
                       </div>
                     </Grid>
                   </Grid>
-                  {/* <Typography
-                    component="h1"
-                    variant="h2"
-                    align="center"
-                    marginRight="0px"
-                    color="textPrimary"
-                    x
-                    gutterBottom
-                  >
-                    Contracts
-                  </Typography>
-                  <div align="center" display="flex-start">
-                    {cards.map(card => (
-                      <Grid
-                        item
-                        key={card}
-                        xs={12}
-                        sm={6}
-                        md={8}
-                        align="center"
-                      >
-                        <Card className={classes.card}>
-                          <CardContent className={classes.cardContent}>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="h2"
-                            >
-                              Contract Name
-                            </Typography>
-                            <Typography>Contract Details</Typography>
-                          </CardContent>
-                          <CardActions
-                            style={{
-                              display: "center",
-                              justifyItems: "center",
-                              marginTop: "20px"
-                            }}
-                          >
-                            <Button size="small" color="primary">
-                              View
-                            </Button>
-                          </CardActions>
-                        </Card>
-                      </Grid>
-                    ))}
-                  </div> */}
                 </Grid>
               </Grid>
               <Container maxWidth="sm">
