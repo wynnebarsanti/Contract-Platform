@@ -51,7 +51,8 @@ const useStyles = theme => ({
     height: "100%",
     display: "flex",
     padding: "20px",
-    marginTop: "50px"
+    marginTop: "50px",
+    marginLeft:"50px"
   },
   cardMedia: {
     paddingTop: "56.25%" // 16:9
@@ -326,25 +327,31 @@ class StudentProfile extends React.Component {
                                 >
                                   {card.title}
                                 </Typography>
-                                <Typography>{card.details}</Typography>
-                              </CardContent>
-                              <CardActions
-                                style={{
-                                  display: "center",
-                                  justifyItems: "center",
-                                  marginTop: "20px"
-                                }}
-                              >
-                                <Button
-                                  size="small"
-                                  color="primary"
-                                  onClick={() =>
-                                    this.contractCompleted(card.firebaseKey)
-                                  }
+                                <Typography
+                                  style={{display: "center", justifyItems: 'center'}}
                                 >
-                                  Completed
-                                </Button>
-                              </CardActions>
+                                
+                                {card.details}
+                                  <CardActions
+                                  style={{
+                                    display: "center",
+                                    justifyItems: "center",
+                                    marginTop: "20px"
+                                  }}
+                                >
+                                  Payment: ${card.payment}
+                                  <Button
+                                    size="small"
+                                    color="primary"
+                                    onClick={()=>this.contractCompleted(card.firebaseKey)}
+                                  >
+                                    Completed
+                                  </Button>
+                                </CardActions>
+                                </Typography>
+                              </CardContent>
+                                  onClick={() =>
+                              
                             </Card>
                           </Grid>
                         ))}
