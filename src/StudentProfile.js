@@ -41,18 +41,21 @@ const useStyles = theme => ({
     padding: theme.spacing(8, 0.5, 6)
   },
   heroButtons: {
-    marginTop: theme.spacing(4)
+    marginTop: theme.spacing(4),
+    marginLeft: '60px'
   },
   cardGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8)
   },
   card: {
-    height: "100%",
-    display: "flex",
+
     padding: "20px",
     marginTop: "50px",
-    marginLeft:"50px"
+    marginLeft:"50px",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column"
   },
   cardMedia: {
     paddingTop: "56.25%" // 16:9
@@ -327,29 +330,25 @@ class StudentProfile extends React.Component {
                                 >
                                   {card.title}
                                 </Typography>
-                                <Typography
-                                  style={{display: "center", justifyItems: 'center'}}
-                                >
-                                
-                                {card.details}
+                                <Typography>{card.details}</Typography>
+                                </CardContent>                              
+                                Payment: ${card.payment}
                                   <CardActions
-                                  style={{
-                                    display: "center",
-                                    justifyItems: "center",
-                                    marginTop: "20px"
-                                  }}
+                                  // style={{
+                                  //   display: "center",
+                                  //   justifyItems: "center",
+                                  //   marginTop: "20px"
+                                  // }}
                                 >
-                                  Payment: ${card.payment}
-                                  <Button
+                                <Button
                                     size="small"
                                     color="primary"
-                                    onClick={()=>this.contractCompleted(card.firebaseKey)}
+                                    onClick={()=>this.contractCompleted(card.firebaseKey) }
+                                    style={{marginLeft:"112px"}}
                                   >
                                     Completed
                                   </Button>
                                 </CardActions>
-                                </Typography>
-                              </CardContent>                              
                             </Card>
                           </Grid>
                         ))}

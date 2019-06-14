@@ -64,8 +64,6 @@ const useStyles = theme => ({
   }
 });
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 class StudentContract extends React.Component {
   constructor(props) {
     super(props);
@@ -146,9 +144,7 @@ class StudentContract extends React.Component {
 
 
   render() {
-    const { users } = this.state;
-    const { uid } = this.state.uid;
-    const { currentUser } = this.state;
+
     const { classes } = this.props;
     return (
       <div>
